@@ -142,12 +142,51 @@
 
   .section-spacer { height: 20px; }
 
-  /* Formula Cards */
-  .formula-cards { display: flex; gap: 8px; flex-wrap: wrap; }
+  /* Formula Carousel */
+  .formula-carousel-wrapper {
+    position: relative;
+    margin: 0 -4px;
+  }
+  .formula-cards {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 4px 4px 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .formula-cards::-webkit-scrollbar { display: none; }
+
+  /* Fade hints on edges */
+  .formula-carousel-wrapper::before,
+  .formula-carousel-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 20px;
+    z-index: 2;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  .formula-carousel-wrapper::before {
+    left: 0;
+    background: linear-gradient(to right, var(--parchment-warm), transparent);
+    opacity: 0;
+  }
+  .formula-carousel-wrapper::after {
+    right: 0;
+    background: linear-gradient(to left, var(--parchment-warm), transparent);
+  }
+  .formula-carousel-wrapper.scrolled-start::before { opacity: 0; }
+  .formula-carousel-wrapper.scrolled-end::after { opacity: 0; }
+  .formula-carousel-wrapper.scrolled-mid::before { opacity: 1; }
 
   .formula-card {
-    flex: 1 1 calc(33.333% - 6px);
+    flex: 0 0 calc((100% - 16px) / 3);
     min-width: 0;
+    scroll-snap-align: start;
     padding: 14px 12px;
     border-radius: 11px;
     border: 2px solid transparent;
@@ -247,7 +286,7 @@
     background: white;
     border-radius: 9px;
     border: 1px solid var(--flour-dust);
-    margin-top: 10px;
+    margin-top: 14px;
   }
   .difficulty-dots { display: flex; gap: 4px; }
   .difficulty-dot {
@@ -258,6 +297,7 @@
   .difficulty-dot.filled { background: var(--sage); }
   .difficulty-dot.filled.intermediate { background: var(--golden-crust); }
   .difficulty-dot.filled.advanced { background: var(--clay); }
+  .difficulty-dot.filled.expert { background: var(--burned-red); }
   .difficulty-label {
     font-family: 'Fraunces', serif;
     font-size: 11.5px; font-weight: 600; color: var(--crust-brown);
@@ -929,31 +969,33 @@
   <!-- LEFT COLUMN -->
   <div class="left-col">
     <div class="section-label">Formula</div>
-    <div class="formula-cards" id="formulaCards">
-      <div class="formula-card selected" data-formula="noknead" onclick="selectFormula(this)">
-        <div class="formula-card-dot"></div>
-        <div class="formula-card-name">No-Knead PAL</div>
-        <div class="formula-card-meta">~22h · minimal handling</div>
-      </div>
-      <div class="formula-card" data-formula="fourfold" onclick="selectFormula(this)">
-        <div class="formula-card-dot"></div>
-        <div class="formula-card-name">Four-Fold PAL</div>
-        <div class="formula-card-meta">~16.5h · more structure</div>
-      </div>
-      <div class="formula-card" data-formula="tartine" onclick="selectFormula(this)">
-        <div class="formula-card-dot"></div>
-        <div class="formula-card-name">Tartine Country</div>
-        <div class="formula-card-meta">~16h · classic method</div>
-      </div>
-      <div class="formula-card" data-formula="wholegrain" onclick="selectFormula(this)">
-        <div class="formula-card-dot"></div>
-        <div class="formula-card-name">100% Whole Grain</div>
-        <div class="formula-card-meta">~24h · high hydration</div>
-      </div>
-      <div class="formula-card" data-formula="extretard" onclick="selectFormula(this)">
-        <div class="formula-card-dot"></div>
-        <div class="formula-card-name">72h Extended Retard</div>
-        <div class="formula-card-meta">~80h · deep flavor</div>
+    <div class="formula-carousel-wrapper" id="carouselWrapper">
+      <div class="formula-cards" id="formulaCards">
+        <div class="formula-card selected" data-formula="noknead" onclick="selectFormula(this)">
+          <div class="formula-card-dot"></div>
+          <div class="formula-card-name">No-Knead PAL</div>
+          <div class="formula-card-meta">~22h · minimal handling</div>
+        </div>
+        <div class="formula-card" data-formula="fourfold" onclick="selectFormula(this)">
+          <div class="formula-card-dot"></div>
+          <div class="formula-card-name">Four-Fold PAL</div>
+          <div class="formula-card-meta">~16.5h · more structure</div>
+        </div>
+        <div class="formula-card" data-formula="tartine" onclick="selectFormula(this)">
+          <div class="formula-card-dot"></div>
+          <div class="formula-card-name">Tartine Country</div>
+          <div class="formula-card-meta">~16h · classic method</div>
+        </div>
+        <div class="formula-card" data-formula="wholegrain" onclick="selectFormula(this)">
+          <div class="formula-card-dot"></div>
+          <div class="formula-card-name">100% Whole Grain</div>
+          <div class="formula-card-meta">~24h · high hydration</div>
+        </div>
+        <div class="formula-card" data-formula="slowferment" onclick="selectFormula(this)">
+          <div class="formula-card-dot"></div>
+          <div class="formula-card-name">72h Slow Ferment</div>
+          <div class="formula-card-meta">~80h · deep flavor</div>
+        </div>
       </div>
     </div>
 
@@ -984,16 +1026,17 @@
           <div class="variant-cell-level">Advanced</div>
         </div>
       </div>
-      <div class="difficulty-bar" id="difficultyBar">
-        <div class="difficulty-dots">
-          <div class="difficulty-dot filled"></div>
-          <div class="difficulty-dot"></div>
-          <div class="difficulty-dot"></div>
-          <div class="difficulty-dot"></div>
-        </div>
-        <div class="difficulty-label" id="difficultyLabel">Beginner</div>
-        <div class="difficulty-desc" id="difficultyDesc">Forgiving dough, easy to shape</div>
+    </div>
+
+    <div class="difficulty-bar" id="difficultyBar">
+      <div class="difficulty-dots">
+        <div class="difficulty-dot filled"></div>
+        <div class="difficulty-dot"></div>
+        <div class="difficulty-dot"></div>
+        <div class="difficulty-dot"></div>
       </div>
+      <div class="difficulty-label" id="difficultyLabel">Beginner</div>
+      <div class="difficulty-desc" id="difficultyDesc">Low levain, long proof — very forgiving</div>
     </div>
 
     <div class="section-spacer"></div>
@@ -1174,7 +1217,9 @@
       ],
       hydration: 74,
       levainRange: [1, 10],
-      defaultLevain: 5
+      defaultLevain: 5,
+      difficulty: 'beginner',
+      diffDesc: 'Low levain, long proof — very forgiving'
     },
     fourfold: {
       variants: {
@@ -1219,7 +1264,9 @@
       ],
       hydration: 75,
       levainRange: null,
-      defaultLevain: 20
+      defaultLevain: 20,
+      difficulty: 'intermediate',
+      diffDesc: 'Precise timing on turns and bulk proof'
     },
     wholegrain: {
       ingredients: [
@@ -1230,9 +1277,11 @@
       ],
       hydration: 92,
       levainRange: null,
-      defaultLevain: 20
+      defaultLevain: 20,
+      difficulty: 'advanced',
+      diffDesc: 'Extremely wet, fast ferment — demands experience'
     },
-    extretard: {
+    slowferment: {
       ingredients: [
         { name: 'Bread Flour', pct: 90, isFlour: true },
         { name: 'Whole Rye', pct: 10, isFlour: true },
@@ -1242,7 +1291,9 @@
       ],
       hydration: 75,
       levainRange: null,
-      defaultLevain: 10
+      defaultLevain: 10,
+      difficulty: 'expert',
+      diffDesc: '72-hour cold bulk — patience and fridge management'
     }
   };
 
@@ -1298,7 +1349,7 @@
       { offsetH: 9, name: 'Cold Retard', desc: 'Into the fridge at 38°F. Monitor for enzymatic breakdown — whole grain doughs can overproof in the cold.', durMin: 840, durLabel: '12-15 hours', type: 'cold' },
       { offsetH: 23, name: 'Bake', desc: 'Dutch oven, 475°F covered 25 min, then 425°F uncovered until deep mahogany.', durMin: 50, durLabel: '~50 min', type: 'bake' }
     ],
-    extretard: [
+    slowferment: [
       { offsetH: 0, name: 'Initial Mix', desc: 'Rough mix all ingredients. No autolyse — just combine until shaggy. Rest 30 minutes.', durMin: 30, type: 'step' },
       { offsetH: 0.5, name: 'Stretch + Fold 1', desc: 'First set of stretch and folds.', durMin: 30, type: 'step' },
       { offsetH: 1, name: 'Stretch + Fold 2', desc: 'Second set. Dough should be smooth.', durMin: 30, type: 'step' },
@@ -1314,7 +1365,8 @@
   const difficultyMap = {
     beginner: { dots: 1, color: '', label: 'Beginner' },
     intermediate: { dots: 2, color: 'intermediate', label: 'Intermediate' },
-    advanced: { dots: 3, color: 'advanced', label: 'Advanced' }
+    advanced: { dots: 3, color: 'advanced', label: 'Advanced' },
+    expert: { dots: 4, color: 'expert', label: 'Expert' }
   };
 
   // ===== FORMAT HELPERS =====
@@ -1483,6 +1535,7 @@
     currentFormula = card.dataset.formula;
 
     const vs = document.getElementById('variantSection');
+    const f = formulas[currentFormula];
     if (currentFormula === 'fourfold') {
       vs.classList.add('visible');
       currentVariant = '75-25';
@@ -1492,10 +1545,13 @@
       levainPct = 25;
     } else {
       vs.classList.remove('visible');
+      // Show difficulty for non-variant formulas
+      if (f.difficulty) {
+        updateDifficulty(f.difficulty, f.diffDesc);
+      }
     }
 
     const sliderRow = document.getElementById('levainSlider');
-    const f = formulas[currentFormula];
     if (!f.levainRange && !f.variants) {
       sliderRow.style.opacity = '0.35';
       sliderRow.style.pointerEvents = 'none';
@@ -1719,10 +1775,38 @@
     document.getElementById('ddtNote').textContent = `Friction factor: ${frictionFactor} (${names[frictionFactor]})`;
   }
 
+  // ===== CAROUSEL SCROLL TRACKING =====
+  function updateCarouselHints() {
+    const wrapper = document.getElementById('carouselWrapper');
+    const cards = document.getElementById('formulaCards');
+    const scrollLeft = cards.scrollLeft;
+    const maxScroll = cards.scrollWidth - cards.clientWidth;
+
+    wrapper.classList.remove('scrolled-start', 'scrolled-end', 'scrolled-mid');
+    if (scrollLeft <= 2) {
+      wrapper.classList.add('scrolled-start');
+    } else if (scrollLeft >= maxScroll - 2) {
+      wrapper.classList.add('scrolled-end');
+    } else {
+      wrapper.classList.add('scrolled-mid');
+    }
+  }
+
+  document.getElementById('formulaCards').addEventListener('scroll', updateCarouselHints);
+
+  // Scroll selected card into view on formula select
+  function scrollToSelected() {
+    const selected = document.querySelector('.formula-card.selected');
+    if (selected) {
+      selected.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+  }
+
   // ===== INIT =====
   calcDDT();
   updateIngredients();
   renderTimeline();
+  updateCarouselHints();
 </script>
 </body>
 </html>

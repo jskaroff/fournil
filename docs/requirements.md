@@ -6,11 +6,13 @@ Fournil ("bakehouse" in French) is an iPad app for managing sourdough bread baki
 ## Core Features
 
 ### 1. Baker's Math Calculator
-- Select from built-in formulas (No-Knead PAL, Four-Fold PAL, Tartine Basic Country, 100% Whole Grain, Extended Retard 72h)
+- Select from built-in formulas via horizontal carousel (3 visible at a time with peek slivers): No-Knead PAL, Four-Fold PAL, Tartine Basic Country, 100% Whole Grain, 72h Slow Ferment
 - Input desired dough weight (200-3000g)
 - See all ingredient weights calculated from baker's percentages
 - DDT (Desired Dough Temperature) calculator
 - Adjustable hydration and levain percentages
+- Difficulty badge shown for every formula/variant: Beginner (1 dot, sage), Intermediate (2 dots, golden), Advanced (3 dots, clay), Expert (4 dots, burned red)
+- Formula selector is a horizontal scroll carousel with scroll-snap, showing 3 cards at a time with peek slivers on edges
 
 ### 2. Starter Tracker
 - Track starter health with visual indicator

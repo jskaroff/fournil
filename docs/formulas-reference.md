@@ -84,6 +84,7 @@ Water temperature = A + B + C
 - 74% cool (75°F) water
 - 2.2% salt
 - 1-10% levain (5% is standard)
+- Difficulty: Beginner (low levain, long proof — very forgiving)
 
 **Final Formula (5% levain):**
 - 360g water, 475g AP flour, 25g rye flour, 25g levain, 11g salt
@@ -127,13 +128,14 @@ Water temperature = A + B + C
 - 2% salt
 - 20% leaven (young, sweet-smelling, low acidity)
 - Based on 1kg total flour
+- Difficulty: Intermediate (precise timing on turns and bulk proof)
 
 ### 100% Whole Grain (High Hydration)
 - 100% whole wheat flour (hard red wheat preferred)
 - 92% water (target temp: 90°F)
 - 2.5% salt
 - 20% levain (100% hydration, used at peak)
-- Difficulty: Advanced
+- Difficulty: Advanced (extremely wet, fast ferment — demands experience)
 - Total time: ~24 hours
 
 Key technique: 2-hour autolyse is mandatory to soften bran particles which act as mechanical gluten disruptors. Rubaud mixing method. 3 rounds of slap and fold for strength, 2 coil folds for aeration. Stitch-shaping into banneton. Cold retard 12-15h at 38°F — monitor for enzymatic breakdown.
@@ -141,13 +143,13 @@ Key technique: 2-hour autolyse is mandatory to soften bran particles which act a
 **Timeline (~24 hours):**
 0:00 Autolyse (2h) → 2:00 Mix (Rubaud) → 2:30 Slap+Fold 1 → 3:00 Slap+Fold 2 → 3:30 Slap+Fold 3 → 4:00 Coil Fold 1 → 5:30 Coil Fold 2 → 6:00 Bulk Proof (1.5-3h) → 8:30 Stitch-Shape → 9:00 Cold Retard (12-15h) → 23:00 Bake
 
-### Extended Retard (72-Hour Fermentation)
+### 72h Slow Ferment
 - 90% bread flour (min 12.5% protein)
 - 10% whole rye (provides sugars for 72h bacterial activity)
 - 75% water (target temp: 75°F)
 - 2.2% salt
 - 10% levain (low inoculation to prevent over-acidification)
-- Difficulty: Intermediate
+- Difficulty: Expert (72-hour cold bulk — patience and fridge management)
 - Total time: ~80 hours
 
 Key technique: Low 10% inoculation is the critical constraint — higher percentages cause structural integrity loss (proteolysis) before 72 hours. No autolyse. Minimal ambient bulk (1-2h), then 72h cold bulk at 36°F. Degas lightly at 48h mark. Shape directly from fridge (cold dough handles easily). Bench proof 2-3h until poke test passes.
