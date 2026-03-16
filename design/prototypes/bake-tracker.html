@@ -6,7 +6,7 @@
 <title>Fournil — Bake Tracker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --parchment: #FEFBF5;
@@ -82,7 +82,7 @@
     gap: 1px;
   }
   .top-bar-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Fraunces', serif;
     font-size: 17px;
     font-weight: 600;
     color: var(--crust-brown);
@@ -93,7 +93,7 @@
     color: var(--wheat-field);
   }
   .top-bar-subtitle {
-    font-family: 'Lora', serif;
+    font-family: 'Source Serif 4', serif;
     font-size: 11px;
     color: var(--wheat-light);
   }
@@ -105,7 +105,7 @@
     border: 1.5px solid var(--flour-dust-deep);
     border-radius: 9px;
     background: white;
-    font-family: 'Lora', serif;
+    font-family: 'Source Serif 4', serif;
     font-size: 12.5px;
     color: var(--wheat-field);
     cursor: pointer;
@@ -141,7 +141,7 @@
   }
 
   .step-name {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Fraunces', serif;
     font-size: 26px;
     font-weight: 600;
     color: var(--crust-brown);
@@ -211,7 +211,7 @@
     gap: 2px;
   }
   .timer-digits {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Fira Mono', monospace;
     font-size: 38px;
     font-weight: 500;
     color: var(--crust-brown);
@@ -223,7 +223,7 @@
     color: var(--over-proof-amber);
   }
   .timer-label {
-    font-family: 'Lora', serif;
+    font-family: 'Source Serif 4', serif;
     font-size: 11px;
     color: var(--wheat-light);
     letter-spacing: 0.08em;
@@ -238,7 +238,7 @@
   }
 
   .timer-hint {
-    font-family: 'Lora', serif;
+    font-family: 'Source Serif 4', serif;
     font-size: 12px;
     color: var(--wheat-light);
     font-style: italic;
@@ -253,7 +253,7 @@
     margin-bottom: 20px;
   }
   .step-instructions p {
-    font-family: 'Lora', serif;
+    font-family: 'Source Serif 4', serif;
     font-size: 13.5px;
     color: var(--wheat-field);
     line-height: 1.6;
@@ -271,7 +271,7 @@
     align-items: flex-start;
   }
   .tip-icon {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Fraunces', serif;
     font-size: 10px;
     font-weight: 700;
     color: var(--sage);
@@ -283,7 +283,7 @@
     margin-top: 1px;
   }
   .tip-text {
-    font-family: 'Lora', serif;
+    font-family: 'Source Serif 4', serif;
     font-size: 12px;
     color: var(--sage);
     line-height: 1.5;
@@ -298,7 +298,7 @@
   .ctrl-btn {
     padding: 11px 24px;
     border-radius: 10px;
-    font-family: 'Lora', serif;
+    font-family: 'Source Serif 4', serif;
     font-size: 13.5px;
     cursor: pointer;
     display: flex;
@@ -333,7 +333,7 @@
     border: none;
     background: var(--golden-crust);
     color: white;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Fraunces', serif;
     font-weight: 600;
     font-size: 14px;
     box-shadow: var(--shadow-golden);
@@ -370,7 +370,7 @@
   .right-scroll::-webkit-scrollbar { width: 0; }
 
   .section-label {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Fraunces', serif;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.13em;
@@ -454,7 +454,7 @@
   }
 
   .progress-name {
-    font-family: 'Lora', serif;
+    font-family: 'Source Serif 4', serif;
     font-size: 13px;
     transition: color 0.2s ease;
   }
@@ -472,7 +472,7 @@
   }
 
   .progress-time {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Fira Mono', monospace;
     font-size: 10.5px;
   }
   .progress-item.completed .progress-time { color: var(--wheat-light); }
@@ -505,7 +505,7 @@
     border-bottom-color: transparent;
   }
   .ing-name {
-    font-family: 'Lora', serif;
+    font-family: 'Source Serif 4', serif;
     font-size: 12.5px;
     color: var(--crust-brown);
     display: flex;
@@ -535,7 +535,7 @@
     background: transparent;
   }
   .ing-grams {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Fira Mono', monospace;
     font-size: 12.5px;
     font-weight: 500;
     color: var(--crust-brown);
@@ -558,7 +558,7 @@
     padding: 5px 12px;
     border-radius: 20px;
     background: var(--flour-dust);
-    font-family: 'Lora', serif;
+    font-family: 'Source Serif 4', serif;
     font-size: 11.5px;
     color: var(--crust-medium);
   }
@@ -567,7 +567,7 @@
     opacity: 0.7;
   }
   .tools-next-hint {
-    font-family: 'Lora', serif;
+    font-family: 'Source Serif 4', serif;
     font-size: 11px;
     color: var(--wheat-light);
     font-style: italic;
@@ -587,7 +587,7 @@
     border: 1.5px solid var(--flour-dust-deep);
     border-radius: 9px;
     background: white;
-    font-family: 'Lora', serif;
+    font-family: 'Source Serif 4', serif;
     font-size: 12px;
     color: var(--wheat-field);
     cursor: pointer;
@@ -647,14 +647,14 @@
     fill: none;
   }
   .celebration-text {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Fraunces', serif;
     font-size: 20px;
     font-weight: 600;
     color: var(--crust-brown);
     animation: slideUp 0.4s ease 0.15s backwards;
   }
   .celebration-sub {
-    font-family: 'Lora', serif;
+    font-family: 'Source Serif 4', serif;
     font-size: 13px;
     color: var(--wheat-field);
     animation: slideUp 0.4s ease 0.25s backwards;

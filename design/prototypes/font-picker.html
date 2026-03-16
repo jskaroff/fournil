@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1366, initial-scale=1">
+<title>Fournil — Font Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Serif+Display:ital@0;1&family=DM+Serif+Text:ital@0;1&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Libre+Caslon+Display&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=Fira+Mono:wght@400;500&family=Space+Mono&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --parchment: #FEFBF5;
+    --flour-dust: #F2EBE0;
+    --flour-dust-deep: #E4D9C8;
+    --parchment-warm: #FAF5EC;
+    --crust-brown: #4A3228;
+    --crust-medium: #6B4D3E;
+    --wheat-field: #8B7355;
+    --wheat-light: #A89478;
+    --golden-crust: #C07A2E;
+    --golden-glow: rgba(192, 122, 46, 0.1);
+    --sage: #7A9178;
+    --sage-bg: rgba(122, 145, 120, 0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--parchment);
+    color: var(--crust-brown);
+    padding: 40px 56px 80px;
+  }
+
+  /* Page header */
+  .page-header {
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--flour-dust-deep);
+  }
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--crust-brown);
+    margin-bottom: 6px;
+  }
+  .page-sub {
+    font-family: 'Lora', serif;
+    font-size: 13px;
+    color: var(--wheat-field);
+    line-height: 1.5;
+  }
+  .current-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--golden-glow);
+    border: 1px solid rgba(192, 122, 46, 0.2);
+    font-family: 'Lora', serif;
+    font-size: 11px;
+    color: var(--golden-crust);
+    margin-left: 10px;
+  }
+
+  /* Grid */
+  .font-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  /* Font card */
+  .font-card {
+    background: white;
+    border: 2px solid var(--flour-dust-deep);
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+  .font-card:hover {
+    border-color: var(--golden-crust);
+    box-shadow: 0 8px 28px rgba(192, 122, 46, 0.14);
+    transform: translateY(-2px);
+  }
+  .font-card.selected {
+    border-color: var(--golden-crust);
+    box-shadow: 0 8px 28px rgba(192, 122, 46, 0.18);
+  }
+  .font-card.is-current {
+    border-color: var(--sage);
+  }
+
+  .selected-badge {
+    display: none;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--golden-crust);
+    color: white;
+    font-size: 10px;
+    font-family: 'Lora', serif;
+    z-index: 10;
+  }
+  .font-card.selected .selected-badge {
+    display: block;
+  }
+
+  .current-label {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--sage-bg);
+    color: var(--sage);
+    font-size: 10px;
+    font-family: 'Lora', serif;
+    border: 1px solid rgba(122, 145, 120, 0.2);
+  }
+
+  /* Card preview area — mimics right panel + left panel bits */
+  .card-preview {
+    padding: 22px 22px 18px;
+    background: var(--parchment-warm);
+    border-bottom: 1px solid var(--flour-dust-deep);
+    min-height: 220px;
+  }
+
+  /* Left panel bits */
+  .preview-step-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--crust-brown);
+    letter-spacing: 0.01em;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .preview-timer {
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--crust-brown);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+  .preview-timer-label {
+    font-size: 10px;
+    color: var(--wheat-light);
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+    margin-bottom: 14px;
+  }
+  .preview-instructions {
+    font-size: 12.5px;
+    color: var(--wheat-field);
+    line-height: 1.55;
+    margin-bottom: 12px;
+  }
+  .preview-tip {
+    padding: 9px 13px;
+    border-radius: 8px;
+    background: var(--sage-bg);
+    border: 1px solid rgba(122, 145, 120, 0.1);
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .preview-tip-label {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--sage);
+    background: rgba(122, 145, 120, 0.14);
+    padding: 2px 6px;
+    border-radius: 3px;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .preview-tip-text {
+    font-size: 11px;
+    color: var(--sage);
+    line-height: 1.45;
+  }
+
+  /* Section label */
+  .preview-section-label {
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--wheat-field);
+    margin-bottom: 6px;
+  }
+
+  /* Card meta */
+  .card-meta {
+    padding: 12px 22px 14px;
+  }
+  .font-name-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .font-pair-name {
+    font-family: 'Lora', serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--crust-brown);
+  }
+  .font-pair-detail {
+    font-family: 'Lora', serif;
+    font-size: 11px;
+    color: var(--wheat-light);
+    font-style: italic;
+  }
+  .font-vibe {
+    font-family: 'Lora', serif;
+    font-size: 11px;
+    color: var(--wheat-field);
+    line-height: 1.4;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div style="display:flex; align-items:baseline; gap:0;">
+    <div class="page-title">Font Options <span class="current-badge">current: Playfair + Lora</span></div>
+  </div>
+  <p class="page-sub" style="margin-top:6px;">Each card shows the same Fournil content — step name, timer, instructions, and a tip. Click a card to select it, then copy the font names below.</p>
+</div>
+
+<div class="font-grid">
+
+  <!-- 1: CURRENT — Playfair Display + Lora -->
+  <div class="font-card is-current" onclick="selectFont(this)">
+    <div class="current-label">current</div>
+    <div class="card-preview" style="font-family: 'Lora', serif;">
+      <div class="preview-section-label" style="font-family:'Playfair Display',serif;">Progress</div>
+      <div class="preview-step-name" style="font-family:'Playfair Display',serif;">Coil Fold + Bulk Proof</div>
+      <div class="preview-timer" style="font-family:'JetBrains Mono',monospace;">12:42:15</div>
+      <div class="preview-timer-label" style="font-family:'Lora',serif;">remaining</div>
+      <div class="preview-instructions" style="font-family:'Lora',serif;">One set of coil folds, then cover and let proof at room temperature (75–78°F) until about doubled in volume.</div>
+      <div class="preview-tip">
+        <div class="preview-tip-label" style="font-family:'Playfair Display',serif;">TIP</div>
+        <div class="preview-tip-text" style="font-family:'Lora',serif;">Look for 60–100% volume expansion. The dough should be jiggly and domed on top.</div>
+      </div>
+    </div>
+    <div class="card-meta">
+      <div class="font-name-row">
+        <span class="font-pair-name">Playfair Display + Lora</span>
+        <span class="font-pair-detail">+ JetBrains Mono</span>
+      </div>
+      <div class="font-vibe">Literary, traditional. The "food magazine" stack — beautiful but familiar.</div>
+    </div>
+    <div class="selected-badge">✓ Selected</div>
+  </div>
+
+  <!-- 2: Cormorant Garamond + Crimson Pro -->
+  <div class="font-card" onclick="selectFont(this)">
+    <div class="card-preview" style="font-family:'Crimson Pro',serif;">
+      <div class="preview-section-label" style="font-family:'Cormorant Garamond',serif; letter-spacing:0.18em;">Progress</div>
+      <div class="preview-step-name" style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; letter-spacing:0.015em;">Coil Fold + Bulk Proof</div>
+      <div class="preview-timer" style="font-family:'IBM Plex Mono',monospace; font-size:28px;">12:42:15</div>
+      <div class="preview-timer-label" style="font-family:'Crimson Pro',serif; letter-spacing:0.06em;">remaining</div>
+      <div class="preview-instructions" style="font-family:'Crimson Pro',serif; font-size:13px; line-height:1.5;">One set of coil folds, then cover and let proof at room temperature (75–78°F) until about doubled in volume.</div>
+      <div class="preview-tip">
+        <div class="preview-tip-label" style="font-family:'Cormorant Garamond',serif; letter-spacing:0.1em;">TIP</div>
+        <div class="preview-tip-text" style="font-family:'Crimson Pro',serif; font-size:12px;">Look for 60–100% volume expansion. The dough should be jiggly and domed on top.</div>
+      </div>
+    </div>
+    <div class="card-meta">
+      <div class="font-name-row">
+        <span class="font-pair-name">Cormorant Garamond + Crimson Pro</span>
+        <span class="font-pair-detail">+ IBM Plex Mono</span>
+      </div>
+      <div class="font-vibe">Very French, antique, delicate. More like a century-old recipe book. Elegant but fragile.</div>
+    </div>
+    <div class="selected-badge">✓ Selected</div>
+  </div>
+
+  <!-- 3: Fraunces + Source Serif 4 -->
+  <div class="font-card" onclick="selectFont(this)">
+    <div class="card-preview" style="font-family:'Source Serif 4',serif;">
+      <div class="preview-section-label" style="font-family:'Source Serif 4',serif; font-weight:600; letter-spacing:0.14em;">Progress</div>
+      <div class="preview-step-name" style="font-family:'Fraunces',serif; font-size:21px; font-weight:600; letter-spacing:0.005em;">Coil Fold + Bulk Proof</div>
+      <div class="preview-timer" style="font-family:'Fira Mono',monospace; font-size:28px;">12:42:15</div>
+      <div class="preview-timer-label" style="font-family:'Source Serif 4',serif; font-size:10px; letter-spacing:0.06em;">remaining</div>
+      <div class="preview-instructions" style="font-family:'Source Serif 4',serif; font-size:12.5px; line-height:1.55;">One set of coil folds, then cover and let proof at room temperature (75–78°F) until about doubled in volume.</div>
+      <div class="preview-tip">
+        <div class="preview-tip-label" style="font-family:'Source Serif 4',serif; font-weight:600;">TIP</div>
+        <div class="preview-tip-text" style="font-family:'Source Serif 4',serif; font-size:11.5px;">Look for 60–100% volume expansion. The dough should be jiggly and domed on top.</div>
+      </div>
+    </div>
+    <div class="card-meta">
+      <div class="font-name-row">
+        <span class="font-pair-name">Fraunces + Source Serif 4</span>
+        <span class="font-pair-detail">+ Fira Mono</span>
+      </div>
+      <div class="font-vibe">Warm, optical, early-American craft. Fraunces is a variable font designed to mimic the inconsistency of old typesetting — very characterful.</div>
+    </div>
+    <div class="selected-badge">✓ Selected</div>
+  </div>
+
+  <!-- 4: DM Serif Display + DM Serif Text -->
+  <div class="font-card" onclick="selectFont(this)">
+    <div class="card-preview" style="font-family:'DM Serif Text',serif;">
+      <div class="preview-section-label" style="font-family:'DM Serif Text',serif; font-size:9.5px; font-weight:600; letter-spacing:0.15em;">Progress</div>
+      <div class="preview-step-name" style="font-family:'DM Serif Display',serif; font-size:22px; font-weight:400; letter-spacing:0.01em;">Coil Fold + Bulk Proof</div>
+      <div class="preview-timer" style="font-family:'Space Mono',monospace; font-size:25px; letter-spacing:-0.02em;">12:42:15</div>
+      <div class="preview-timer-label" style="font-family:'DM Serif Text',serif; font-size:10px; letter-spacing:0.06em;">remaining</div>
+      <div class="preview-instructions" style="font-family:'DM Serif Text',serif; font-size:12.5px; line-height:1.55;">One set of coil folds, then cover and let proof at room temperature (75–78°F) until about doubled in volume.</div>
+      <div class="preview-tip">
+        <div class="preview-tip-label" style="font-family:'DM Serif Text',serif; font-weight:400;">TIP</div>
+        <div class="preview-tip-text" style="font-family:'DM Serif Text',serif; font-size:11.5px;">Look for 60–100% volume expansion. The dough should be jiggly and domed on top.</div>
+      </div>
+    </div>
+    <div class="card-meta">
+      <div class="font-name-row">
+        <span class="font-pair-name">DM Serif Display + DM Serif Text</span>
+        <span class="font-pair-detail">+ Space Mono</span>
+      </div>
+      <div class="font-vibe">Clean, editorial, contemporary. More structured and modern than the others — feels like a well-designed app, less like a cookbook.</div>
+    </div>
+    <div class="selected-badge">✓ Selected</div>
+  </div>
+
+  <!-- 5: EB Garamond + Libre Baskerville -->
+  <div class="font-card" onclick="selectFont(this)">
+    <div class="card-preview" style="font-family:'Libre Baskerville',serif;">
+      <div class="preview-section-label" style="font-family:'EB Garamond',serif; font-size:9px; font-weight:500; letter-spacing:0.18em;">Progress</div>
+      <div class="preview-step-name" style="font-family:'EB Garamond',serif; font-size:22px; font-weight:600; letter-spacing:0.01em;">Coil Fold + Bulk Proof</div>
+      <div class="preview-timer" style="font-family:'Courier Prime',monospace; font-size:27px; font-weight:700; letter-spacing:-0.01em;">12:42:15</div>
+      <div class="preview-timer-label" style="font-family:'Libre Baskerville',serif; font-size:9.5px; letter-spacing:0.06em;">remaining</div>
+      <div class="preview-instructions" style="font-family:'Libre Baskerville',serif; font-size:11.5px; line-height:1.6;">One set of coil folds, then cover and let proof at room temperature (75–78°F) until about doubled in volume.</div>
+      <div class="preview-tip">
+        <div class="preview-tip-label" style="font-family:'EB Garamond',serif; font-size:9px;">TIP</div>
+        <div class="preview-tip-text" style="font-family:'Libre Baskerville',serif; font-size:10.5px;">Look for 60–100% volume expansion. The dough should be jiggly and domed on top.</div>
+      </div>
+    </div>
+    <div class="card-meta">
+      <div class="font-name-row">
+        <span class="font-pair-name">EB Garamond + Libre Baskerville</span>
+        <span class="font-pair-detail">+ Courier Prime</span>
+      </div>
+      <div class="font-vibe">Old school, dense, bookish. Serious and sturdy — feels like a worn hardcover. Courier Prime adds a typewriter warmth.</div>
+    </div>
+    <div class="selected-badge">✓ Selected</div>
+  </div>
+
+  <!-- 6: Spectral + Crimson Pro -->
+  <div class="font-card" onclick="selectFont(this)">
+    <div class="card-preview" style="font-family:'Crimson Pro',serif;">
+      <div class="preview-section-label" style="font-family:'Spectral',serif; font-size:9.5px; font-weight:600; letter-spacing:0.15em;">Progress</div>
+      <div class="preview-step-name" style="font-family:'Spectral',serif; font-size:21px; font-weight:600; font-style:italic; letter-spacing:0.01em;">Coil Fold + Bulk Proof</div>
+      <div class="preview-timer" style="font-family:'IBM Plex Mono',monospace; font-size:28px; letter-spacing:-0.01em;">12:42:15</div>
+      <div class="preview-timer-label" style="font-family:'Crimson Pro',serif; font-size:10px; letter-spacing:0.06em;">remaining</div>
+      <div class="preview-instructions" style="font-family:'Crimson Pro',serif; font-size:13px; line-height:1.55;">One set of coil folds, then cover and let proof at room temperature (75–78°F) until about doubled in volume.</div>
+      <div class="preview-tip">
+        <div class="preview-tip-label" style="font-family:'Spectral',serif; font-size:9px; letter-spacing:0.1em;">TIP</div>
+        <div class="preview-tip-text" style="font-family:'Crimson Pro',serif; font-size:12px;">Look for 60–100% volume expansion. The dough should be jiggly and domed on top.</div>
+      </div>
+    </div>
+    <div class="card-meta">
+      <div class="font-name-row">
+        <span class="font-pair-name">Spectral + Crimson Pro</span>
+        <span class="font-pair-detail">+ IBM Plex Mono</span>
+      </div>
+      <div class="font-vibe">French digital type, precise but warm. Spectral in italic for headers gives a distinctive slant — confident and a little unexpected.</div>
+    </div>
+    <div class="selected-badge">✓ Selected</div>
+  </div>
+
+</div>
+
+<!-- Selection output -->
+<div id="selectionOutput" style="display:none; margin-top:28px; padding:20px 24px; background:white; border:1.5px solid var(--golden-crust); border-radius:12px; max-width:600px;">
+  <div style="font-family:'Lora',serif; font-size:11px; font-weight:600; color:var(--golden-crust); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px;">Selected</div>
+  <div id="selectionText" style="font-family:'Lora',serif; font-size:14px; color:var(--crust-brown);"></div>
+</div>
+
+<script>
+  function selectFont(card) {
+    document.querySelectorAll('.font-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    const name = card.querySelector('.font-pair-name').textContent;
+    const detail = card.querySelector('.font-pair-detail')?.textContent || '';
+    const vibe = card.querySelector('.font-vibe').textContent;
+    const output = document.getElementById('selectionOutput');
+    output.style.display = 'block';
+    document.getElementById('selectionText').innerHTML = `<strong>${name}</strong> ${detail}<br><span style="color:var(--wheat-field); font-size:12.5px;">${vibe}</span>`;
+  }
+</script>
+</body>
+</html>
