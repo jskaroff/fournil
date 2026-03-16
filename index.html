@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1024, initial-scale=1">
+<title>Fournil — Design Prototypes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --parchment: #FEFBF5;
+    --flour-dust: #F2EBE0;
+    --flour-dust-deep: #E4D9C8;
+    --crust-brown: #4A3228;
+    --crust-medium: #6B4D3E;
+    --wheat-field: #8B7355;
+    --wheat-light: #A89478;
+    --golden-crust: #C07A2E;
+    --golden-crust-light: #D4923F;
+    --golden-glow: rgba(192, 122, 46, 0.08);
+    --sage: #7A9178;
+    --sage-bg: rgba(122, 145, 120, 0.08);
+    --shadow-sm: 0 1px 3px rgba(74, 50, 40, 0.06);
+    --shadow-md: 0 4px 16px rgba(74, 50, 40, 0.09);
+    --shadow-lg: 0 12px 36px rgba(74, 50, 40, 0.11);
+    --shadow-golden: 0 4px 20px rgba(192, 122, 46, 0.18);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Lora', Georgia, serif;
+    background: var(--parchment);
+    color: var(--crust-brown);
+    min-height: 100vh;
+  }
+
+  /* Grain texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* Header */
+  header {
+    padding: 56px 64px 0;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .wordmark {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+
+  .wordmark-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--crust-brown);
+    letter-spacing: 0.02em;
+  }
+
+  .wordmark-tag {
+    font-family: 'Lora', serif;
+    font-size: 13px;
+    color: var(--wheat-field);
+    font-style: italic;
+  }
+
+  .header-desc {
+    font-family: 'Lora', serif;
+    font-size: 14px;
+    color: var(--wheat-field);
+    line-height: 1.6;
+    max-width: 480px;
+    margin-bottom: 8px;
+  }
+
+  .header-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: var(--sage-bg);
+    font-family: 'Lora', serif;
+    font-size: 11.5px;
+    color: var(--sage);
+    margin-top: 12px;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--sage);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* Divider */
+  .divider {
+    max-width: 900px;
+    margin: 32px auto 0;
+    padding: 0 64px;
+    height: 1px;
+    background: var(--flour-dust-deep);
+  }
+
+  /* Grid */
+  .grid {
+    max-width: 900px;
+    margin: 40px auto 0;
+    padding: 0 64px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  /* Section label */
+  .section-heading {
+    grid-column: 1 / -1;
+    font-family: 'Playfair Display', serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--wheat-light);
+    margin-bottom: -4px;
+  }
+
+  /* Prototype Card */
+  .proto-card {
+    display: block;
+    text-decoration: none;
+    background: white;
+    border: 1.5px solid var(--flour-dust-deep);
+    border-radius: 16px;
+    padding: 28px;
+    transition: all 0.25s ease;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .proto-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--golden-glow) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .proto-card:hover {
+    border-color: var(--golden-crust);
+    box-shadow: var(--shadow-golden);
+    transform: translateY(-2px);
+  }
+
+  .proto-card:hover::before {
+    opacity: 1;
+  }
+
+  .proto-card:active {
+    transform: translateY(0);
+  }
+
+  .card-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--wheat-light);
+    margin-bottom: 10px;
+  }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--crust-brown);
+    margin-bottom: 8px;
+    letter-spacing: 0.01em;
+  }
+
+  .card-desc {
+    font-family: 'Lora', serif;
+    font-size: 13px;
+    color: var(--wheat-field);
+    line-height: 1.55;
+    margin-bottom: 20px;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 20px;
+    font-family: 'Lora', serif;
+    font-size: 11px;
+  }
+
+  .badge-ready {
+    background: var(--sage-bg);
+    color: var(--sage);
+    border: 1px solid rgba(122, 145, 120, 0.2);
+  }
+
+  .badge-planned {
+    background: var(--flour-dust);
+    color: var(--wheat-light);
+    border: 1px solid transparent;
+  }
+
+  .card-arrow {
+    font-size: 16px;
+    color: var(--golden-crust);
+    transition: transform 0.2s ease;
+    opacity: 0;
+  }
+
+  .proto-card:hover .card-arrow {
+    opacity: 1;
+    transform: translateX(3px);
+  }
+
+  /* Coming soon card */
+  .proto-card.coming-soon {
+    opacity: 0.55;
+    pointer-events: none;
+    background: var(--parchment);
+    border-style: dashed;
+  }
+
+  .proto-card.coming-soon::before {
+    display: none;
+  }
+
+  /* Orientation hint for iPad */
+  .orientation-hint {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 64px;
+    font-family: 'Lora', serif;
+    font-size: 12px;
+    color: var(--wheat-light);
+    font-style: italic;
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--flour-dust-deep);
+    margin-top: 0;
+    padding: 24px 64px;
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-text {
+    font-family: 'Lora', serif;
+    font-size: 11.5px;
+    color: var(--wheat-light);
+    font-style: italic;
+  }
+
+  .footer-credit {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--flour-dust-deep);
+    letter-spacing: 0.05em;
+  }
+
+  /* Entry animation */
+  .proto-card {
+    animation: fadeUp 0.5s ease backwards;
+  }
+  .proto-card:nth-child(2) { animation-delay: 0.05s; }
+  .proto-card:nth-child(3) { animation-delay: 0.1s; }
+  .proto-card:nth-child(4) { animation-delay: 0.15s; }
+  .proto-card:nth-child(5) { animation-delay: 0.2s; }
+  .proto-card:nth-child(6) { animation-delay: 0.25s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  header {
+    animation: fadeUp 0.4s ease backwards;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wordmark">
+    <span class="wordmark-title">Fournil</span>
+    <span class="wordmark-tag">bakehouse · design prototypes</span>
+  </div>
+  <p class="header-desc">iPad app for managing sourdough bread baking end-to-end — starter care, recipe planning, guided bake tracking, and a bread log.</p>
+  <div class="header-status">
+    <div class="status-dot"></div>
+    Design phase · Hi-res prototypes in progress
+  </div>
+</header>
+
+<div class="divider"></div>
+
+<div class="grid">
+
+  <div class="section-heading">Ready to preview</div>
+
+  <a class="proto-card" href="design/prototypes/plan-tab.html">
+    <div class="card-eyebrow">Tab 02 · Bake</div>
+    <div class="card-title">Bake Tab</div>
+    <p class="card-desc">Formula selector, baker's math calculator, timeline planner, and ingredient scaling. Three scheduling modes: Start Now, Start At, Finish By.</p>
+    <div class="card-meta">
+      <span class="card-badge badge-ready">✓ Ready</span>
+      <span class="card-arrow">→</span>
+    </div>
+  </a>
+
+  <a class="proto-card" href="design/prototypes/bake-tracker.html">
+    <div class="card-eyebrow">Full-Screen · Tracker</div>
+    <div class="card-title">Bake Tracker</div>
+    <p class="card-desc">Step-by-step guided bake with countdown timers, ingredient check-off, tools guidance, and shaping tips. Lives on top of the Bake tab during an active bake.</p>
+    <div class="card-meta">
+      <span class="card-badge badge-ready">✓ Ready</span>
+      <span class="card-arrow">→</span>
+    </div>
+  </a>
+
+  <div class="section-heading" style="margin-top: 8px;">Coming up</div>
+
+  <div class="proto-card coming-soon">
+    <div class="card-eyebrow">Tab 01 · Starter</div>
+    <div class="card-title">Starter Tracker</div>
+    <p class="card-desc">Health indicator, feeding log with history, standard ratios (2:2:1, 20:20:1, revival protocol).</p>
+    <div class="card-meta">
+      <span class="card-badge badge-planned">Planned</span>
+    </div>
+  </div>
+
+  <div class="proto-card coming-soon">
+    <div class="card-eyebrow">Tab 03 · Log</div>
+    <div class="card-title">Bread Log</div>
+    <p class="card-desc">Record completed bakes with photos, notes, and multi-dimensional ratings (crumb, crust, flavor, rise).</p>
+    <div class="card-meta">
+      <span class="card-badge badge-planned">Planned</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="orientation-hint">
+  🍞 Best experienced in landscape orientation on iPad
+</div>
+
+<footer>
+  <span class="footer-text">Inspired by Andrew Janjigian's Sourdough Lifestyle &amp; Chad Robertson's Tartine Bread</span>
+  <span class="footer-credit">FOURNIL · v0.1</span>
+</footer>
+
+</body>
+</html>

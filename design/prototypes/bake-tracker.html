@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1366, initial-scale=1">
+<title>Fournil — Bake Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --parchment: #FEFBF5;
+    --parchment-warm: #FAF5EC;
+    --flour-dust: #F2EBE0;
+    --flour-dust-deep: #E4D9C8;
+    --linen: #F7F1E6;
+    --crust-brown: #4A3228;
+    --crust-medium: #6B4D3E;
+    --wheat-field: #8B7355;
+    --wheat-light: #A89478;
+    --golden-crust: #C07A2E;
+    --golden-crust-light: #D4923F;
+    --golden-glow: rgba(192, 122, 46, 0.08);
+    --golden-glow-md: rgba(192, 122, 46, 0.14);
+    --sage: #7A9178;
+    --sage-light: #9DB89B;
+    --sage-bg: rgba(122, 145, 120, 0.08);
+    --sage-bg-md: rgba(122, 145, 120, 0.14);
+    --clay: #B86B4A;
+    --clay-bg: rgba(184, 107, 74, 0.08);
+    --night-blue: #3D4F6A;
+    --night-bg: rgba(61, 79, 106, 0.06);
+    --slate: #6B7C8A;
+    --slate-light: #8FA0AF;
+    --rising-green: #5E8A50;
+    --rising-green-bg: rgba(94, 138, 80, 0.1);
+    --over-proof-amber: #C97B3A;
+    --over-proof-amber-bg: rgba(201, 123, 58, 0.1);
+    --burned-red: #A04030;
+    --shadow-sm: 0 1px 3px rgba(74, 50, 40, 0.06);
+    --shadow-md: 0 3px 10px rgba(74, 50, 40, 0.08);
+    --shadow-lg: 0 8px 24px rgba(74, 50, 40, 0.10);
+    --shadow-golden: 0 4px 16px rgba(192, 122, 46, 0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Lora', Georgia, serif;
+    background: var(--parchment);
+    color: var(--crust-brown);
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ===== TOP BAR ===== */
+  .top-bar {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 36px;
+    border-bottom: 1px solid var(--flour-dust-deep);
+    background: var(--parchment);
+    flex-shrink: 0;
+  }
+  .top-bar-left {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .top-bar-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--crust-brown);
+    letter-spacing: 0.01em;
+  }
+  .top-bar-title span {
+    font-weight: 400;
+    color: var(--wheat-field);
+  }
+  .top-bar-subtitle {
+    font-family: 'Lora', serif;
+    font-size: 11px;
+    color: var(--wheat-light);
+  }
+  .end-bake-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border: 1.5px solid var(--flour-dust-deep);
+    border-radius: 9px;
+    background: white;
+    font-family: 'Lora', serif;
+    font-size: 12.5px;
+    color: var(--wheat-field);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .end-bake-btn:hover {
+    border-color: var(--burned-red);
+    color: var(--burned-red);
+    background: rgba(160, 64, 48, 0.04);
+  }
+  .end-bake-btn svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+  }
+
+  /* ===== MAIN LAYOUT ===== */
+  .main-layout {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
+
+  /* ===== LEFT: CURRENT STEP ===== */
+  .left-panel {
+    flex: 0 0 55%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 48px;
+    position: relative;
+  }
+
+  .step-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--crust-brown);
+    letter-spacing: 0.01em;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+
+  /* Timer Ring */
+  .timer-container {
+    position: relative;
+    width: 260px;
+    height: 260px;
+    margin-bottom: 20px;
+  }
+
+  .timer-ring-bg,
+  .timer-ring-progress {
+    position: absolute;
+    inset: 0;
+  }
+  .timer-ring-bg circle,
+  .timer-ring-progress circle {
+    fill: none;
+    stroke-width: 6;
+    cx: 130;
+    cy: 130;
+    r: 120;
+  }
+  .timer-ring-bg circle {
+    stroke: var(--flour-dust);
+  }
+  .timer-ring-progress circle {
+    stroke: var(--golden-crust);
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: center;
+    transition: stroke-dashoffset 1s linear, stroke 0.4s ease;
+    filter: drop-shadow(0 0 6px rgba(192, 122, 46, 0.2));
+  }
+  .timer-ring-progress.paused circle {
+    stroke: var(--over-proof-amber);
+    filter: drop-shadow(0 0 6px rgba(201, 123, 58, 0.2));
+  }
+  .timer-ring-progress.done circle {
+    stroke: var(--sage);
+    filter: drop-shadow(0 0 6px rgba(122, 145, 120, 0.2));
+  }
+
+  /* Subtle tick marks */
+  .timer-ticks {
+    position: absolute;
+    inset: 0;
+  }
+  .timer-ticks line {
+    stroke: var(--flour-dust-deep);
+    stroke-width: 1;
+  }
+
+  .timer-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+  .timer-digits {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 38px;
+    font-weight: 500;
+    color: var(--crust-brown);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    transition: color 0.3s ease;
+  }
+  .timer-digits.paused {
+    color: var(--over-proof-amber);
+  }
+  .timer-label {
+    font-family: 'Lora', serif;
+    font-size: 11px;
+    color: var(--wheat-light);
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+  }
+  .timer-label.paused-label {
+    color: var(--over-proof-amber);
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 10.5px;
+  }
+
+  .timer-hint {
+    font-family: 'Lora', serif;
+    font-size: 12px;
+    color: var(--wheat-light);
+    font-style: italic;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  /* Instructions */
+  .step-instructions {
+    max-width: 440px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .step-instructions p {
+    font-family: 'Lora', serif;
+    font-size: 13.5px;
+    color: var(--wheat-field);
+    line-height: 1.6;
+  }
+
+  .tip-card {
+    max-width: 440px;
+    padding: 12px 18px;
+    border-radius: 10px;
+    background: var(--sage-bg);
+    border: 1px solid rgba(122, 145, 120, 0.12);
+    margin-bottom: 28px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .tip-icon {
+    font-family: 'Playfair Display', serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--sage);
+    background: rgba(122, 145, 120, 0.12);
+    padding: 3px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .tip-text {
+    font-family: 'Lora', serif;
+    font-size: 12px;
+    color: var(--sage);
+    line-height: 1.5;
+  }
+
+  /* Controls */
+  .controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .ctrl-btn {
+    padding: 11px 24px;
+    border-radius: 10px;
+    font-family: 'Lora', serif;
+    font-size: 13.5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: all 0.2s ease;
+  }
+  .ctrl-skip {
+    border: 1.5px solid var(--flour-dust-deep);
+    background: white;
+    color: var(--wheat-field);
+  }
+  .ctrl-skip:hover {
+    border-color: var(--wheat-light);
+    background: var(--linen);
+  }
+  .ctrl-pause {
+    border: 1.5px solid var(--flour-dust-deep);
+    background: white;
+    color: var(--crust-medium);
+  }
+  .ctrl-pause:hover {
+    border-color: var(--over-proof-amber);
+    color: var(--over-proof-amber);
+  }
+  .ctrl-pause.is-paused {
+    border-color: var(--over-proof-amber);
+    background: var(--over-proof-amber-bg);
+    color: var(--over-proof-amber);
+  }
+  .ctrl-done {
+    border: none;
+    background: var(--golden-crust);
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: var(--shadow-golden);
+    padding: 12px 28px;
+  }
+  .ctrl-done:hover {
+    background: var(--golden-crust-light);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(192, 122, 46, 0.25);
+  }
+  .ctrl-done:active {
+    transform: translateY(0);
+  }
+  .ctrl-icon {
+    font-size: 15px;
+    line-height: 1;
+  }
+
+  /* ===== RIGHT: OVERVIEW ===== */
+  .right-panel {
+    flex: 0 0 45%;
+    border-left: 1px solid var(--flour-dust-deep);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--parchment-warm);
+  }
+
+  .right-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px 32px;
+  }
+  .right-scroll::-webkit-scrollbar { width: 0; }
+
+  .section-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--wheat-field);
+    margin-bottom: 14px;
+  }
+
+  /* Step Progress */
+  .progress-list {
+    position: relative;
+    padding-left: 22px;
+    margin-bottom: 28px;
+  }
+  .progress-list::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 6px;
+    bottom: 6px;
+    width: 1.5px;
+    background: var(--flour-dust-deep);
+  }
+
+  .progress-item {
+    position: relative;
+    padding: 8px 12px 8px 16px;
+    margin-bottom: 2px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: default;
+    transition: background 0.2s ease;
+  }
+  .progress-item:hover {
+    background: rgba(0,0,0,0.015);
+  }
+
+  .progress-dot {
+    position: absolute;
+    left: -22px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    z-index: 2;
+  }
+  .progress-item.completed .progress-dot {
+    background: var(--sage);
+    border: 2px solid var(--sage);
+  }
+  .progress-item.completed .progress-dot::after {
+    content: '✓';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7px;
+    color: white;
+    font-weight: 700;
+  }
+  .progress-item.current .progress-dot {
+    background: var(--golden-crust);
+    border: 2px solid var(--golden-crust);
+    box-shadow: 0 0 0 3px var(--golden-glow-md);
+    width: 13px;
+    height: 13px;
+    left: -23px;
+  }
+  .progress-item.upcoming .progress-dot {
+    background: white;
+    border: 2px solid var(--flour-dust-deep);
+  }
+
+  .progress-item.current {
+    background: var(--golden-glow);
+    border-radius: 8px;
+  }
+
+  .progress-name {
+    font-family: 'Lora', serif;
+    font-size: 13px;
+    transition: color 0.2s ease;
+  }
+  .progress-item.completed .progress-name {
+    color: var(--wheat-light);
+    text-decoration: line-through;
+    text-decoration-color: var(--flour-dust-deep);
+  }
+  .progress-item.current .progress-name {
+    color: var(--crust-brown);
+    font-weight: 600;
+  }
+  .progress-item.upcoming .progress-name {
+    color: var(--wheat-field);
+  }
+
+  .progress-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+  }
+  .progress-item.completed .progress-time { color: var(--wheat-light); }
+  .progress-item.current .progress-time { color: var(--golden-crust); font-weight: 500; }
+  .progress-item.upcoming .progress-time { color: var(--wheat-light); }
+
+  /* Separator */
+  .section-sep {
+    height: 1px;
+    background: var(--flour-dust-deep);
+    margin: 4px 0 24px;
+  }
+
+  /* Ingredients compact */
+  .ingredients-compact {
+    margin-bottom: 28px;
+  }
+  .ing-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--flour-dust);
+  }
+  .ing-row:last-child { border-bottom: none; }
+  .ing-row.flour-row {
+    background: var(--sage-bg);
+    margin: 0 -8px;
+    padding: 7px 8px;
+    border-radius: 4px;
+    border-bottom-color: transparent;
+  }
+  .ing-name {
+    font-family: 'Lora', serif;
+    font-size: 12.5px;
+    color: var(--crust-brown);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ing-check {
+    font-size: 10px;
+    color: var(--sage);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .ing-row.checked .ing-check {
+    opacity: 1;
+  }
+  .ing-row.checked .ing-name {
+    color: var(--wheat-light);
+    text-decoration: line-through;
+    text-decoration-color: var(--flour-dust-deep);
+  }
+  .ing-row.checked .ing-grams {
+    color: var(--wheat-light);
+    text-decoration: line-through;
+    text-decoration-color: var(--flour-dust-deep);
+  }
+  .ing-row.checked.flour-row {
+    background: transparent;
+  }
+  .ing-grams {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--crust-brown);
+  }
+
+  /* Tools Section */
+  .tools-section {
+    margin-bottom: 28px;
+  }
+  .tool-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .tool-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: var(--flour-dust);
+    font-family: 'Lora', serif;
+    font-size: 11.5px;
+    color: var(--crust-medium);
+  }
+  .tool-tag-icon {
+    font-size: 12px;
+    opacity: 0.7;
+  }
+  .tools-next-hint {
+    font-family: 'Lora', serif;
+    font-size: 11px;
+    color: var(--wheat-light);
+    font-style: italic;
+    margin-top: 4px;
+  }
+
+  /* Quick Actions */
+  .quick-actions {
+    display: flex;
+    gap: 10px;
+  }
+  .qa-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    border: 1.5px solid var(--flour-dust-deep);
+    border-radius: 9px;
+    background: white;
+    font-family: 'Lora', serif;
+    font-size: 12px;
+    color: var(--wheat-field);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .qa-btn:hover {
+    border-color: var(--wheat-light);
+    background: var(--linen);
+    color: var(--crust-medium);
+  }
+  .qa-icon {
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  /* ===== STEP COMPLETE CELEBRATION ===== */
+  .celebration-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(254, 251, 245, 0.92);
+    z-index: 50;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    backdrop-filter: blur(4px);
+  }
+  .celebration-overlay.visible {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .celebration-check {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--sage);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: popBounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes popBounce {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.15); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .celebration-check svg {
+    width: 32px;
+    height: 32px;
+    stroke: white;
+    stroke-width: 3;
+    fill: none;
+  }
+  .celebration-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--crust-brown);
+    animation: slideUp 0.4s ease 0.15s backwards;
+  }
+  .celebration-sub {
+    font-family: 'Lora', serif;
+    font-size: 13px;
+    color: var(--wheat-field);
+    animation: slideUp 0.4s ease 0.25s backwards;
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== ENTRY ANIMATIONS ===== */
+  .left-panel > * {
+    animation: fadeSlideIn 0.5s ease backwards;
+  }
+  .left-panel > :nth-child(1) { animation-delay: 0.05s; }
+  .left-panel > :nth-child(2) { animation-delay: 0.1s; }
+  .left-panel > :nth-child(3) { animation-delay: 0.15s; }
+  .left-panel > :nth-child(4) { animation-delay: 0.2s; }
+  .left-panel > :nth-child(5) { animation-delay: 0.25s; }
+  .left-panel > :nth-child(6) { animation-delay: 0.3s; }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .progress-item {
+    animation: fadeSlideIn 0.35s ease backwards;
+  }
+  .progress-item:nth-child(1) { animation-delay: 0.08s; }
+  .progress-item:nth-child(2) { animation-delay: 0.12s; }
+  .progress-item:nth-child(3) { animation-delay: 0.16s; }
+  .progress-item:nth-child(4) { animation-delay: 0.20s; }
+  .progress-item:nth-child(5) { animation-delay: 0.24s; }
+  .progress-item:nth-child(6) { animation-delay: 0.28s; }
+  .progress-item:nth-child(7) { animation-delay: 0.32s; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="top-bar-left">
+    <div class="top-bar-title">Baking: <span>No-Knead PAL</span></div>
+    <div class="top-bar-subtitle" id="topBarStep">Step 3 of 7</div>
+  </div>
+  <button class="end-bake-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    End Bake
+  </button>
+</div>
+
+<!-- MAIN -->
+<div class="main-layout">
+
+  <!-- LEFT: CURRENT STEP -->
+  <div class="left-panel" id="leftPanel">
+    <div class="step-name" id="stepName">Coil Fold + Bulk Proof</div>
+
+    <div class="timer-container" id="timerContainer">
+      <!-- Tick marks -->
+      <svg class="timer-ticks" viewBox="0 0 260 260" id="timerTicks"></svg>
+      <!-- Background ring -->
+      <svg class="timer-ring-bg" viewBox="0 0 260 260">
+        <circle></circle>
+      </svg>
+      <!-- Progress ring -->
+      <svg class="timer-ring-progress" viewBox="0 0 260 260" id="timerRingProgress">
+        <circle id="timerCircle"></circle>
+      </svg>
+      <!-- Inner content -->
+      <div class="timer-inner">
+        <div class="timer-digits" id="timerDigits">12:42:15</div>
+        <div class="timer-label" id="timerLabel">remaining</div>
+      </div>
+    </div>
+
+    <div class="timer-hint" id="timerHint">Done around 7:00 PM</div>
+
+    <div class="step-instructions" id="stepInstructions">
+      <p>One set of coil folds, then cover and let proof at room temperature (75–78°F) until about doubled in volume.</p>
+    </div>
+
+    <div class="tip-card" id="tipCard">
+      <div class="tip-icon">TIP</div>
+      <div class="tip-text">Look for 60–100% volume expansion. The dough should be jiggly and domed on top. Be patient — this step takes the longest.</div>
+    </div>
+
+    <div class="controls">
+      <button class="ctrl-btn ctrl-skip" onclick="skipStep()">
+        <span class="ctrl-icon">⏭</span> Skip
+      </button>
+      <button class="ctrl-btn ctrl-pause" id="pauseBtn" onclick="togglePause()">
+        <span class="ctrl-icon" id="pauseIcon">⏸</span>
+        <span id="pauseText">Pause</span>
+      </button>
+      <button class="ctrl-btn ctrl-done" onclick="completeStep()">
+        Done <span class="ctrl-icon">✓</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- RIGHT: OVERVIEW -->
+  <div class="right-panel">
+    <div class="right-scroll">
+      <div class="section-label">Progress</div>
+      <div class="progress-list" id="progressList">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="section-sep"></div>
+
+      <div class="section-label">Ingredients</div>
+      <div class="ingredients-compact" id="ingredientsList">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="section-sep"></div>
+
+      <div class="section-label">Tools</div>
+      <div class="tools-section" id="toolsSection">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="section-sep"></div>
+
+      <div class="section-label">Notes</div>
+      <div class="quick-actions">
+        <button class="qa-btn"><span class="qa-icon">📷</span> Add Photo</button>
+        <button class="qa-btn"><span class="qa-icon">📝</span> Add Note</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Celebration overlay -->
+<div class="celebration-overlay" id="celebration">
+  <div class="celebration-check">
+    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <div class="celebration-text" id="celebrationText">Step complete!</div>
+  <div class="celebration-sub" id="celebrationSub">Moving to Preshape…</div>
+</div>
+
+<script>
+  // ===== BAKE DATA =====
+  const steps = [
+    { name: 'Mix', time: '6:00 AM', desc: 'Combine water, levain, and flours. Stir until no dry flour remains.', tip: null, durationSec: 30 * 60, usesIngredients: ['AP Flour', 'Rye Flour', 'Water', 'Levain'], tools: ['Kitchen scale', 'Mixing bowl or cambro', 'Dough whisk or hands'], nextTools: 'Next: salt, bench scraper' },
+    { name: 'Add Salt', time: '6:30 AM', desc: 'Add reserved water and salt. Knead until uniform.', tip: null, durationSec: 30 * 60, usesIngredients: ['Salt'], tools: ['Bench scraper', 'Wet hands'], nextTools: 'Next: straight-sided container' },
+    { name: 'Coil Fold + Bulk Proof', time: '7:00 AM', desc: 'One set of coil folds, then cover and let proof at room temperature (75-78 F) until about doubled in volume.', tip: 'Look for 60-100% volume expansion. The dough should be jiggly and domed on top. Be patient -- this step takes the longest.', durationSec: 12 * 3600 + 42 * 60 + 15, endHint: 'Done around 7:00 PM', usesIngredients: [], tools: ['Straight-sided container', 'Cover or shower cap', 'Instant-read thermometer'], nextTools: 'Next: bench scraper, unfloured surface' },
+    { name: 'Preshape', time: '7:00 PM', desc: 'Turn dough out onto a clean, unfloured surface. Use the bench scraper to build tension, tucking the dough under itself. Rest 20-30 minutes uncovered.', tip: 'Do not use flour on the surface -- the friction helps build tension. Use the scraper to drag the dough toward you in short strokes. The dough should hold a round shape.', durationSec: 30 * 60, usesIngredients: [], tools: ['Bench scraper', 'Clean work surface (no flour)'], nextTools: 'Next: banneton, rice flour' },
+    { name: 'Final Shape', time: '7:30 PM', desc: 'Lightly flour the top of the dough and flip. Fold edges into the center, then flip seam-side down and drag to tighten. Transfer seam-side up into a well-floured banneton.', tip: 'Use rice flour in the banneton -- it resists sticking better than AP flour. Shape with purpose but gentle hands.', durationSec: 30 * 60, usesIngredients: [], tools: ['Banneton or proofing basket', 'Rice flour for dusting', 'Bench scraper'], nextTools: 'Next: plastic wrap or bag for fridge' },
+    { name: 'Cold Proof', time: '8:00 PM', desc: 'Cover the banneton and place in the refrigerator. Cold proof develops flavor and makes scoring easier.', tip: 'Anywhere from 8 to 24 hours. Longer = more sour flavor.', durationSec: 8 * 3600, endHint: 'Done around 4:00 AM tomorrow', usesIngredients: [], tools: ['Plastic wrap or bag', 'Refrigerator space'], nextTools: 'Next: Dutch oven, parchment, lame' },
+    { name: 'Bake', time: '4:00 AM', desc: 'Preheat Dutch oven at 475 F for 1 hour. Invert loaf onto parchment, score, and transfer to pot. Bake covered 20 min, then uncovered at 425 F until deep brown.', tip: 'Score swiftly and confidently. The bread will tell you when it is done -- listen for the crackle.', durationSec: 40 * 60, usesIngredients: [], tools: ['Dutch oven or Challenger pan', 'Parchment paper', 'Lame or razor blade', 'Cooling rack'], nextTools: null }
+  ];
+
+  const ingredients = [
+    { name: 'AP Flour', grams: '472g', isFlour: true },
+    { name: 'Rye Flour', grams: '25g', isFlour: true },
+    { name: 'Water', grams: '368g', isFlour: false },
+    { name: 'Salt', grams: '11g', isFlour: false },
+    { name: 'Levain', grams: '25g', isFlour: false }
+  ];
+
+  let currentStep = 2; // 0-indexed, step 3 of 7
+  let isPaused = false;
+  let totalSec = steps[currentStep].durationSec;
+  let remainingSec = totalSec;
+
+  // ===== RENDER =====
+  function renderProgress() {
+    const list = document.getElementById('progressList');
+    list.innerHTML = steps.map((s, i) => {
+      let cls = 'upcoming';
+      if (i < currentStep) cls = 'completed';
+      if (i === currentStep) cls = 'current';
+      return `
+        <div class="progress-item ${cls}">
+          <div class="progress-dot"></div>
+          <span class="progress-name">${s.name}</span>
+          <span class="progress-time">${s.time}</span>
+        </div>
+      `;
+    }).join('');
+
+    document.getElementById('topBarStep').textContent = `Step ${currentStep + 1} of ${steps.length}`;
+  }
+
+  function getUsedIngredients() {
+    const used = new Set();
+    for (let i = 0; i < currentStep; i++) {
+      steps[i].usesIngredients.forEach(name => used.add(name));
+    }
+    return used;
+  }
+
+  function renderIngredients() {
+    const used = getUsedIngredients();
+    document.getElementById('ingredientsList').innerHTML = ingredients.map(ing => {
+      const isChecked = used.has(ing.name);
+      const flourClass = ing.isFlour ? 'flour-row' : '';
+      const checkedClass = isChecked ? 'checked' : '';
+      return `<div class="ing-row ${flourClass} ${checkedClass}">
+        <span class="ing-name"><span class="ing-check">✓</span>${ing.name}</span>
+        <span class="ing-grams">${ing.grams}</span>
+      </div>`;
+    }).join('');
+  }
+
+  const toolIcons = {
+    'Kitchen scale': '⚖️',
+    'Mixing bowl or cambro': '🥣',
+    'Dough whisk or hands': '🤲',
+    'Bench scraper': '🔪',
+    'Wet hands': '💧',
+    'Straight-sided container': '📦',
+    'Cover or shower cap': '🧢',
+    'Instant-read thermometer': '🌡️',
+    'Clean work surface (no flour)': '🧹',
+    'Banneton or proofing basket': '🧺',
+    'Rice flour for dusting': '🌾',
+    'Plastic wrap or bag': '🛍️',
+    'Refrigerator space': '❄️',
+    'Dutch oven or Challenger pan': '🍳',
+    'Parchment paper': '📜',
+    'Lame or razor blade': '🔪',
+    'Cooling rack': '🧊'
+  };
+
+  function renderTools() {
+    const step = steps[currentStep];
+    let html = '<div class="tool-list">';
+    step.tools.forEach(tool => {
+      const icon = toolIcons[tool] || '🔧';
+      html += `<span class="tool-tag"><span class="tool-tag-icon">${icon}</span>${tool}</span>`;
+    });
+    html += '</div>';
+    if (step.nextTools) {
+      html += `<div class="tools-next-hint">${step.nextTools}</div>`;
+    }
+    document.getElementById('toolsSection').innerHTML = html;
+  }
+
+  function renderCurrentStep() {
+    const step = steps[currentStep];
+    document.getElementById('stepName').textContent = step.name;
+    document.getElementById('stepInstructions').innerHTML = `<p>${step.desc}</p>`;
+
+    const tipCard = document.getElementById('tipCard');
+    if (step.tip) {
+      tipCard.style.display = 'flex';
+      tipCard.querySelector('.tip-text').textContent = step.tip;
+    } else {
+      tipCard.style.display = 'none';
+    }
+
+    const hint = document.getElementById('timerHint');
+    hint.textContent = step.endHint || '';
+    hint.style.display = step.endHint ? 'block' : 'none';
+
+    totalSec = step.durationSec;
+    remainingSec = totalSec;
+    isPaused = false;
+    updatePauseUI();
+    updateTimerDisplay();
+    updateRing();
+    renderIngredients();
+    renderTools();
+  }
+
+  // ===== TIMER =====
+  function formatDuration(sec) {
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    const s = sec % 60;
+    if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    return `${m}:${String(s).padStart(2, '0')}`;
+  }
+
+  function updateTimerDisplay() {
+    document.getElementById('timerDigits').textContent = formatDuration(remainingSec);
+  }
+
+  function updateRing() {
+    const circ = 2 * Math.PI * 120;
+    const progress = 1 - (remainingSec / totalSec);
+    const offset = circ * (1 - progress);
+    const circle = document.getElementById('timerCircle');
+    circle.style.strokeDasharray = circ;
+    circle.style.strokeDashoffset = offset;
+  }
+
+  // Generate tick marks
+  function renderTicks() {
+    const svg = document.getElementById('timerTicks');
+    let html = '';
+    for (let i = 0; i < 60; i++) {
+      const angle = (i * 6) * Math.PI / 180;
+      const isHour = i % 5 === 0;
+      const r1 = isHour ? 114 : 117;
+      const r2 = 120;
+      const x1 = 130 + r1 * Math.cos(angle - Math.PI / 2);
+      const y1 = 130 + r1 * Math.sin(angle - Math.PI / 2);
+      const x2 = 130 + r2 * Math.cos(angle - Math.PI / 2);
+      const y2 = 130 + r2 * Math.sin(angle - Math.PI / 2);
+      html += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke-width="${isHour ? 1.5 : 0.5}" opacity="${isHour ? 0.3 : 0.15}"/>`;
+    }
+    svg.innerHTML = html;
+  }
+
+  // Timer tick
+  setInterval(() => {
+    if (!isPaused && remainingSec > 0) {
+      remainingSec--;
+      updateTimerDisplay();
+      updateRing();
+    }
+  }, 1000);
+
+  // ===== CONTROLS =====
+  function togglePause() {
+    isPaused = !isPaused;
+    updatePauseUI();
+  }
+
+  function updatePauseUI() {
+    const btn = document.getElementById('pauseBtn');
+    const icon = document.getElementById('pauseIcon');
+    const text = document.getElementById('pauseText');
+    const digits = document.getElementById('timerDigits');
+    const label = document.getElementById('timerLabel');
+    const ring = document.getElementById('timerRingProgress');
+
+    if (isPaused) {
+      btn.classList.add('is-paused');
+      icon.textContent = '▶';
+      text.textContent = 'Resume';
+      digits.classList.add('paused');
+      label.textContent = 'PAUSED';
+      label.classList.add('paused-label');
+      ring.classList.add('paused');
+    } else {
+      btn.classList.remove('is-paused');
+      icon.textContent = '⏸';
+      text.textContent = 'Pause';
+      digits.classList.remove('paused');
+      label.textContent = 'remaining';
+      label.classList.remove('paused-label');
+      ring.classList.remove('paused');
+    }
+  }
+
+  function completeStep() {
+    if (currentStep >= steps.length - 1) return;
+
+    // Celebration
+    const overlay = document.getElementById('celebration');
+    const nextName = steps[currentStep + 1].name;
+    document.getElementById('celebrationText').textContent = `${steps[currentStep].name} — done!`;
+    document.getElementById('celebrationSub').textContent = `Moving to ${nextName}…`;
+    overlay.classList.add('visible');
+
+    setTimeout(() => {
+      overlay.classList.remove('visible');
+      currentStep++;
+      renderProgress();
+      renderCurrentStep();
+    }, 1400);
+  }
+
+  function skipStep() {
+    if (currentStep >= steps.length - 1) return;
+    currentStep++;
+    renderProgress();
+    renderCurrentStep();
+  }
+
+  // ===== INIT =====
+  renderTicks();
+  renderProgress();
+  renderCurrentStep();  // calls renderIngredients() + renderTools()
+</script>
+</body>
+</html>
