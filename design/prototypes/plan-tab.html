@@ -65,7 +65,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    font-family: 'Lora', Georgia, serif;
+    font-family: 'Source Serif 4', Georgia, serif;
     background: var(--parchment);
     color: var(--crust-brown);
     width: 100vw;
@@ -95,7 +95,7 @@
   }
 
   .nav-title {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Fraunces', serif;
     font-size: 20px;
     font-weight: 600;
     color: var(--crust-brown);
@@ -131,7 +131,7 @@
 
   /* Section labels — consistent hierarchy */
   .section-label {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Fraunces', serif;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.13em;
@@ -143,10 +143,11 @@
   .section-spacer { height: 20px; }
 
   /* Formula Cards */
-  .formula-cards { display: flex; gap: 8px; }
+  .formula-cards { display: flex; gap: 8px; flex-wrap: wrap; }
 
   .formula-card {
-    flex: 1;
+    flex: 1 1 calc(33.333% - 6px);
+    min-width: 0;
     padding: 14px 12px;
     border-radius: 11px;
     border: 2px solid transparent;
@@ -166,7 +167,7 @@
     transform: translateY(-2px);
   }
   .formula-card-name {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Fraunces', serif;
     font-size: 14px;
     font-weight: 600;
     color: var(--crust-brown);
@@ -283,7 +284,7 @@
   .weight-btn:hover { background: var(--flour-dust); border-color: var(--wheat-light); }
   .weight-btn:active { transform: scale(0.95); }
   .weight-display {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Fraunces', serif;
     font-size: 30px; font-weight: 700;
     color: var(--crust-brown);
     min-width: 90px; text-align: center;
@@ -516,7 +517,7 @@
     margin-bottom: 16px;
   }
   .panel-title {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Fraunces', serif;
     font-size: 15px; font-weight: 600;
     color: var(--crust-brown);
   }
@@ -592,6 +593,7 @@
   .hydration-badge.low { background: var(--sage-bg); color: var(--sage); }
   .hydration-badge.medium { background: var(--golden-glow); color: var(--golden-crust); }
   .hydration-badge.high { background: var(--clay-bg); color: var(--clay); }
+  .hydration-badge.extreme { background: rgba(160, 64, 48, 0.1); color: var(--burned-red); }
 
   /* ===== TIMELINE PANEL ===== */
   .timeline-panel {
@@ -909,6 +911,8 @@
   .formula-card:nth-child(1) { animation-delay: 0.05s; }
   .formula-card:nth-child(2) { animation-delay: 0.1s; }
   .formula-card:nth-child(3) { animation-delay: 0.15s; }
+  .formula-card:nth-child(4) { animation-delay: 0.2s; }
+  .formula-card:nth-child(5) { animation-delay: 0.25s; }
 </style>
 </head>
 <body>
@@ -940,6 +944,16 @@
         <div class="formula-card-dot"></div>
         <div class="formula-card-name">Tartine Country</div>
         <div class="formula-card-meta">~16h · classic method</div>
+      </div>
+      <div class="formula-card" data-formula="wholegrain" onclick="selectFormula(this)">
+        <div class="formula-card-dot"></div>
+        <div class="formula-card-name">100% Whole Grain</div>
+        <div class="formula-card-meta">~24h · high hydration</div>
+      </div>
+      <div class="formula-card" data-formula="extretard" onclick="selectFormula(this)">
+        <div class="formula-card-dot"></div>
+        <div class="formula-card-name">72h Extended Retard</div>
+        <div class="formula-card-meta">~80h · deep flavor</div>
       </div>
     </div>
 
@@ -1206,6 +1220,29 @@
       hydration: 75,
       levainRange: null,
       defaultLevain: 20
+    },
+    wholegrain: {
+      ingredients: [
+        { name: 'Whole Wheat Flour', pct: 100, isFlour: true },
+        { name: 'Water', pct: 92, isFlour: false },
+        { name: 'Salt', pct: 2.5, isFlour: false },
+        { name: 'Levain', pct: 20, isFlour: false }
+      ],
+      hydration: 92,
+      levainRange: null,
+      defaultLevain: 20
+    },
+    extretard: {
+      ingredients: [
+        { name: 'Bread Flour', pct: 90, isFlour: true },
+        { name: 'Whole Rye', pct: 10, isFlour: true },
+        { name: 'Water', pct: 75, isFlour: false },
+        { name: 'Salt', pct: 2.2, isFlour: false },
+        { name: 'Levain', pct: 10, isFlour: false }
+      ],
+      hydration: 75,
+      levainRange: null,
+      defaultLevain: 10
     }
   };
 
@@ -1247,6 +1284,30 @@
       { offsetH: 9.25, name: 'Preshape', desc: 'Pre-shape into round. Bench rest 20-30 min.', durMin: 25, type: 'step' },
       { offsetH: 9.75, name: 'Shape + Cold Proof', desc: 'Final shape, into banneton, into fridge.', durMin: 720, durLabel: '8-18 hours', type: 'cold' },
       { offsetH: 16, name: 'Bake', desc: 'Dutch oven, 500°F covered 20 min, then 450°F uncovered 20-25 min.', durMin: 45, durLabel: '~45 min', type: 'bake' }
+    ],
+    wholegrain: [
+      { offsetH: 0, name: 'Autolyse', desc: 'Combine flour and water (90°F). Full hydration of bran is critical — do not skip or shorten.', durMin: 120, durLabel: '2 hours', type: 'bulk' },
+      { offsetH: 2, name: 'Mix (Rubaud)', desc: 'Add levain and salt. Rubaud mixing — wet hands, stretch and slap the dough in the bowl for 10 minutes until it gains some structure.', durMin: 10, type: 'step' },
+      { offsetH: 2.5, name: 'Slap + Fold 1', desc: 'First round of slap and fold. The dough will be very sticky — resist adding flour.', durMin: 30, type: 'step' },
+      { offsetH: 3, name: 'Slap + Fold 2', desc: 'Second round. Dough should be gaining some strength.', durMin: 30, type: 'step' },
+      { offsetH: 3.5, name: 'Slap + Fold 3', desc: 'Third round. Dough should feel noticeably stronger now.', durMin: 30, type: 'step' },
+      { offsetH: 4, name: 'Coil Fold 1', desc: 'Gentle coil folds for aeration. The dough is gaining volume.', durMin: 90, type: 'step' },
+      { offsetH: 5.5, name: 'Coil Fold 2', desc: 'Final coil folds. Assess dough strength — it should hold shape on the counter briefly.', durMin: 30, type: 'step' },
+      { offsetH: 6, name: 'Bulk Proof', desc: 'Proof at 78°F until 50-75% volume increase. Whole grain ferments faster than white — watch it carefully.', durMin: 120, durLabel: '1.5-3 hours', type: 'bulk' },
+      { offsetH: 8.5, name: 'Stitch-Shape', desc: 'Stitch-shape on a lightly floured surface. Transfer seam-side up into a well-floured banneton.', durMin: 15, type: 'step' },
+      { offsetH: 9, name: 'Cold Retard', desc: 'Into the fridge at 38°F. Monitor for enzymatic breakdown — whole grain doughs can overproof in the cold.', durMin: 840, durLabel: '12-15 hours', type: 'cold' },
+      { offsetH: 23, name: 'Bake', desc: 'Dutch oven, 475°F covered 25 min, then 425°F uncovered until deep mahogany.', durMin: 50, durLabel: '~50 min', type: 'bake' }
+    ],
+    extretard: [
+      { offsetH: 0, name: 'Initial Mix', desc: 'Rough mix all ingredients. No autolyse — just combine until shaggy. Rest 30 minutes.', durMin: 30, type: 'step' },
+      { offsetH: 0.5, name: 'Stretch + Fold 1', desc: 'First set of stretch and folds.', durMin: 30, type: 'step' },
+      { offsetH: 1, name: 'Stretch + Fold 2', desc: 'Second set. Dough should be smooth.', durMin: 30, type: 'step' },
+      { offsetH: 1.5, name: 'Stretch + Fold 3', desc: 'Third set. Minimal activity — just maintain structure.', durMin: 30, type: 'step' },
+      { offsetH: 2, name: 'Ambient Bulk', desc: 'Proof at room temperature. Target minimal activity — just a slight puff. The real work happens in the cold.', durMin: 60, durLabel: '1-2 hours', type: 'bulk' },
+      { offsetH: 3, name: 'Cold Bulk (72h)', desc: 'Into the fridge at 36°F. The long cold fermentation develops complex lactic and acetic acids. Degas lightly at the 48-hour mark.', durMin: 4320, durLabel: '72 hours', type: 'cold' },
+      { offsetH: 75, name: 'Cold Shape', desc: 'Shape immediately from the fridge — the cold dough handles easily. Transfer to banneton.', durMin: 15, type: 'step' },
+      { offsetH: 75.5, name: 'Bench Proof', desc: 'Room temperature proof until the poke test passes — dough springs back slowly with a slight indent remaining.', durMin: 150, durLabel: '2-3 hours', type: 'bulk' },
+      { offsetH: 78, name: 'Bake', desc: 'Dutch oven, 475°F covered 20 min, then 425°F uncovered. The long ferment gives exceptional oven spring and a blistered crust.', durMin: 40, durLabel: '~40 min', type: 'bake' }
     ]
   };
 
@@ -1311,9 +1372,7 @@
   // ===== TIMELINE RENDERING =====
   function renderTimeline() {
     const panel = document.getElementById('timelinePanel');
-    const steps = currentFormula === 'fourfold'
-      ? timelines.fourfold
-      : timelines[currentFormula];
+    const steps = timelines[currentFormula];
 
     const now = new Date();
     const startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), startHour, 0, 0);
@@ -1436,14 +1495,14 @@
     }
 
     const sliderRow = document.getElementById('levainSlider');
-    if (currentFormula === 'tartine') {
+    const f = formulas[currentFormula];
+    if (!f.levainRange && !f.variants) {
       sliderRow.style.opacity = '0.35';
       sliderRow.style.pointerEvents = 'none';
-      levainPct = 20;
+      levainPct = f.defaultLevain;
     } else {
       sliderRow.style.opacity = '1';
       sliderRow.style.pointerEvents = 'auto';
-      const f = formulas[currentFormula];
       if (f.levainRange) {
         levainPct = f.defaultLevain || f.levainRange[0];
       }
@@ -1524,7 +1583,7 @@
     const h = getHydration();
     const badge = document.getElementById('hydrationBadge');
     badge.textContent = h + '% hydration';
-    badge.className = 'hydration-badge ' + (h <= 74 ? 'low' : h <= 76 ? 'medium' : 'high');
+    badge.className = 'hydration-badge ' + (h <= 74 ? 'low' : h <= 76 ? 'medium' : h <= 85 ? 'high' : 'extreme');
 
     document.getElementById('totalWeight').textContent = '~' + totalGrams + 'g';
   }
@@ -1545,10 +1604,10 @@
   }
 
   function handleSliderClick(e) {
-    if (currentFormula === 'tartine') return;
+    const f = formulas[currentFormula];
+    if (!f.levainRange && !f.variants) return;
     const rect = document.getElementById('sliderTrack').getBoundingClientRect();
     const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-    const f = formulas[currentFormula];
     let range = currentFormula === 'fourfold' ? formulas.fourfold.levainRange : f.levainRange;
     if (!range) return;
     levainPct = Math.round((range[0] + pct * (range[1] - range[0])) * 2) / 2;
