@@ -128,6 +128,33 @@ Water temperature = A + B + C
 - 20% leaven (young, sweet-smelling, low acidity)
 - Based on 1kg total flour
 
+### 100% Whole Grain (High Hydration)
+- 100% whole wheat flour (hard red wheat preferred)
+- 92% water (target temp: 90°F)
+- 2.5% salt
+- 20% levain (100% hydration, used at peak)
+- Difficulty: Advanced
+- Total time: ~24 hours
+
+Key technique: 2-hour autolyse is mandatory to soften bran particles which act as mechanical gluten disruptors. Rubaud mixing method. 3 rounds of slap and fold for strength, 2 coil folds for aeration. Stitch-shaping into banneton. Cold retard 12-15h at 38°F — monitor for enzymatic breakdown.
+
+**Timeline (~24 hours):**
+0:00 Autolyse (2h) → 2:00 Mix (Rubaud) → 2:30 Slap+Fold 1 → 3:00 Slap+Fold 2 → 3:30 Slap+Fold 3 → 4:00 Coil Fold 1 → 5:30 Coil Fold 2 → 6:00 Bulk Proof (1.5-3h) → 8:30 Stitch-Shape → 9:00 Cold Retard (12-15h) → 23:00 Bake
+
+### Extended Retard (72-Hour Fermentation)
+- 90% bread flour (min 12.5% protein)
+- 10% whole rye (provides sugars for 72h bacterial activity)
+- 75% water (target temp: 75°F)
+- 2.2% salt
+- 10% levain (low inoculation to prevent over-acidification)
+- Difficulty: Intermediate
+- Total time: ~80 hours
+
+Key technique: Low 10% inoculation is the critical constraint — higher percentages cause structural integrity loss (proteolysis) before 72 hours. No autolyse. Minimal ambient bulk (1-2h), then 72h cold bulk at 36°F. Degas lightly at 48h mark. Shape directly from fridge (cold dough handles easily). Bench proof 2-3h until poke test passes.
+
+**Timeline (~80 hours):**
+0:00 Initial Mix → 0:30 S+F 1 → 1:00 S+F 2 → 1:30 S+F 3 → 2:00 Ambient Bulk (1-2h) → 3:00 Cold Bulk 72h → 75:00 Cold Shape → 75:30 Bench Proof (2-3h) → 78:00 Bake
+
 ## Dutch Oven Baking
 1. Preheat Dutch oven at **475°F for 1 hour**, highest rack
 2. Lay parchment strip on loaf
