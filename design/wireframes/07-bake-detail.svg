@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1194 834"
+     font-family="'Source Serif 4', 'Georgia', serif" font-size="14">
+
+  <!-- Background -->
+  <rect width="1194" height="834" fill="#FEFBF5"/>
+
+  <!-- ==================== TOP NAV BAR ==================== -->
+  <rect x="0" y="0" width="1194" height="56" fill="#FEFBF5"/>
+  <line x1="0" y1="56" x2="1194" y2="56" stroke="#E5DDD0"/>
+
+  <!-- Back button -->
+  <text x="32" y="37" font-size="16" fill="#C07A2E">&#9664;</text>
+  <text x="52" y="37" font-size="14" fill="#C07A2E">Bread Log</text>
+
+  <!-- Title -->
+  <text x="597" y="37" text-anchor="middle" font-size="18" font-weight="700" fill="#4A3228" font-family="'Fraunces', 'Georgia', serif">March 15 Bake</text>
+
+  <!-- Share + Edit buttons -->
+  <rect x="1020" y="14" width="72" height="30" rx="6" fill="#FFFFFF" stroke="#D9CEBD" stroke-width="1"/>
+  <text x="1056" y="33" text-anchor="middle" font-size="13" fill="#4A3228">Share &#8599;</text>
+
+  <rect x="1104" y="14" width="56" height="30" rx="6" fill="#F2EBE0" stroke="#D9CEBD" stroke-width="1"/>
+  <text x="1132" y="33" text-anchor="middle" font-size="13" fill="#4A3228">Edit</text>
+
+  <!-- ==================== VERTICAL DIVIDER ==================== -->
+  <line x1="597" y1="56" x2="597" y2="820" stroke="#E5DDD0"/>
+
+  <!-- ==================== LEFT COLUMN (50%) — PHOTOS ==================== -->
+
+  <!-- Main photo -->
+  <rect x="32" y="80" width="528" height="380" rx="10" fill="#F2EBE0"/>
+  <line x1="32" y1="80" x2="560" y2="460" stroke="#E5DDD0" stroke-width="0.5"/>
+  <line x1="560" y1="80" x2="32" y2="460" stroke="#E5DDD0" stroke-width="0.5"/>
+  <text x="296" y="278" text-anchor="middle" font-size="14" fill="#D9CEBD">Main Photo</text>
+
+  <!-- Thumbnail strip -->
+  <rect x="32" y="476" width="168" height="116" rx="8" fill="#F2EBE0"/>
+  <line x1="32" y1="476" x2="200" y2="592" stroke="#E5DDD0" stroke-width="0.5"/>
+  <line x1="200" y1="476" x2="32" y2="592" stroke="#E5DDD0" stroke-width="0.5"/>
+  <text x="116" y="538" text-anchor="middle" font-size="11" fill="#D9CEBD">Photo 1</text>
+
+  <rect x="212" y="476" width="168" height="116" rx="8" fill="#F2EBE0"/>
+  <line x1="212" y1="476" x2="380" y2="592" stroke="#E5DDD0" stroke-width="0.5"/>
+  <line x1="380" y1="476" x2="212" y2="592" stroke="#E5DDD0" stroke-width="0.5"/>
+  <text x="296" y="538" text-anchor="middle" font-size="11" fill="#D9CEBD">Photo 2</text>
+
+  <rect x="392" y="476" width="168" height="116" rx="8" fill="#F2EBE0"/>
+  <line x1="392" y1="476" x2="560" y2="592" stroke="#E5DDD0" stroke-width="0.5"/>
+  <line x1="560" y1="476" x2="392" y2="592" stroke="#E5DDD0" stroke-width="0.5"/>
+  <text x="476" y="538" text-anchor="middle" font-size="11" fill="#D9CEBD">Photo 3</text>
+
+  <!-- ==================== RIGHT COLUMN (50%) — DETAILS ==================== -->
+
+  <!-- Title and date -->
+  <text x="629" y="110" font-size="20" font-weight="700" fill="#4A3228" font-family="'Fraunces', 'Georgia', serif">No-Knead Pain au Levain</text>
+  <text x="629" y="132" font-size="13" fill="#8B7355">March 15, 2026</text>
+
+  <line x1="629" y1="148" x2="1152" y2="148" stroke="#E5DDD0"/>
+
+  <!-- RATING section -->
+  <text x="629" y="174" font-size="11" font-weight="600" fill="#8B7355" letter-spacing="1.2">RATING</text>
+
+  <!-- Overall -->
+  <text x="629" y="204" font-size="13" fill="#8B7355">Overall</text>
+  <text x="780" y="204" font-size="17" fill="#C07A2E">&#9733;&#9733;&#9733;&#9733;</text><text x="848" y="204" font-size="17" fill="#E5DDD0">&#9733;</text>
+
+  <!-- Crumb -->
+  <text x="629" y="232" font-size="13" fill="#8B7355">Crumb</text>
+  <text x="780" y="232" font-size="17" fill="#C07A2E">&#9733;&#9733;&#9733;&#9733;&#9733;</text>
+
+  <!-- Crust -->
+  <text x="629" y="260" font-size="13" fill="#8B7355">Crust</text>
+  <text x="780" y="260" font-size="17" fill="#C07A2E">&#9733;&#9733;&#9733;</text><text x="832" y="260" font-size="17" fill="#E5DDD0">&#9733;&#9733;</text>
+
+  <!-- Flavor -->
+  <text x="629" y="288" font-size="13" fill="#8B7355">Flavor</text>
+  <text x="780" y="288" font-size="17" fill="#C07A2E">&#9733;&#9733;&#9733;&#9733;</text><text x="848" y="288" font-size="17" fill="#E5DDD0">&#9733;</text>
+
+  <!-- Rise -->
+  <text x="629" y="316" font-size="13" fill="#8B7355">Rise</text>
+  <text x="780" y="316" font-size="17" fill="#C07A2E">&#9733;&#9733;&#9733;&#9733;</text><text x="848" y="316" font-size="17" fill="#E5DDD0">&#9733;</text>
+
+  <line x1="629" y1="336" x2="1152" y2="336" stroke="#E5DDD0"/>
+
+  <!-- FORMULA section -->
+  <text x="629" y="362" font-size="11" font-weight="600" fill="#8B7355" letter-spacing="1.2">FORMULA</text>
+  <text x="629" y="390" font-size="14" fill="#4A3228">95% AP · 5% rye</text>
+  <text x="629" y="412" font-size="14" fill="#4A3228">74% hydration · 5% levain</text>
+  <text x="629" y="434" font-size="13" fill="#8B7355">Target dough: 900g</text>
+
+  <line x1="629" y1="454" x2="1152" y2="454" stroke="#E5DDD0"/>
+
+  <!-- NOTES section -->
+  <text x="629" y="480" font-size="11" font-weight="600" fill="#8B7355" letter-spacing="1.2">NOTES</text>
+  <text x="629" y="508" font-size="14" fill="#4A3228">"Best crumb yet! The long cold proof</text>
+  <text x="629" y="528" font-size="14" fill="#4A3228">really helped with the open crumb</text>
+  <text x="629" y="548" font-size="14" fill="#4A3228">structure. Scored a bit too shallow."</text>
+
+  <line x1="629" y1="568" x2="1152" y2="568" stroke="#E5DDD0"/>
+
+  <!-- BAKE DETAILS section -->
+  <text x="629" y="594" font-size="11" font-weight="600" fill="#8B7355" letter-spacing="1.2">BAKE DETAILS</text>
+
+  <text x="629" y="622" font-size="13" fill="#8B7355">Oven temp</text>
+  <text x="900" y="622" text-anchor="end" font-size="14" font-weight="600" fill="#4A3228">475°F → 425°F</text>
+  <line x1="629" y1="634" x2="900" y2="634" stroke="#F2EBE0"/>
+
+  <text x="629" y="656" font-size="13" fill="#8B7355">Covered</text>
+  <text x="900" y="656" text-anchor="end" font-size="14" font-weight="600" fill="#4A3228">20 min</text>
+  <line x1="629" y1="668" x2="900" y2="668" stroke="#F2EBE0"/>
+
+  <text x="629" y="690" font-size="13" fill="#8B7355">Uncovered</text>
+  <text x="900" y="690" text-anchor="end" font-size="14" font-weight="600" fill="#4A3228">25 min</text>
+
+</svg>

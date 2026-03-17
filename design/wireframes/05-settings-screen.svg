@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1194 834"
+     font-family="'Source Serif 4', 'Georgia', serif" font-size="14">
+
+  <!-- Background -->
+  <rect width="1194" height="834" fill="#FEFBF5"/>
+
+  <!-- ==================== TOP NAV BAR ==================== -->
+  <rect x="0" y="0" width="1194" height="56" fill="#FEFBF5"/>
+  <line x1="0" y1="56" x2="1194" y2="56" stroke="#E5DDD0"/>
+
+  <!-- Back button -->
+  <text x="32" y="37" font-size="16" fill="#C07A2E">&#9664;</text>
+  <text x="52" y="37" font-size="14" fill="#C07A2E">Back</text>
+
+  <text x="597" y="37" text-anchor="middle" font-size="18" font-weight="700" fill="#4A3228" font-family="'Fraunces', 'Georgia', serif">Settings</text>
+
+  <!-- ==================== VERTICAL DIVIDER ==================== -->
+  <line x1="320" y1="56" x2="320" y2="834" stroke="#E5DDD0"/>
+
+  <!-- ==================== LEFT SIDEBAR (menu) ==================== -->
+  <rect x="0" y="56" width="320" height="778" fill="#F2EBE0"/>
+
+  <!-- Menu item 1: Inspiration (selected) -->
+  <rect x="0" y="56" width="320" height="56" fill="#FEFBF5"/>
+  <rect x="0" y="56" width="3" height="56" fill="#C07A2E"/>
+  <text x="24" y="90" font-size="15" font-weight="600" fill="#4A3228">Inspiration</text>
+  <text x="296" y="90" text-anchor="end" font-size="14" fill="#D9CEBD">&#9654;</text>
+
+  <!-- Menu item 2: Formula Builder (coming soon) -->
+  <rect x="0" y="112" width="320" height="56" fill="#F2EBE0"/>
+  <text x="24" y="146" font-size="15" fill="#8B7355">Formula Builder</text>
+  <rect x="178" y="132" width="92" height="20" rx="10" fill="#E5DDD0"/>
+  <text x="224" y="146" text-anchor="middle" font-size="10" fill="#8B7355">Coming Soon</text>
+
+  <!-- Menu item 3: Preferences -->
+  <rect x="0" y="168" width="320" height="56" fill="#F2EBE0"/>
+  <text x="24" y="202" font-size="15" fill="#8B7355">Preferences</text>
+  <text x="296" y="202" text-anchor="end" font-size="14" fill="#D9CEBD">&#9654;</text>
+
+  <!-- Menu item 4: Equipment Guide -->
+  <rect x="0" y="224" width="320" height="56" fill="#F2EBE0"/>
+  <text x="24" y="258" font-size="15" fill="#8B7355">Equipment Guide</text>
+  <text x="296" y="258" text-anchor="end" font-size="14" fill="#D9CEBD">&#9654;</text>
+
+  <!-- Menu item 5: About Fournil -->
+  <rect x="0" y="280" width="320" height="56" fill="#F2EBE0"/>
+  <text x="24" y="314" font-size="15" fill="#8B7355">About Fournil</text>
+  <text x="296" y="314" text-anchor="end" font-size="14" fill="#D9CEBD">&#9654;</text>
+
+  <!-- ==================== RIGHT DETAIL PANE — Inspiration ==================== -->
+
+  <!-- Sources section -->
+  <text x="356" y="92" font-size="11" font-weight="600" fill="#8B7355" letter-spacing="1.2">SOURCES</text>
+
+  <!-- Source card 1: Janjigian -->
+  <rect x="356" y="108" width="500" height="72" rx="8" fill="#FFFFFF" stroke="#E5DDD0"/>
+  <text x="376" y="132" font-size="15" font-weight="600" fill="#4A3228">Andrew Janjigian</text>
+  <text x="376" y="152" font-size="13" fill="#8B7355">The Sourdough Lifestyle</text>
+  <text x="376" y="170" font-size="12" fill="#C07A2E">wordloaf.substack.com · @wordloaf</text>
+
+  <!-- Source card 2: Robertson -->
+  <rect x="356" y="192" width="500" height="72" rx="8" fill="#FFFFFF" stroke="#E5DDD0"/>
+  <text x="376" y="216" font-size="15" font-weight="600" fill="#4A3228">Chad Robertson</text>
+  <text x="376" y="236" font-size="13" fill="#8B7355">Tartine Bread</text>
+  <text x="376" y="254" font-size="12" fill="#C07A2E">tartinebakery.com</text>
+
+  <!-- Further Reading section -->
+  <text x="356" y="300" font-size="11" font-weight="600" fill="#8B7355" letter-spacing="1.2">FURTHER READING</text>
+
+  <text x="372" y="324" font-size="13" fill="#C07A2E">On desired dough temperatures (DDT)</text>
+  <text x="356" y="324" font-size="13" fill="#8B7355">•</text>
+  <line x1="356" y1="336" x2="856" y2="336" stroke="#F2EBE0"/>
+
+  <text x="372" y="356" font-size="13" fill="#C07A2E">Care and feeding of a sourdough starter</text>
+  <text x="356" y="356" font-size="13" fill="#8B7355">•</text>
+  <line x1="356" y1="368" x2="856" y2="368" stroke="#F2EBE0"/>
+
+  <text x="372" y="388" font-size="13" fill="#C07A2E">That Levain Feeling</text>
+  <text x="356" y="388" font-size="13" fill="#8B7355">•</text>
+  <line x1="356" y1="400" x2="856" y2="400" stroke="#F2EBE0"/>
+
+  <text x="372" y="420" font-size="13" fill="#C07A2E">On Dutch oven baking</text>
+  <text x="356" y="420" font-size="13" fill="#8B7355">•</text>
+  <line x1="356" y1="432" x2="856" y2="432" stroke="#F2EBE0"/>
+
+  <text x="372" y="452" font-size="13" fill="#C07A2E">No-knead PAL recipe template</text>
+  <text x="356" y="452" font-size="13" fill="#8B7355">•</text>
+  <line x1="356" y1="464" x2="856" y2="464" stroke="#F2EBE0"/>
+
+  <text x="372" y="484" font-size="13" fill="#C07A2E">Quarantinystarter 2.0</text>
+  <text x="356" y="484" font-size="13" fill="#8B7355">•</text>
+
+  <!-- Glossary section -->
+  <text x="356" y="528" font-size="11" font-weight="600" fill="#8B7355" letter-spacing="1.2">SOURDOUGH GLOSSARY</text>
+
+  <!-- Glossary item 1: collapsed -->
+  <rect x="356" y="544" width="500" height="40" rx="6" fill="#F2EBE0" stroke="#E5DDD0"/>
+  <text x="376" y="570" font-size="14" fill="#D9CEBD">&#9654;</text>
+  <text x="396" y="570" font-size="14" fill="#4A3228">Autolyse</text>
+
+  <!-- Glossary item 2: expanded -->
+  <rect x="356" y="592" width="500" height="88" rx="6" fill="#F2EBE0" stroke="#E5DDD0"/>
+  <text x="376" y="618" font-size="14" fill="#C07A2E">&#9660;</text>
+  <text x="396" y="618" font-size="14" font-weight="600" fill="#4A3228">Bulk Proof</text>
+  <text x="396" y="642" font-size="13" fill="#8B7355">The stage of dough fermentation before</text>
+  <text x="396" y="660" font-size="13" fill="#8B7355">dividing and shaping of the loaves.</text>
+
+  <!-- Glossary item 3: collapsed -->
+  <rect x="356" y="688" width="500" height="40" rx="6" fill="#F2EBE0" stroke="#E5DDD0"/>
+  <text x="376" y="714" font-size="14" fill="#D9CEBD">&#9654;</text>
+  <text x="396" y="714" font-size="14" fill="#4A3228">Cold-Proofing</text>
+
+  <!-- Glossary item 4: collapsed -->
+  <rect x="356" y="736" width="500" height="40" rx="6" fill="#F2EBE0" stroke="#E5DDD0"/>
+  <text x="376" y="762" font-size="14" fill="#D9CEBD">&#9654;</text>
+  <text x="396" y="762" font-size="14" fill="#4A3228">DDT (Desired Dough Temperature)</text>
+
+  <!-- Glossary item 5: collapsed -->
+  <rect x="356" y="784" width="500" height="40" rx="6" fill="#F2EBE0" stroke="#E5DDD0"/>
+  <text x="376" y="810" font-size="14" fill="#D9CEBD">&#9654;</text>
+  <text x="396" y="810" font-size="14" fill="#4A3228">Final Formula</text>
+
+</svg>
