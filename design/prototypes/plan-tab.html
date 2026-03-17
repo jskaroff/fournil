@@ -142,175 +142,198 @@
 
   .section-spacer { height: 20px; }
 
-  /* Formula Carousel */
+  /* ===== FORMULA VERTICAL CAROUSEL ===== */
   .formula-carousel-wrapper {
     position: relative;
     margin: 0 -4px;
   }
   .formula-cards {
     display: flex;
+    flex-direction: column;
     gap: 8px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
     scroll-behavior: smooth;
-    padding: 4px 4px 8px;
+    padding: 4px;
+    max-height: 230px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
   .formula-cards::-webkit-scrollbar { display: none; }
 
-  /* Fade hints on edges */
+  /* Fade hints on top/bottom edges */
   .formula-carousel-wrapper::before,
   .formula-carousel-wrapper::after {
     content: '';
     position: absolute;
-    top: 0; bottom: 0;
-    width: 20px;
+    left: 0; right: 0;
+    height: 24px;
     z-index: 2;
     pointer-events: none;
     transition: opacity 0.2s ease;
   }
   .formula-carousel-wrapper::before {
-    left: 0;
-    background: linear-gradient(to right, var(--parchment-warm), transparent);
+    top: 0;
+    background: linear-gradient(to bottom, var(--parchment-warm), transparent);
     opacity: 0;
   }
   .formula-carousel-wrapper::after {
-    right: 0;
-    background: linear-gradient(to left, var(--parchment-warm), transparent);
+    bottom: 0;
+    background: linear-gradient(to top, var(--parchment-warm), transparent);
   }
   .formula-carousel-wrapper.scrolled-start::before { opacity: 0; }
   .formula-carousel-wrapper.scrolled-end::after { opacity: 0; }
   .formula-carousel-wrapper.scrolled-mid::before { opacity: 1; }
 
   .formula-card {
-    flex: 0 0 calc((100% - 16px) / 3);
-    min-width: 0;
+    width: 100%;
+    flex-shrink: 0;
     scroll-snap-align: start;
-    padding: 14px 12px;
-    border-radius: 11px;
+    padding: 14px 16px;
+    border-radius: 12px;
     border: 2px solid transparent;
     background: var(--flour-dust);
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
   }
   .formula-card:hover {
-    transform: translateY(-1px);
     box-shadow: var(--shadow-md);
   }
   .formula-card.selected {
     border-color: var(--golden-crust);
     background: white;
     box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
   }
+
+  .formula-card-thumb {
+    width: 48px; height: 48px;
+    border-radius: 10px;
+    background: var(--flour-dust-deep);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .formula-card.selected .formula-card-thumb {
+    background: var(--golden-glow-md);
+  }
+
+  .formula-card-content {
+    flex: 1; min-width: 0;
+  }
+
   .formula-card-name {
     font-family: 'Fraunces', serif;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     color: var(--crust-brown);
-    margin-bottom: 4px;
+    margin-bottom: 3px;
     line-height: 1.2;
   }
+
+  .formula-card-difficulty {
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 4px;
+  }
+  .formula-card-difficulty .diff-dots {
+    display: flex; gap: 3px;
+  }
+  .formula-card-difficulty .diff-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--flour-dust-deep);
+  }
+  .formula-card-difficulty .diff-dot.filled { background: var(--sage); }
+  .formula-card-difficulty .diff-dot.filled.intermediate { background: var(--golden-crust); }
+  .formula-card-difficulty .diff-dot.filled.advanced { background: var(--clay); }
+  .formula-card-difficulty .diff-dot.filled.expert { background: var(--burned-red); }
+  .formula-card-difficulty .diff-label {
+    font-family: 'Source Serif 4', serif;
+    font-size: 10px; color: var(--wheat-field);
+  }
+
   .formula-card-meta {
     font-family: 'Source Serif 4', serif;
     font-size: 11px;
     color: var(--wheat-field);
     line-height: 1.4;
-  }
-  .formula-card-dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--golden-crust);
-    position: absolute; top: 12px; right: 12px;
-    opacity: 0; transform: scale(0);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-  .formula-card.selected .formula-card-dot { opacity: 1; transform: scale(1); }
-
-  /* Four-Fold Variant */
-  .variant-section {
-    max-height: 0; overflow: hidden; opacity: 0;
-    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-  }
-  .variant-section.visible { max-height: 300px; opacity: 1; margin-top: 20px; }
-
-  .variant-grid-header {
-    display: grid;
-    grid-template-columns: 56px 1fr 1fr;
-    gap: 8px; margin-bottom: 6px;
-  }
-  .variant-grid-header span {
-    font-family: 'Source Serif 4', serif; font-size: 10.5px;
-    color: var(--wheat-light); text-align: center;
-  }
-  .variant-grid-full {
-    display: grid;
-    grid-template-columns: 56px 1fr 1fr;
-    gap: 8px;
-  }
-  .variant-row-label {
-    font-family: 'Fira Mono', monospace;
-    font-size: 11px; font-weight: 500;
-    color: var(--wheat-field);
-    display: flex; align-items: center; justify-content: center;
-    height: 56px;
-  }
-  .variant-cell {
-    height: 56px; border-radius: 10px;
-    border: 1.5px solid var(--flour-dust-deep);
-    background: white;
-    cursor: pointer;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 3px;
-    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-  .variant-cell:hover { border-color: var(--golden-crust); transform: translateY(-1px); }
-  .variant-cell.selected {
-    border-color: var(--golden-crust);
-    background: var(--golden-glow);
-    box-shadow: 0 0 0 1px var(--golden-crust);
-  }
-  .variant-cell-ratio {
-    font-family: 'Fira Mono', monospace;
-    font-size: 12.5px; font-weight: 500; color: var(--crust-brown);
-  }
-  .variant-cell-level {
-    font-family: 'Source Serif 4', serif; font-size: 9.5px; color: var(--wheat-field);
+    margin-bottom: 5px;
   }
 
-  /* Difficulty */
-  .difficulty-bar {
-    display: flex; align-items: center; gap: 10px;
-    padding: 9px 14px;
-    background: white;
-    border-radius: 9px;
-    border: 1px solid var(--flour-dust);
-    margin-top: 14px;
-  }
-  .difficulty-dots { display: flex; gap: 4px; }
-  .difficulty-dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--flour-dust-deep);
-    transition: background 0.3s ease;
-  }
-  .difficulty-dot.filled { background: var(--sage); }
-  .difficulty-dot.filled.intermediate { background: var(--golden-crust); }
-  .difficulty-dot.filled.advanced { background: var(--clay); }
-  .difficulty-dot.filled.expert { background: var(--burned-red); }
-  .difficulty-label {
-    font-family: 'Fraunces', serif;
-    font-size: 11.5px; font-weight: 600; color: var(--crust-brown);
-  }
-  .difficulty-desc {
+  .formula-card-desc {
     font-family: 'Source Serif 4', serif;
-    font-size: 10.5px; color: var(--wheat-field);
-    font-style: italic; margin-left: auto;
+    font-size: 11.5px;
+    color: var(--wheat-field);
+    font-style: italic;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 5px;
   }
 
-  /* Dough Weight — dominant control */
+  .formula-card-log-link {
+    font-family: 'Source Serif 4', serif;
+    font-size: 10.5px;
+    color: var(--golden-crust);
+    text-decoration: underline;
+    text-decoration-color: rgba(192, 122, 46, 0.3);
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+  .formula-card-log-link:hover {
+    text-decoration-color: var(--golden-crust);
+  }
+
+  .formula-add-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 56px;
+    border: 1.5px dashed var(--wheat-light);
+    border-radius: 12px;
+    background: transparent;
+    cursor: pointer;
+    scroll-snap-align: start;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+  }
+  .formula-add-btn:hover {
+    border-color: var(--golden-crust-light);
+    background: var(--golden-glow);
+  }
+  .formula-add-btn-icon { font-size: 18px; color: var(--wheat-light); }
+  .formula-add-btn-label {
+    font-family: 'Source Serif 4', serif;
+    font-size: 12.5px; color: var(--wheat-light);
+  }
+
+  /* Coming soon popover */
+  .coming-soon-popover {
+    position: fixed;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    padding: 12px 16px;
+    z-index: 100;
+    font-family: 'Source Serif 4', serif;
+    font-size: 12.5px;
+    color: var(--crust-brown);
+    white-space: nowrap;
+    animation: popoverFadeIn 0.15s ease;
+  }
+  @keyframes popoverFadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== DOUGH WEIGHT ===== */
   .weight-control {
-    display: flex; align-items: center; justify-content: center; gap: 16px;
+    display: flex; align-items: center;
+  }
+  .weight-adjust {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 16px;
   }
   .weight-btn {
     width: 38px; height: 38px; border-radius: 10px;
@@ -335,199 +358,403 @@
     color: var(--wheat-field); margin-left: 1px;
   }
 
-  /* Levain Slider */
-  .slider-row { display: flex; align-items: center; gap: 12px; }
-  .slider-label {
-    font-family: 'Source Serif 4', serif; font-size: 12px;
-    color: var(--wheat-field); min-width: 56px;
-  }
-  .slider-track {
-    flex: 1; height: 5px;
-    background: var(--flour-dust-deep);
-    border-radius: 3px; position: relative; cursor: pointer;
-  }
-  .slider-fill {
-    height: 100%;
-    background: var(--golden-crust);
-    border-radius: 3px;
-    transition: width 0.15s ease;
-  }
-  .slider-thumb {
-    width: 18px; height: 18px;
-    background: white;
-    border: 2px solid var(--golden-crust);
-    border-radius: 50%;
-    position: absolute; top: 50%;
-    transform: translate(-50%, -50%);
-    cursor: grab;
-    box-shadow: var(--shadow-sm);
-    transition: left 0.15s ease;
-  }
-  .slider-value {
-    font-family: 'Fira Mono', monospace;
-    font-size: 12.5px; font-weight: 500;
-    color: var(--crust-brown);
-    min-width: 40px; text-align: right;
-  }
-
-  /* DDT Collapsed */
-  .ddt-collapsed {
-    display: flex; align-items: center; gap: 12px;
-    padding: 11px 14px;
-    background: white;
-    border-radius: 10px;
-    border: 1px solid var(--flour-dust);
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  .ddt-collapsed:hover {
-    border-color: var(--slate-light);
-    box-shadow: var(--shadow-sm);
-  }
-  .ddt-collapsed-icon {
-    width: 30px; height: 30px;
-    border-radius: 8px;
-    background: linear-gradient(135deg, #E8F0F6, #D4E4EF);
+  .doubler-btn {
+    height: 24px; padding: 0 9px;
+    border-radius: 5px;
+    border: 1.5px solid var(--flour-dust-deep);
+    background: white; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s ease; user-select: none;
     flex-shrink: 0;
   }
-  .ddt-collapsed-icon svg { color: var(--slate); }
-  .ddt-collapsed-info { flex: 1; }
-  .ddt-collapsed-label {
-    font-family: 'Source Serif 4', serif;
-    font-size: 10.5px; color: var(--wheat-field);
+  .doubler-btn:hover { border-color: var(--golden-crust-light); background: var(--golden-glow); }
+  .doubler-btn.active {
+    background: var(--golden-crust);
+    border-color: var(--golden-crust);
   }
-  .ddt-collapsed-value {
+  .doubler-btn.active .doubler-label { color: white; font-weight: 600; }
+  .doubler-label {
     font-family: 'Fira Mono', monospace;
-    font-size: 14px; font-weight: 500; color: var(--crust-brown);
-  }
-  .ddt-collapsed-edit {
-    font-family: 'Source Serif 4', serif;
-    font-size: 11px; color: var(--slate);
-    text-decoration: underline;
-    text-decoration-color: var(--slate-light);
-    text-underline-offset: 2px;
+    font-size: 10.5px; font-weight: 500; letter-spacing: 0.04em;
+    color: var(--wheat-field);
   }
 
-  /* DDT Popover */
-  .ddt-overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(74, 50, 40, 0.2);
-    z-index: 100;
-    backdrop-filter: blur(2px);
+  /* ===== FORMULA KNOBS ===== */
+  .knobs-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 20px;
   }
-  .ddt-overlay.visible { display: flex; align-items: center; justify-content: center; }
-
-  .ddt-popover {
-    background: white;
-    border-radius: 16px;
-    padding: 28px 32px 24px;
-    box-shadow: var(--shadow-lg), 0 0 0 1px var(--flour-dust);
-    width: 420px;
-    animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  .knobs-header .section-label { margin: 0; }
+  .knob-style-toggle {
+    display: flex; gap: 2px;
+    background: var(--flour-dust); border-radius: 6px; padding: 2px;
   }
-  @keyframes popIn {
-    from { opacity: 0; transform: scale(0.95) translateY(8px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
-  }
-  .ddt-popover-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 20px;
-  }
-  .ddt-popover-title {
-    font-family: 'Fraunces', serif;
-    font-size: 17px; font-weight: 600; color: var(--crust-brown);
-  }
-  .ddt-popover-close {
-    width: 32px; height: 32px; border-radius: 8px;
-    border: none; background: var(--flour-dust);
-    color: var(--wheat-field); font-size: 16px;
-    cursor: pointer; display: flex;
-    align-items: center; justify-content: center;
+  .knob-style-toggle button {
+    font-family: 'Source Serif 4', serif; font-size: 9.5px;
+    padding: 3px 8px; border: none; border-radius: 4px;
+    background: transparent; color: var(--wheat-field); cursor: pointer;
     transition: all 0.15s ease;
   }
-  .ddt-popover-close:hover { background: var(--flour-dust-deep); }
+  .knob-style-toggle button.active {
+    background: white; color: var(--crust-brown);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  }
+  .knobs-row {
+    display: flex; gap: 24px; justify-content: center;
+    padding: 8px 0;
+  }
+  .knob-control { text-align: center; flex: 1; }
+  .knob-label {
+    font-family: 'Fraunces', serif;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--wheat-field);
+    margin-bottom: 8px;
+  }
 
-  .ddt-target-row {
-    display: flex; align-items: center; gap: 8px;
-    padding: 10px 14px;
-    background: var(--parchment-warm);
-    border-radius: 8px;
-    margin-bottom: 18px;
+  /* --- Arc style (original) --- */
+  .knob-dial {
+    width: 100px; height: 100px;
+    position: relative;
+    cursor: pointer;
+    touch-action: none;
+    margin: 0 auto;
   }
-  .ddt-target-label {
-    font-family: 'Source Serif 4', serif; font-size: 12.5px; color: var(--wheat-field);
+  .knob-dial.readonly {
+    cursor: default;
+    opacity: 0.5;
+    pointer-events: none;
   }
-  .ddt-target-value {
+  .knob-dial svg {
+    width: 100%; height: 100%;
+    transform: rotate(135deg);
+  }
+  .knob-track {
+    fill: none;
+    stroke: var(--flour-dust-deep);
+    stroke-width: 6;
+    stroke-linecap: round;
+  }
+  .knob-fill {
+    fill: none;
+    stroke: var(--golden-crust);
+    stroke-width: 6;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.15s ease;
+  }
+  .knob-notch {
+    fill: none;
+    stroke: var(--wheat-light);
+    stroke-width: 2;
+  }
+  .knob-value {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
     font-family: 'Fira Mono', monospace;
-    font-size: 15px; font-weight: 500; color: var(--crust-brown);
+    font-size: 20px; font-weight: 500;
+    color: var(--crust-brown);
+  }
+  .knob-value span {
+    font-size: 12px; color: var(--wheat-field);
+    margin-left: 1px;
+  }
+  .knob-readonly-label {
+    font-family: 'Source Serif 4', serif;
+    font-size: 9.5px;
+    color: var(--wheat-light);
+    font-style: italic;
+    margin-top: 4px;
   }
 
-  .ddt-inputs { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
-  .ddt-input-row { display: flex; align-items: center; gap: 10px; }
-  .ddt-input-label {
-    font-family: 'Source Serif 4', serif; font-size: 13px;
-    color: var(--wheat-field); min-width: 130px;
+  /* --- Slider style --- */
+  .knob-slider-wrap {
+    position: relative;
+    padding: 8px 0 4px;
   }
-  .ddt-input {
-    width: 72px; padding: 9px 10px;
+  .knob-slider-value {
+    font-family: 'Fira Mono', monospace;
+    font-size: 22px; font-weight: 500;
+    color: var(--crust-brown);
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .knob-slider-value span {
+    font-size: 13px; color: var(--wheat-field);
+  }
+  .knob-slider-track {
+    position: relative;
+    height: 44px;
+    display: flex; align-items: center;
+    touch-action: none;
+    cursor: pointer;
+  }
+  .knob-slider-track.readonly {
+    opacity: 0.45;
+    pointer-events: none;
+  }
+  .knob-slider-rail {
+    position: absolute; left: 0; right: 0;
+    height: 4px; border-radius: 2px;
+    background: var(--flour-dust-deep);
+    top: 50%; transform: translateY(-50%);
+  }
+  .knob-slider-fill {
+    position: absolute; left: 0;
+    height: 4px; border-radius: 2px;
+    background: var(--golden-crust);
+    top: 50%; transform: translateY(-50%);
+    transition: width 0.1s ease;
+  }
+  .knob-slider-thumb {
+    position: absolute;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: white;
+    border: 2.5px solid var(--golden-crust);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    top: 50%; transform: translate(-50%, -50%);
+    transition: left 0.1s ease;
+    z-index: 2;
+  }
+  .knob-slider-thumb:active {
+    transform: translate(-50%, -50%) scale(1.15);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+  }
+  .knob-slider-tick {
+    position: absolute;
+    width: 2px; height: 12px;
+    background: var(--wheat-light);
+    border-radius: 1px;
+    top: 50%; transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+  .knob-slider-tick-label {
+    position: absolute;
+    font-family: 'Fira Mono', monospace;
+    font-size: 9px; color: var(--wheat-light);
+    top: calc(50% + 14px);
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  /* --- Stepper style --- */
+  .knob-stepper-wrap {
+    padding: 4px 0;
+  }
+  .knob-stepper-value {
+    font-family: 'Fira Mono', monospace;
+    font-size: 22px; font-weight: 500;
+    color: var(--crust-brown);
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .knob-stepper-value span {
+    font-size: 13px; color: var(--wheat-field);
+  }
+  .knob-stepper-presets {
+    display: flex; gap: 6px; justify-content: center;
+    flex-wrap: wrap;
+  }
+  .knob-stepper-btn {
+    font-family: 'Fira Mono', monospace;
+    font-size: 13px; font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 10px;
     border: 1.5px solid var(--flour-dust-deep);
-    border-radius: 8px; background: var(--parchment);
+    background: white;
+    color: var(--wheat-field);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    min-width: 48px;
+  }
+  .knob-stepper-btn:active {
+    transform: scale(0.96);
+  }
+  .knob-stepper-btn.active {
+    background: var(--golden-crust);
+    border-color: var(--golden-crust);
+    color: white;
+    font-weight: 600;
+  }
+  .knob-stepper-btn.readonly {
+    opacity: 0.45;
+    pointer-events: none;
+  }
+  .knob-stepper-fine {
+    display: flex; gap: 8px; justify-content: center;
+    margin-top: 8px;
+  }
+  .knob-stepper-fine button {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1.5px solid var(--flour-dust-deep);
+    background: white;
     font-family: 'Fira Mono', monospace;
-    font-size: 14px; color: var(--crust-brown);
+    font-size: 16px; color: var(--wheat-field);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.12s ease;
+  }
+  .knob-stepper-fine button:active {
+    background: var(--flour-dust);
+    transform: scale(0.92);
+  }
+
+  /* ===== WATER TEMP INLINE ===== */
+  .water-temp-panel {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid var(--flour-dust);
+    padding: 14px 16px;
+  }
+  .water-temp-inputs {
+    display: flex; gap: 10px; margin-bottom: 12px;
+  }
+  .water-temp-input-group {
+    flex: 1; text-align: center;
+  }
+  .water-temp-input-label {
+    font-family: 'Source Serif 4', serif;
+    font-size: 10px; color: var(--wheat-light);
+    margin-bottom: 4px;
+  }
+  .water-temp-input-wrap {
+    position: relative;
+    display: flex; align-items: center;
+  }
+  .water-temp-input {
+    width: 100%; padding: 6px 24px 6px 4px;
+    border: 1.5px solid var(--flour-dust-deep);
+    border-radius: 7px; background: var(--parchment);
+    font-family: 'Fira Mono', monospace;
+    font-size: 13px; color: var(--crust-brown);
     text-align: center; outline: none;
     transition: border-color 0.2s ease;
   }
-  .ddt-input:focus { border-color: var(--golden-crust); }
-  .ddt-unit { font-family: 'Source Serif 4', serif; font-size: 13px; color: var(--wheat-light); }
+  .water-temp-input:focus { border-color: var(--golden-crust); }
+  .water-temp-input-suffix {
+    position: absolute;
+    right: 6px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 10px; color: var(--wheat-light);
+    pointer-events: none;
+  }
 
+  .water-temp-result {
+    text-align: center;
+    padding: 10px 0;
+    margin-bottom: 8px;
+  }
+  .water-temp-result-label {
+    font-family: 'Source Serif 4', serif;
+    font-size: 11px; color: var(--wheat-field);
+    margin-bottom: 2px;
+  }
+  .water-temp-result-value {
+    font-family: 'Fraunces', serif;
+    font-size: 32px; font-weight: 700;
+    color: var(--slate);
+    letter-spacing: -0.02em;
+  }
+  .water-temp-result-value sup {
+    font-size: 16px; font-weight: 400;
+  }
+
+  .water-temp-ref {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 6px 10px;
+    background: var(--parchment-warm);
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    position: relative;
+  }
+  .water-temp-ref:hover { background: var(--flour-dust); }
+  .water-temp-ref-text {
+    font-family: 'Source Serif 4', serif;
+    font-size: 10.5px; color: var(--wheat-field);
+  }
+  .water-temp-ref-icon {
+    color: var(--wheat-light);
+    flex-shrink: 0;
+    opacity: 0.7;
+    transition: opacity 0.15s ease;
+  }
+  .water-temp-ref:hover .water-temp-ref-icon { opacity: 1; }
+
+  /* DDT Settings Popover (iPad-style, fixed position) */
+  .ddt-popover-anchor { position: relative; }
+  .ddt-settings-popover {
+    display: none;
+    position: fixed;
+    width: 270px;
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: var(--shadow-lg), 0 0 0 1px var(--flour-dust);
+    z-index: 50;
+    animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .ddt-settings-popover.visible { display: block; }
+  .ddt-settings-popover::after {
+    content: '';
+    position: absolute;
+    bottom: -7px;
+    left: 50%; transform: translateX(-50%) rotate(45deg);
+    width: 14px; height: 14px;
+    background: white;
+    border-right: 1px solid var(--flour-dust);
+    border-bottom: 1px solid var(--flour-dust);
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.95) translateY(4px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .ddt-popover-title {
+    font-family: 'Fraunces', serif;
+    font-size: 13px; font-weight: 600; color: var(--crust-brown);
+    margin-bottom: 14px;
+  }
+  .ddt-target-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px;
+    background: var(--parchment-warm);
+    border-radius: 7px;
+    margin-bottom: 14px;
+  }
+  .ddt-target-label {
+    font-family: 'Source Serif 4', serif; font-size: 11px; color: var(--wheat-field);
+  }
+  .ddt-target-value {
+    font-family: 'Fira Mono', monospace;
+    font-size: 13px; font-weight: 500; color: var(--crust-brown);
+  }
   .ddt-method-label {
     font-family: 'Fraunces', serif;
-    font-size: 10px; font-weight: 600;
+    font-size: 9px; font-weight: 600;
     letter-spacing: 0.12em; text-transform: uppercase;
     color: var(--wheat-field); margin-bottom: 8px;
   }
   .ddt-method-seg {
     display: flex; background: var(--flour-dust);
-    border-radius: 9px; padding: 3px; margin-bottom: 20px;
+    border-radius: 8px; padding: 3px;
   }
   .ddt-method-btn {
-    flex: 1; padding: 9px 0; border: none;
+    flex: 1; padding: 7px 0; border: none;
     background: transparent;
-    font-family: 'Source Serif 4', serif; font-size: 12.5px;
+    font-family: 'Source Serif 4', serif; font-size: 11px;
     color: var(--wheat-field); cursor: pointer;
-    border-radius: 7px; transition: all 0.2s ease;
+    border-radius: 6px; transition: all 0.2s ease;
   }
   .ddt-method-btn.active {
     background: white; color: var(--crust-brown);
     box-shadow: var(--shadow-sm);
   }
-
-  .ddt-result-box {
-    padding: 20px;
-    background: linear-gradient(135deg, #E8F0F6 0%, #D8E8F2 100%);
-    border-radius: 12px;
-    text-align: center;
-    border: 1px solid #C8D8E4;
+  .ddt-backdrop {
+    display: none;
+    position: fixed; inset: 0; z-index: 49;
   }
-  .ddt-result-label {
-    font-family: 'Source Serif 4', serif;
-    font-size: 12px; color: var(--slate);
-    margin-bottom: 4px;
-  }
-  .ddt-result-value {
-    font-family: 'Fraunces', serif;
-    font-size: 36px; font-weight: 700;
-    color: var(--slate);
-    letter-spacing: -0.02em;
-  }
-  .ddt-result-value sup { font-size: 18px; font-weight: 400; }
-  .ddt-result-note {
-    font-family: 'Source Serif 4', serif;
-    font-size: 10.5px; color: var(--slate-light);
-    font-style: italic; margin-top: 6px;
-  }
+  .ddt-backdrop.visible { display: block; }
 
   /* ===== RIGHT COLUMN ===== */
   .right-col {
@@ -607,33 +834,36 @@
     color: var(--crust-brown); text-align: right;
   }
 
-  .ingredients-summary {
-    display: flex; justify-content: space-between;
-    padding: 14px 12px 0;
-    margin-top: 6px;
-    border-top: 1.5px solid var(--flour-dust-deep);
+  /* Ingredient pills */
+  .ingredient-pills {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    margin-bottom: 12px;
   }
-  .summary-item { display: flex; align-items: baseline; gap: 6px; }
-  .summary-label {
-    font-family: 'Source Serif 4', serif; font-size: 11.5px; color: var(--wheat-field);
-  }
-  .summary-value {
-    font-family: 'Fira Mono', monospace;
-    font-size: 13px; font-weight: 500; color: var(--crust-brown);
-  }
-
-  /* Hydration badge */
-  .hydration-badge {
-    display: inline-flex; align-items: center; gap: 4px;
+  .ingredient-pill {
+    display: inline-flex; align-items: center;
     padding: 3px 10px;
     border-radius: 6px;
     font-family: 'Fira Mono', monospace;
-    font-size: 12px; font-weight: 500;
+    font-size: 11px; font-weight: 500;
   }
-  .hydration-badge.low { background: var(--sage-bg); color: var(--sage); }
-  .hydration-badge.medium { background: var(--golden-glow); color: var(--golden-crust); }
-  .hydration-badge.high { background: var(--clay-bg); color: var(--clay); }
-  .hydration-badge.extreme { background: rgba(160, 64, 48, 0.1); color: var(--burned-red); }
+  .hydration-pill { background: var(--sage-bg); color: var(--sage); }
+  .levain-pill { background: var(--golden-glow); color: var(--golden-crust); }
+  .doubled-pill { background: rgba(160, 64, 48, 0.1); color: var(--burned-red); }
+
+  /* Total row — in same table as ingredients for guaranteed column alignment */
+  .ingredients-total-row td {
+    border-top: 1.5px solid var(--flour-dust-deep);
+    padding: 12px 12px 4px;
+    border-bottom: none !important;
+  }
+  .total-label {
+    font-family: 'Source Serif 4', serif;
+    font-size: 12px; color: var(--wheat-field);
+  }
+  .summary-value {
+    font-weight: 600;
+    font-size: 14px;
+  }
 
   /* ===== TIMELINE PANEL ===== */
   .timeline-panel {
@@ -777,6 +1007,149 @@
   .proof-block-wrapper.cold-wrapper .timeline-dot {
     border: 2px solid var(--night-blue);
     background: var(--night-bg-md);
+  }
+
+  /* ===== Proof Style Toggle ===== */
+  .proof-style-toggle {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 14px;
+    background: var(--flour-dust);
+    border-radius: 7px;
+    padding: 2px;
+  }
+  .proof-style-btn {
+    flex: 1; padding: 5px 0; border: none;
+    background: transparent;
+    font-family: 'Source Serif 4', serif;
+    font-size: 10.5px; color: var(--wheat-field);
+    cursor: pointer; border-radius: 5px;
+    transition: all 0.2s ease;
+  }
+  .proof-style-btn.active {
+    background: white; color: var(--crust-brown);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ===== Proof Style A: Thick Timeline Segment ===== */
+  .proof-thick {
+    position: relative;
+    margin: 4px 0 2px 14px;
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .proof-thick-line {
+    width: 4px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .proof-thick.bulk .proof-thick-line {
+    background: linear-gradient(to bottom, var(--golden-crust), var(--golden-crust-light));
+  }
+  .proof-thick.cold .proof-thick-line {
+    background: linear-gradient(to bottom, var(--night-blue), rgba(61, 79, 106, 0.5));
+  }
+  .proof-thick-content {
+    display: flex; flex-direction: column;
+    justify-content: center; gap: 4px;
+    padding: 8px 0;
+  }
+  .proof-thick .proof-block-label {
+    font-family: 'Fraunces', serif;
+    font-size: 12px; font-weight: 600;
+  }
+  .proof-thick.bulk .proof-block-label { color: var(--golden-crust); }
+  .proof-thick.cold .proof-block-label { color: var(--night-blue); }
+  .proof-thick .proof-block-duration {
+    font-family: 'Fira Mono', monospace;
+    font-size: 9.5px; color: var(--wheat-field);
+  }
+
+  /* ===== Proof Style B: Hatched Fill ===== */
+  .proof-hatched.bulk {
+    background:
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 4px,
+        rgba(192, 122, 46, 0.10) 4px,
+        rgba(192, 122, 46, 0.10) 8px
+      );
+    border-color: var(--golden-crust-light);
+  }
+  .proof-hatched.cold {
+    background:
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 4px,
+        rgba(61, 79, 106, 0.08) 4px,
+        rgba(61, 79, 106, 0.08) 8px
+      );
+    border-color: var(--night-blue);
+  }
+
+  /* ===== Proof Style C: Bracket/Range ===== */
+  .proof-bracket {
+    position: relative;
+    margin: 4px 0 2px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .proof-bracket-start,
+  .proof-bracket-end {
+    height: 8px;
+    position: relative;
+  }
+  .proof-bracket-start::before,
+  .proof-bracket-end::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 16px;
+    height: 2px;
+  }
+  .proof-bracket-start::after,
+  .proof-bracket-end::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 2px;
+  }
+  .proof-bracket-start::before { top: 0; }
+  .proof-bracket-start::after { top: 0; height: 100%; }
+  .proof-bracket-end::before { bottom: 0; }
+  .proof-bracket-end::after { bottom: 0; height: 100%; }
+
+  .proof-bracket.bulk .proof-bracket-start::before,
+  .proof-bracket.bulk .proof-bracket-start::after,
+  .proof-bracket.bulk .proof-bracket-end::before,
+  .proof-bracket.bulk .proof-bracket-end::after {
+    background: var(--golden-crust);
+  }
+  .proof-bracket.cold .proof-bracket-start::before,
+  .proof-bracket.cold .proof-bracket-start::after,
+  .proof-bracket.cold .proof-bracket-end::before,
+  .proof-bracket.cold .proof-bracket-end::after {
+    background: var(--night-blue);
+  }
+  .proof-bracket-content {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 6px 0 6px 24px;
+  }
+  .proof-bracket .proof-block-label {
+    font-family: 'Fraunces', serif;
+    font-size: 12px; font-weight: 600;
+  }
+  .proof-bracket.bulk .proof-block-label { color: var(--golden-crust); }
+  .proof-bracket.cold .proof-block-label { color: var(--night-blue); }
+  .proof-bracket .proof-block-duration {
+    font-family: 'Fira Mono', monospace;
+    font-size: 9.5px; color: var(--wheat-field);
   }
 
   /* Day boundary marker */
@@ -968,112 +1341,85 @@
 
   <!-- LEFT COLUMN -->
   <div class="left-col">
+    <!-- 1. Formula Selector -->
     <div class="section-label">Formula</div>
     <div class="formula-carousel-wrapper" id="carouselWrapper">
       <div class="formula-cards" id="formulaCards">
-        <div class="formula-card selected" data-formula="noknead" onclick="selectFormula(this)">
-          <div class="formula-card-dot"></div>
-          <div class="formula-card-name">No-Knead PAL</div>
-          <div class="formula-card-meta">~22h · minimal handling</div>
-        </div>
-        <div class="formula-card" data-formula="fourfold" onclick="selectFormula(this)">
-          <div class="formula-card-dot"></div>
-          <div class="formula-card-name">Four-Fold PAL</div>
-          <div class="formula-card-meta">~16.5h · more structure</div>
-        </div>
-        <div class="formula-card" data-formula="tartine" onclick="selectFormula(this)">
-          <div class="formula-card-dot"></div>
-          <div class="formula-card-name">Tartine Country</div>
-          <div class="formula-card-meta">~16h · classic method</div>
-        </div>
-        <div class="formula-card" data-formula="wholegrain" onclick="selectFormula(this)">
-          <div class="formula-card-dot"></div>
-          <div class="formula-card-name">100% Whole Grain</div>
-          <div class="formula-card-meta">~24h · high hydration</div>
-        </div>
-        <div class="formula-card" data-formula="slowferment" onclick="selectFormula(this)">
-          <div class="formula-card-dot"></div>
-          <div class="formula-card-name">72h Slow Ferment</div>
-          <div class="formula-card-meta">~80h · deep flavor</div>
-        </div>
+        <!-- Rendered by JS: renderFormulaCards() -->
       </div>
     </div>
 
-    <div class="variant-section" id="variantSection">
-      <div class="section-label">Variant</div>
-      <div class="variant-grid-header">
-        <span></span>
-        <span>25% levain</span>
-        <span>35% levain</span>
-      </div>
-      <div class="variant-grid-full" id="variantGrid">
-        <div class="variant-row-label">75%</div>
-        <div class="variant-cell selected" data-variant="75-25" onclick="selectVariant(this)">
-          <div class="variant-cell-ratio">75 / 25</div>
-          <div class="variant-cell-level">Beginner</div>
-        </div>
-        <div class="variant-cell" data-variant="75-35" onclick="selectVariant(this)">
-          <div class="variant-cell-ratio">75 / 35</div>
-          <div class="variant-cell-level">Intermediate</div>
-        </div>
-        <div class="variant-row-label">80%</div>
-        <div class="variant-cell" data-variant="80-25" onclick="selectVariant(this)">
-          <div class="variant-cell-ratio">80 / 25</div>
-          <div class="variant-cell-level">Intermediate</div>
-        </div>
-        <div class="variant-cell" data-variant="80-35" onclick="selectVariant(this)">
-          <div class="variant-cell-ratio">80 / 35</div>
-          <div class="variant-cell-level">Advanced</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="difficulty-bar" id="difficultyBar">
-      <div class="difficulty-dots">
-        <div class="difficulty-dot filled"></div>
-        <div class="difficulty-dot"></div>
-        <div class="difficulty-dot"></div>
-        <div class="difficulty-dot"></div>
-      </div>
-      <div class="difficulty-label" id="difficultyLabel">Beginner</div>
-      <div class="difficulty-desc" id="difficultyDesc">Low levain, long proof — very forgiving</div>
-    </div>
-
-    <div class="section-spacer"></div>
-
-    <div class="section-label">Dough Weight</div>
+    <!-- 2. Dough Weight -->
+    <div class="section-label" style="margin-top: 20px">Dough Weight</div>
     <div class="weight-control">
-      <button class="weight-btn" onclick="adjustWeight(-50)">−</button>
-      <div class="weight-display" id="weightDisplay">900<span>g</span></div>
-      <button class="weight-btn" onclick="adjustWeight(50)">+</button>
+      <div class="weight-adjust">
+        <button class="weight-btn" onclick="adjustWeight(-50)">−</button>
+        <div class="weight-display" id="weightDisplay">900<span>g</span></div>
+        <button class="weight-btn" onclick="adjustWeight(50)">+</button>
+      </div>
+      <button class="doubler-btn" id="doublerBtn" onclick="toggleDoubler()">
+        <span class="doubler-label">2×</span>
+      </button>
     </div>
 
-    <div class="section-spacer"></div>
-
-    <div class="section-label" id="levainLabel">Levain</div>
-    <div class="slider-row" id="levainSlider">
-      <div class="slider-label">Levain %</div>
-      <div class="slider-track" id="sliderTrack" onclick="handleSliderClick(event)">
-        <div class="slider-fill" id="sliderFill" style="width: 44%"></div>
-        <div class="slider-thumb" id="sliderThumb" style="left: 44%"></div>
-      </div>
-      <div class="slider-value" id="sliderValue">5%</div>
+    <!-- 3. Formula Knobs -->
+    <div class="section-label" style="margin-top: 20px">Formula</div>
+    <div class="knobs-row" id="knobsRow">
+      <!-- Rendered by JS: renderKnobs() -->
     </div>
 
-    <div class="section-spacer"></div>
-
-    <div class="section-label">Water Temperature</div>
-    <div class="ddt-collapsed" id="ddtCollapsed" onclick="openDDT()">
-      <div class="ddt-collapsed-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+    <!-- 4. Water Temperature -->
+    <div class="section-label" style="margin-top: 20px">Water Temperature</div>
+    <div class="water-temp-panel">
+      <div class="water-temp-inputs">
+        <div class="water-temp-input-group">
+          <div class="water-temp-input-label">Flour</div>
+          <div class="water-temp-input-wrap">
+            <input class="water-temp-input" type="number" value="68" id="ddtFlour" oninput="calcDDT()">
+            <span class="water-temp-input-suffix">°F</span>
+          </div>
+        </div>
+        <div class="water-temp-input-group">
+          <div class="water-temp-input-label">Room</div>
+          <div class="water-temp-input-wrap">
+            <input class="water-temp-input" type="number" value="72" id="ddtRoom" oninput="calcDDT()">
+            <span class="water-temp-input-suffix">°F</span>
+          </div>
+        </div>
+        <div class="water-temp-input-group">
+          <div class="water-temp-input-label">Levain</div>
+          <div class="water-temp-input-wrap">
+            <input class="water-temp-input" type="number" value="40" id="ddtLevain" oninput="calcDDT()">
+            <span class="water-temp-input-suffix">°F</span>
+          </div>
+        </div>
       </div>
-      <div class="ddt-collapsed-info">
-        <div class="ddt-collapsed-label">Use water at</div>
-        <div class="ddt-collapsed-value" id="ddtCollapsedValue">127°F</div>
+      <div class="water-temp-result">
+        <div class="water-temp-result-label">Use water at</div>
+        <div class="water-temp-result-value" id="ddtResult">127<sup>°F</sup></div>
       </div>
-      <div class="ddt-collapsed-edit">Edit</div>
+      <div class="ddt-popover-anchor">
+        <div class="water-temp-ref" onclick="toggleDDTSettings()">
+          <span class="water-temp-ref-text" id="ddtRefText">DDT of 78°F · Hand mixing</span>
+          <svg class="water-temp-ref-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </div>
+        <div class="ddt-settings-popover" id="ddtSettingsPopover">
+          <div class="ddt-popover-title">DDT Settings</div>
+          <div class="ddt-target-row">
+            <span class="ddt-target-label">Target DDT</span>
+            <span class="ddt-target-value">78°F</span>
+          </div>
+          <div class="ddt-method-label">Mixing Method</div>
+          <div class="ddt-method-seg">
+            <button class="ddt-method-btn active" onclick="selectMethod(this, 5)">Hand</button>
+            <button class="ddt-method-btn" onclick="selectMethod(this, 25)">Mixer</button>
+            <button class="ddt-method-btn" onclick="selectMethod(this, 30)">Processor</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+  <div class="ddt-backdrop" id="ddtBackdrop" onclick="closeDDTSettings()"></div>
 
   <!-- RIGHT COLUMN: Two Panels -->
   <div class="right-col">
@@ -1082,7 +1428,10 @@
       <div class="ingredients-panel">
         <div class="panel-header">
           <div class="panel-title">Ingredients</div>
-          <div class="hydration-badge low" id="hydrationBadge">74% hydration</div>
+        </div>
+        <div class="ingredient-pills" id="ingredientPills">
+          <span class="ingredient-pill hydration-pill">74% hydration</span>
+          <span class="ingredient-pill levain-pill">5% levain</span>
         </div>
         <table class="ingredients-table">
           <thead>
@@ -1093,19 +1442,15 @@
             </tr>
           </thead>
           <tbody id="ingredientsBody">
-            <tr class="flour-row"><td class="ingredient-name">AP Flour</td><td class="ingredient-pct">95%</td><td class="ingredient-grams">456g</td></tr>
-            <tr class="flour-row"><td class="ingredient-name">Rye Flour</td><td class="ingredient-pct">5%</td><td class="ingredient-grams">24g</td></tr>
-            <tr><td class="ingredient-name">Water</td><td class="ingredient-pct">74%</td><td class="ingredient-grams">355g</td></tr>
-            <tr><td class="ingredient-name">Salt</td><td class="ingredient-pct">2.2%</td><td class="ingredient-grams">11g</td></tr>
-            <tr><td class="ingredient-name">Levain</td><td class="ingredient-pct">5%</td><td class="ingredient-grams">24g</td></tr>
           </tbody>
+          <tfoot>
+            <tr class="ingredients-total-row">
+              <td class="ingredient-name total-label">Total</td>
+              <td class="ingredient-pct"></td>
+              <td class="ingredient-grams summary-value" id="totalWeight">~870g</td>
+            </tr>
+          </tfoot>
         </table>
-        <div class="ingredients-summary">
-          <div class="summary-item">
-            <span class="summary-label">Total</span>
-            <span class="summary-value" id="totalWeight">~870g</span>
-          </div>
-        </div>
       </div>
 
       <!-- Timeline Panel -->
@@ -1139,47 +1484,6 @@
   </div>
 </div>
 
-<!-- DDT Popover -->
-<div class="ddt-overlay" id="ddtOverlay" onclick="closeDDT(event)">
-  <div class="ddt-popover" onclick="event.stopPropagation()">
-    <div class="ddt-popover-header">
-      <div class="ddt-popover-title">Water Temperature</div>
-      <button class="ddt-popover-close" onclick="closeDDT()">✕</button>
-    </div>
-    <div class="ddt-target-row">
-      <span class="ddt-target-label">Target DDT</span>
-      <span class="ddt-target-value">78°F</span>
-    </div>
-    <div class="ddt-inputs">
-      <div class="ddt-input-row">
-        <span class="ddt-input-label">Flour temperature</span>
-        <input class="ddt-input" type="number" value="68" id="ddtFlour" oninput="calcDDT()">
-        <span class="ddt-unit">°F</span>
-      </div>
-      <div class="ddt-input-row">
-        <span class="ddt-input-label">Room temperature</span>
-        <input class="ddt-input" type="number" value="72" id="ddtRoom" oninput="calcDDT()">
-        <span class="ddt-unit">°F</span>
-      </div>
-      <div class="ddt-input-row">
-        <span class="ddt-input-label">Levain temperature</span>
-        <input class="ddt-input" type="number" value="40" id="ddtLevain" oninput="calcDDT()">
-        <span class="ddt-unit">°F</span>
-      </div>
-    </div>
-    <div class="ddt-method-label">Mixing Method</div>
-    <div class="ddt-method-seg">
-      <button class="ddt-method-btn active" onclick="selectMethod(this, 5)">Hand</button>
-      <button class="ddt-method-btn" onclick="selectMethod(this, 25)">Stand Mixer</button>
-      <button class="ddt-method-btn" onclick="selectMethod(this, 30)">Food Processor</button>
-    </div>
-    <div class="ddt-result-box">
-      <div class="ddt-result-label">Use water at</div>
-      <div class="ddt-result-value" id="ddtResult">127.0<sup>°F</sup></div>
-      <div class="ddt-result-note" id="ddtNote">Friction factor: 5 (hand mixing)</div>
-    </div>
-  </div>
-</div>
 
 <!-- Tab Bar -->
 <div class="tab-bar">
@@ -1201,13 +1505,21 @@
   let currentFormula = 'noknead';
   let currentVariant = '75-25';
   let currentWeight = 900;
+  let isDoubled = false;
   let levainPct = 5;
   let frictionFactor = 5;
   let whenMode = 'now'; // 'now', 'start', 'finish'
   let startHour = 6; // 6 AM default
+  let proofStyle = 'hatched'; // 'thick' | 'hatched' | 'bracket' — TODO: refine hatched style further
+  let knobStyle = 'slider'; // TODO: make slider visually richer (custom thumb, gradient fill, etc.)
 
   const formulas = {
     noknead: {
+      longName: 'No-Knead Pain au Levain',
+      shortName: 'No-Knead PAL',
+      shortDescription: 'A hands-off loaf with a crisp, crackly crust and moist, tangy crumb.',
+      timing: '22h',
+      technique: 'minimal handling',
       ingredients: [
         { name: 'AP Flour', pct: 95, isFlour: true },
         { name: 'Rye Flour', pct: 5, isFlour: true },
@@ -1222,6 +1534,18 @@
       diffDesc: 'Low levain, long proof — very forgiving'
     },
     fourfold: {
+      longName: 'Four-Fold Pain au Levain',
+      shortName: 'Four-Fold PAL',
+      shortDescription: 'A structured loaf with an open crumb, built through four sets of folds.',
+      timing: '16.5h',
+      technique: 'more structure',
+      knobPresets: [
+        { hydration: 75, levain: 25, variant: '75-25' },
+        { hydration: 75, levain: 35, variant: '75-35' },
+        { hydration: 80, levain: 25, variant: '80-25' },
+        { hydration: 80, levain: 35, variant: '80-35' }
+      ],
+      hydrationRange: [70, 85],
       variants: {
         '75-25': { ingredients: [
           { name: 'AP Flour', pct: 95, isFlour: true },
@@ -1255,6 +1579,11 @@
       levainRange: [12.5, 35]
     },
     tartine: {
+      longName: 'Tartine Basic Country Bread',
+      shortName: 'Tartine Country',
+      shortDescription: "Chad Robertson's classic country loaf — mild tang, custardy crumb.",
+      timing: '16h',
+      technique: 'classic method',
       ingredients: [
         { name: 'Bread Flour', pct: 90, isFlour: true },
         { name: 'Whole Wheat', pct: 10, isFlour: true },
@@ -1269,6 +1598,11 @@
       diffDesc: 'Precise timing on turns and bulk proof'
     },
     wholegrain: {
+      longName: '100% Whole Grain',
+      shortName: 'Whole Grain',
+      shortDescription: 'A deeply nutty, moist loaf showcasing 100% whole wheat character.',
+      timing: '24h',
+      technique: 'high hydration',
       ingredients: [
         { name: 'Whole Wheat Flour', pct: 100, isFlour: true },
         { name: 'Water', pct: 92, isFlour: false },
@@ -1282,6 +1616,11 @@
       diffDesc: 'Extremely wet, fast ferment — demands experience'
     },
     slowferment: {
+      longName: '72h Slow Ferment',
+      shortName: '72h Slow',
+      shortDescription: 'A complex, deeply-flavored bread developed over three days of cold fermentation.',
+      timing: '80h',
+      technique: 'deep flavor',
       ingredients: [
         { name: 'Bread Flour', pct: 90, isFlour: true },
         { name: 'Whole Rye', pct: 10, isFlour: true },
@@ -1438,6 +1777,7 @@
         <div class="panel-title">Timeline</div>
         <div class="panel-subtitle">~${Math.round(totalHours)} hours</div>
       </div>
+      <!-- proof style toggle hidden for now; using hatched -->
       <div class="timeline">
     `;
 
@@ -1467,17 +1807,51 @@
         const wrapperClass = step.type === 'cold' ? 'cold-wrapper' : 'bulk-wrapper';
         const proofEndDate = endDate;
 
-        html += `
-          <div class="proof-block-wrapper ${wrapperClass}">
-            <div class="timeline-dot"></div>
-            <div class="timeline-time">${formatTime(stepDate)}</div>
-            <div class="proof-block ${blockClass}" style="min-height: ${blockHeight}px">
-              <div class="proof-block-label">${step.name}</div>
-              <div class="proof-block-duration">${getDurationLabel(step)}</div>
+        if (proofStyle === 'thick') {
+          html += `
+            <div class="proof-block-wrapper proof-thick-wrapper ${wrapperClass}">
+              <div class="timeline-dot"></div>
+              <div class="timeline-time">${formatTime(stepDate)}</div>
+              <div class="proof-thick ${blockClass}" style="min-height: ${blockHeight}px">
+                <div class="proof-thick-line"></div>
+                <div class="proof-thick-content">
+                  <div class="proof-block-label">${step.name}</div>
+                  <div class="proof-block-duration">${getDurationLabel(step)}</div>
+                </div>
+              </div>
+              <div class="timeline-hint">until ~${formatTimeShort(endDate)} ${getDayLabel(endDate, startDate)}</div>
             </div>
-            <div class="timeline-hint">until ~${formatTimeShort(endDate)} ${getDayLabel(endDate, startDate)}</div>
-          </div>
-        `;
+          `;
+        } else if (proofStyle === 'hatched') {
+          html += `
+            <div class="proof-block-wrapper ${wrapperClass}">
+              <div class="timeline-dot"></div>
+              <div class="timeline-time">${formatTime(stepDate)}</div>
+              <div class="proof-block proof-hatched ${blockClass}" style="min-height: ${blockHeight}px">
+                <div class="proof-block-label">${step.name}</div>
+                <div class="proof-block-duration">${getDurationLabel(step)}</div>
+              </div>
+              <div class="timeline-hint">until ~${formatTimeShort(endDate)} ${getDayLabel(endDate, startDate)}</div>
+            </div>
+          `;
+        } else {
+          // bracket style
+          html += `
+            <div class="proof-block-wrapper proof-bracket-wrapper ${wrapperClass}">
+              <div class="timeline-dot"></div>
+              <div class="timeline-time">${formatTime(stepDate)}</div>
+              <div class="proof-bracket ${blockClass}" style="min-height: ${blockHeight}px">
+                <div class="proof-bracket-start"></div>
+                <div class="proof-bracket-content">
+                  <div class="proof-block-label">${step.name}</div>
+                  <div class="proof-block-duration">${getDurationLabel(step)}</div>
+                </div>
+                <div class="proof-bracket-end"></div>
+              </div>
+              <div class="timeline-hint">until ~${formatTimeShort(endDate)} ${getDayLabel(endDate, startDate)}</div>
+            </div>
+          `;
+        }
 
         // Day boundary after proof if day changed
         if (proofEndDate.getDate() !== stepDate.getDate() && i < steps.length - 1) {
@@ -1528,74 +1902,490 @@
     updateWhenHint();
   }
 
+  // ===== FORMULA CARD RENDERING =====
+  const formulaIcons = {
+    noknead: '🍞', fourfold: '🥖', tartine: '🌾', wholegrain: '🌿', slowferment: '❄️'
+  };
+
+  function renderFormulaCards() {
+    const container = document.getElementById('formulaCards');
+    container.innerHTML = '';
+    Object.entries(formulas).forEach(([key, f]) => {
+      const diff = difficultyMap[f.difficulty || (f.variants ? formulas.fourfold.variants['75-25'].difficulty : 'beginner')];
+      const diffLevel = f.difficulty || (f.variants ? formulas.fourfold.variants['75-25'].difficulty : 'beginner');
+      const dots = Array.from({length: 4}, (_, i) => {
+        let cls = 'diff-dot';
+        if (i < diff.dots) { cls += ' filled'; if (diff.color) cls += ' ' + diff.color; }
+        return `<div class="${cls}"></div>`;
+      }).join('');
+
+      const card = document.createElement('div');
+      card.className = 'formula-card' + (key === currentFormula ? ' selected' : '');
+      card.dataset.formula = key;
+      card.onclick = () => selectFormula(card);
+      card.innerHTML = `
+        <div class="formula-card-thumb">${formulaIcons[key] || '🍞'}</div>
+        <div class="formula-card-content">
+          <div class="formula-card-name">${f.longName}</div>
+          <div class="formula-card-difficulty">
+            <div class="diff-dots">${dots}</div>
+            <span class="diff-label">${diff.label}</span>
+          </div>
+          <div class="formula-card-meta">${f.timing} · ${f.technique}</div>
+          <div class="formula-card-desc">${f.shortDescription}</div>
+          <div class="formula-card-log-link" onclick="event.stopPropagation()">View previous bakes →</div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    // TODO: Wire to Formula Builder/Editor when implemented.
+    // Flow: tap "+" → open Formula Builder → save → new formula appears in carousel and is auto-selected.
+    const addBtn = document.createElement('div');
+    addBtn.className = 'formula-add-btn';
+    addBtn.innerHTML = `<span class="formula-add-btn-icon">+</span><span class="formula-add-btn-label">New Formula</span>`;
+    addBtn.onclick = () => showComingSoonPopover(addBtn);
+    container.appendChild(addBtn);
+
+    updateCarouselHints();
+  }
+
+  function showComingSoonPopover(anchor) {
+    // Toggle off if already showing
+    const existing = document.querySelector('.coming-soon-popover');
+    if (existing) { existing.remove(); return; }
+
+    const rect = anchor.getBoundingClientRect();
+    const popover = document.createElement('div');
+    popover.className = 'coming-soon-popover';
+    popover.textContent = 'Formula Builder coming soon';
+    document.body.appendChild(popover);
+
+    // Position to the right of the button, vertically centered
+    const popRect = popover.getBoundingClientRect();
+    let left = rect.right + 8;
+    let top = rect.top + rect.height / 2 - popRect.height / 2;
+    if (left + popRect.width > window.innerWidth) {
+      left = rect.left + rect.width / 2 - popRect.width / 2;
+      top = rect.top - popRect.height - 8;
+    }
+    popover.style.left = left + 'px';
+    popover.style.top = top + 'px';
+
+    // Dismiss on click-outside (delayed to avoid same-click dismiss) or after 3s
+    function dismiss() {
+      if (popover.parentNode) popover.remove();
+      document.removeEventListener('click', onOutside, true);
+    }
+    function onOutside(e) {
+      if (!popover.contains(e.target) && !anchor.contains(e.target)) dismiss();
+    }
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        document.addEventListener('click', onOutside, true);
+      });
+    });
+    setTimeout(dismiss, 3000);
+  }
+
   // ===== FORMULA SELECTION =====
   function selectFormula(card) {
     document.querySelectorAll('.formula-card').forEach(c => c.classList.remove('selected'));
     card.classList.add('selected');
     currentFormula = card.dataset.formula;
 
-    const vs = document.getElementById('variantSection');
     const f = formulas[currentFormula];
     if (currentFormula === 'fourfold') {
-      vs.classList.add('visible');
       currentVariant = '75-25';
-      document.querySelectorAll('.variant-cell').forEach(c => c.classList.remove('selected'));
-      document.querySelector('.variant-cell[data-variant="75-25"]').classList.add('selected');
-      updateDifficulty('beginner', 'Forgiving dough, easy to shape');
       levainPct = 25;
+      hydrationPct = 75;
     } else {
-      vs.classList.remove('visible');
-      // Show difficulty for non-variant formulas
-      if (f.difficulty) {
-        updateDifficulty(f.difficulty, f.diffDesc);
-      }
+      levainPct = f.defaultLevain || 5;
+      hydrationPct = f.hydration;
     }
 
-    const sliderRow = document.getElementById('levainSlider');
-    if (!f.levainRange && !f.variants) {
-      sliderRow.style.opacity = '0.35';
-      sliderRow.style.pointerEvents = 'none';
-      levainPct = f.defaultLevain;
-    } else {
-      sliderRow.style.opacity = '1';
-      sliderRow.style.pointerEvents = 'auto';
-      if (f.levainRange) {
-        levainPct = f.defaultLevain || f.levainRange[0];
-      }
-    }
-    updateSliderVisual();
+    renderKnobs();
     updateIngredients();
     renderTimeline();
+
+    // Scroll selected card into view
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
-  function selectVariant(cell) {
-    document.querySelectorAll('.variant-cell').forEach(c => c.classList.remove('selected'));
-    cell.classList.add('selected');
-    currentVariant = cell.dataset.variant;
-    const v = formulas.fourfold.variants[currentVariant];
-    updateDifficulty(v.difficulty, v.diffDesc);
-    const li = v.ingredients.find(i => i.name === 'Levain');
-    if (li) { levainPct = li.pct; updateSliderVisual(); }
-    updateIngredients();
-  }
+  // ===== KNOB RENDERING =====
+  let hydrationPct = 74;
 
-  function updateDifficulty(level, desc) {
-    const info = difficultyMap[level];
-    document.querySelectorAll('#difficultyBar .difficulty-dot').forEach((d, i) => {
-      d.className = 'difficulty-dot';
-      if (i < info.dots) { d.classList.add('filled'); if (info.color) d.classList.add(info.color); }
+  function setKnobStyle(style) {
+    knobStyle = style;
+    document.querySelectorAll('#knobStyleToggle button').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent.toLowerCase() === style);
     });
-    document.getElementById('difficultyLabel').textContent = info.label;
-    document.getElementById('difficultyDesc').textContent = desc;
+    renderKnobs();
+  }
+
+  function renderKnobs() {
+    const container = document.getElementById('knobsRow');
+    const f = formulas[currentFormula];
+    const hasVariants = !!f.variants;
+
+    const hydVal = hasVariants ? hydrationPct : f.hydration;
+    const levVal = hasVariants ? levainPct : (f.defaultLevain || 5);
+    const hydRange = hasVariants ? (f.hydrationRange || [70, 85]) : [60, 100];
+    const levRange = hasVariants ? (f.levainRange || [10, 40]) : [1, 40];
+
+    if (knobStyle === 'slider') {
+      container.innerHTML = renderSliderKnobs(hydVal, levVal, hydRange, levRange, hasVariants);
+      if (hasVariants) {
+        setupSliderInteraction('hydrationSlider', 'hydration', hydRange);
+        setupSliderInteraction('levainSlider', 'levain', levRange);
+      }
+    } else if (knobStyle === 'stepper') {
+      container.innerHTML = renderStepperKnobs(hydVal, levVal, hydRange, levRange, hasVariants);
+    } else {
+      container.innerHTML = renderArcKnobs(hydVal, levVal, hydRange, levRange, hasVariants);
+      if (hasVariants) {
+        setupArcInteraction('hydrationDial');
+        setupArcInteraction('levainDial');
+      }
+    }
+  }
+
+  // ===== SLIDER STYLE =====
+  function renderSliderKnobs(hydVal, levVal, hydRange, levRange, hasVariants) {
+    return `
+      <div class="knob-control">
+        <div class="knob-label">Hydration</div>
+        <div class="knob-slider-wrap">
+          <div class="knob-slider-value" id="hydrationValue">${hydVal}<span>%</span></div>
+          <div class="knob-slider-track ${hasVariants ? '' : 'readonly'}" id="hydrationSlider"
+               data-knob="hydration" data-min="${hydRange[0]}" data-max="${hydRange[1]}">
+            <div class="knob-slider-rail"></div>
+            <div class="knob-slider-fill" id="hydrationFill" style="width: ${sliderPct(hydVal, hydRange)}%"></div>
+            ${hasVariants ? renderSliderTicks(getHydrationPresets(), hydRange) : ''}
+            ${hasVariants ? `<div class="knob-slider-thumb" id="hydrationThumb" style="left: ${sliderPct(hydVal, hydRange)}%"></div>` : ''}
+          </div>
+        </div>
+        ${hasVariants ? '' : '<div class="knob-readonly-label">Fixed</div>'}
+      </div>
+      <div class="knob-control">
+        <div class="knob-label">Levain</div>
+        <div class="knob-slider-wrap">
+          <div class="knob-slider-value" id="levainValue">${levVal}<span>%</span></div>
+          <div class="knob-slider-track ${hasVariants ? '' : 'readonly'}" id="levainSlider"
+               data-knob="levain" data-min="${levRange[0]}" data-max="${levRange[1]}">
+            <div class="knob-slider-rail"></div>
+            <div class="knob-slider-fill" id="levainFill" style="width: ${sliderPct(levVal, levRange)}%"></div>
+            ${hasVariants ? renderSliderTicks(getLevainPresets(), levRange) : ''}
+            ${hasVariants ? `<div class="knob-slider-thumb" id="levainThumb" style="left: ${sliderPct(levVal, levRange)}%"></div>` : ''}
+          </div>
+        </div>
+        ${hasVariants ? '' : '<div class="knob-readonly-label">Fixed</div>'}
+      </div>
+    `;
+  }
+
+  function sliderPct(val, range) {
+    return Math.max(0, Math.min(100, ((val - range[0]) / (range[1] - range[0])) * 100));
+  }
+
+  function renderSliderTicks(presets, range) {
+    return presets.map(p => {
+      const pct = sliderPct(p, range);
+      return `<div class="knob-slider-tick" style="left: ${pct}%"></div>
+              <div class="knob-slider-tick-label" style="left: ${pct}%">${p}%</div>`;
+    }).join('');
+  }
+
+  function setupSliderInteraction(trackId, knobType, range) {
+    const track = document.getElementById(trackId);
+    if (!track) return;
+    let dragging = false;
+    const presets = knobType === 'hydration' ? getHydrationPresets() : getLevainPresets();
+
+    function getValueFromX(clientX) {
+      const rect = track.getBoundingClientRect();
+      const pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      let value = range[0] + pct * (range[1] - range[0]);
+      // Magnetic snap to presets
+      for (const preset of presets) {
+        if (Math.abs(value - preset) <= 1.5) { value = preset; break; }
+      }
+      return Math.round(value);
+    }
+
+    function onMove(e) {
+      if (!dragging) return;
+      e.preventDefault();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const val = getValueFromX(clientX);
+      if (knobType === 'hydration') hydrationPct = val;
+      else levainPct = val;
+      updateSliderVisuals(trackId, knobType, val, range);
+      matchVariant();
+      updateIngredients();
+    }
+
+    function onUp() {
+      dragging = false;
+      document.removeEventListener('pointermove', onMove);
+      document.removeEventListener('pointerup', onUp);
+    }
+
+    track.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      onMove(e);
+      document.addEventListener('pointermove', onMove);
+      document.addEventListener('pointerup', onUp);
+    });
+  }
+
+  function updateSliderVisuals(trackId, knobType, value, range) {
+    const pct = sliderPct(value, range);
+    const fill = document.getElementById(knobType + 'Fill');
+    const thumb = document.getElementById(knobType + 'Thumb');
+    const valueEl = document.getElementById(knobType + 'Value');
+    if (fill) fill.style.width = pct + '%';
+    if (thumb) thumb.style.left = pct + '%';
+    if (valueEl) valueEl.innerHTML = value + '<span>%</span>';
+  }
+
+  // ===== STEPPER STYLE =====
+  function renderStepperKnobs(hydVal, levVal, hydRange, levRange, hasVariants) {
+    const hydPresets = hasVariants ? getHydrationPresets() : [hydVal];
+    const levPresets = hasVariants ? getLevainPresets() : [levVal];
+
+    return `
+      <div class="knob-control">
+        <div class="knob-label">Hydration</div>
+        <div class="knob-stepper-wrap">
+          <div class="knob-stepper-value" id="hydrationValue">${hydVal}<span>%</span></div>
+          <div class="knob-stepper-presets">
+            ${hydPresets.map(p => `
+              <button class="knob-stepper-btn ${p === hydVal ? 'active' : ''} ${hasVariants ? '' : 'readonly'}"
+                      onclick="setStepperValue('hydration', ${p})">${p}%</button>
+            `).join('')}
+          </div>
+          ${hasVariants ? `
+          <div class="knob-stepper-fine">
+            <button onclick="adjustKnob('hydration', -1, ${hydRange[0]}, ${hydRange[1]})">−</button>
+            <button onclick="adjustKnob('hydration', +1, ${hydRange[0]}, ${hydRange[1]})">+</button>
+          </div>` : '<div class="knob-readonly-label">Fixed</div>'}
+        </div>
+      </div>
+      <div class="knob-control">
+        <div class="knob-label">Levain</div>
+        <div class="knob-stepper-wrap">
+          <div class="knob-stepper-value" id="levainValue">${levVal}<span>%</span></div>
+          <div class="knob-stepper-presets">
+            ${levPresets.map(p => `
+              <button class="knob-stepper-btn ${p === levVal ? 'active' : ''} ${hasVariants ? '' : 'readonly'}"
+                      onclick="setStepperValue('levain', ${p})">${p}%</button>
+            `).join('')}
+          </div>
+          ${hasVariants ? `
+          <div class="knob-stepper-fine">
+            <button onclick="adjustKnob('levain', -1, ${levRange[0]}, ${levRange[1]})">−</button>
+            <button onclick="adjustKnob('levain', +1, ${levRange[0]}, ${levRange[1]})">+</button>
+          </div>` : '<div class="knob-readonly-label">Fixed</div>'}
+        </div>
+      </div>
+    `;
+  }
+
+  function setStepperValue(knobType, value) {
+    if (knobType === 'hydration') hydrationPct = value;
+    else levainPct = value;
+    matchVariant();
+    updateIngredients();
+    renderKnobs();
+  }
+
+  function adjustKnob(knobType, delta, min, max) {
+    if (knobType === 'hydration') {
+      hydrationPct = Math.max(min, Math.min(max, hydrationPct + delta));
+    } else {
+      levainPct = Math.max(min, Math.min(max, levainPct + delta));
+    }
+    matchVariant();
+    updateIngredients();
+    renderKnobs();
+  }
+
+  // ===== ARC STYLE (original) =====
+  function renderArcKnobs(hydVal, levVal, hydRange, levRange, hasVariants) {
+    return `
+      <div class="knob-control">
+        <div class="knob-label">Hydration</div>
+        <div class="knob-dial ${hasVariants ? '' : 'readonly'}" id="hydrationDial" data-knob="hydration" data-min="${hydRange[0]}" data-max="${hydRange[1]}">
+          ${renderKnobSVG(hydVal, hydRange[0], hydRange[1], hasVariants ? getHydrationPresets() : [])}
+          <div class="knob-value" id="hydrationValue">${hydVal}<span>%</span></div>
+        </div>
+        ${hasVariants ? '' : '<div class="knob-readonly-label">Fixed</div>'}
+      </div>
+      <div class="knob-control">
+        <div class="knob-label">Levain</div>
+        <div class="knob-dial ${hasVariants ? '' : 'readonly'}" id="levainDial" data-knob="levain" data-min="${levRange[0]}" data-max="${levRange[1]}">
+          ${renderKnobSVG(levVal, levRange[0], levRange[1], hasVariants ? getLevainPresets() : [])}
+          <div class="knob-value" id="levainValue">${levVal}<span>%</span></div>
+        </div>
+        ${hasVariants ? '' : '<div class="knob-readonly-label">Fixed</div>'}
+      </div>
+    `;
+  }
+
+  function getHydrationPresets() {
+    const f = formulas[currentFormula];
+    if (!f.knobPresets) return [];
+    return [...new Set(f.knobPresets.map(p => p.hydration))];
+  }
+
+  function getLevainPresets() {
+    const f = formulas[currentFormula];
+    if (!f.knobPresets) return [];
+    return [...new Set(f.knobPresets.map(p => p.levain))];
+  }
+
+  function renderKnobSVG(value, min, max, presets) {
+    const r = 40;
+    const cx = 50, cy = 50;
+    const circumference = 2 * Math.PI * r;
+    const arcLen = circumference * 0.75;
+    const gap = circumference * 0.25;
+    const pct = Math.max(0, Math.min(1, (value - min) / (max - min)));
+    const fillOffset = arcLen - pct * arcLen;
+
+    let notches = '';
+    presets.forEach(preset => {
+      const presetPct = (preset - min) / (max - min);
+      const angle = (-135 + presetPct * 270) * Math.PI / 180;
+      const x1 = cx + (r - 6) * Math.cos(angle);
+      const y1 = cy + (r - 6) * Math.sin(angle);
+      const x2 = cx + (r + 2) * Math.cos(angle);
+      const y2 = cy + (r + 2) * Math.sin(angle);
+      notches += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="knob-notch"/>`;
+    });
+
+    return `
+      <svg viewBox="0 0 100 100">
+        <circle cx="${cx}" cy="${cy}" r="${r}" class="knob-track"
+          stroke-dasharray="${arcLen} ${gap}" stroke-dashoffset="0" />
+        <circle cx="${cx}" cy="${cy}" r="${r}" class="knob-fill"
+          stroke-dasharray="${arcLen} ${gap}" stroke-dashoffset="${fillOffset}" />
+        ${notches}
+      </svg>
+    `;
+  }
+
+  function setupArcInteraction(dialId) {
+    const dial = document.getElementById(dialId);
+    if (!dial) return;
+    let dragging = false;
+
+    function getValueFromEvent(e) {
+      const rect = dial.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      let angle = Math.atan2(clientY - cy, clientX - cx) * 180 / Math.PI;
+      angle = angle - 135;
+      if (angle < -180) angle += 360;
+      if (angle < 0) angle += 360;
+      if (angle > 270) return null;
+
+      const min = parseFloat(dial.dataset.min);
+      const max = parseFloat(dial.dataset.max);
+      let value = min + (angle / 270) * (max - min);
+
+      const knobType = dial.dataset.knob;
+      const presets = knobType === 'hydration' ? getHydrationPresets() : getLevainPresets();
+      for (const preset of presets) {
+        if (Math.abs(value - preset) <= 2) { value = preset; break; }
+      }
+      return Math.round(Math.max(min, Math.min(max, value)));
+    }
+
+    function onMove(e) {
+      if (!dragging) return;
+      e.preventDefault();
+      const val = getValueFromEvent(e);
+      if (val === null) return;
+      const knobType = dial.dataset.knob;
+      if (knobType === 'hydration') hydrationPct = val;
+      else levainPct = val;
+      updateArcVisual(dialId);
+      matchVariant();
+      updateIngredients();
+    }
+
+    function onUp() {
+      dragging = false;
+      document.removeEventListener('pointermove', onMove);
+      document.removeEventListener('pointerup', onUp);
+    }
+
+    dial.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      onMove(e);
+      document.addEventListener('pointermove', onMove);
+      document.addEventListener('pointerup', onUp);
+    });
+  }
+
+  function updateArcVisual(dialId) {
+    const dial = document.getElementById(dialId);
+    if (!dial) return;
+    const knobType = dial.dataset.knob;
+    const value = knobType === 'hydration' ? hydrationPct : levainPct;
+    const min = parseFloat(dial.dataset.min);
+    const max = parseFloat(dial.dataset.max);
+    const pct = Math.max(0, Math.min(1, (value - min) / (max - min)));
+    const r = 40;
+    const arcLen = 2 * Math.PI * r * 0.75;
+    const fillOffset = arcLen - pct * arcLen;
+
+    const fillCircle = dial.querySelector('.knob-fill');
+    if (fillCircle) fillCircle.style.strokeDashoffset = fillOffset;
+
+    const valueEl = document.getElementById(knobType + 'Value');
+    if (valueEl) valueEl.innerHTML = value + '<span>%</span>';
+  }
+
+  function matchVariant() {
+    if (currentFormula !== 'fourfold') return;
+    const f = formulas.fourfold;
+    let best = null, bestDist = Infinity;
+    for (const preset of f.knobPresets) {
+      const dist = Math.abs(hydrationPct - preset.hydration) + Math.abs(levainPct - preset.levain);
+      if (dist < bestDist) { bestDist = dist; best = preset; }
+    }
+    if (best) {
+      currentVariant = best.variant;
+    }
   }
 
   function adjustWeight(delta) {
     currentWeight = Math.max(200, Math.min(3000, currentWeight + delta));
+    updateWeightDisplay();
+    updateIngredients();
+  }
+
+  function toggleDoubler() {
+    isDoubled = !isDoubled;
+    document.getElementById('doublerBtn').classList.toggle('active', isDoubled);
+    updateWeightDisplay();
+    updateIngredients();
+  }
+
+  function getEffectiveWeight() {
+    return isDoubled ? currentWeight * 2 : currentWeight;
+  }
+
+  function updateWeightDisplay() {
     const d = document.getElementById('weightDisplay');
     d.innerHTML = currentWeight + '<span>g</span>';
     d.classList.add('weight-changing');
     setTimeout(() => d.classList.remove('weight-changing'), 150);
-    updateIngredients();
   }
 
   function getIngredients() {
@@ -1610,6 +2400,7 @@
 
   function updateIngredients() {
     const ings = getIngredients();
+    const weight = getEffectiveWeight();
     const totalPct = ings.reduce((s, i) => {
       let p = i.pct;
       if (i.name === 'Levain' || i.name === 'Leaven') p = levainPct;
@@ -1623,7 +2414,7 @@
     ings.forEach(ing => {
       let pct = ing.pct;
       if (ing.name === 'Levain' || ing.name === 'Leaven') pct = levainPct;
-      const grams = Math.ceil(pct * (currentWeight / totalPct));
+      const grams = Math.ceil(pct * (weight / totalPct));
       totalGrams += grams;
 
       const tr = document.createElement('tr');
@@ -1636,43 +2427,22 @@
       tbody.appendChild(tr);
     });
 
+    // Update pills
     const h = getHydration();
-    const badge = document.getElementById('hydrationBadge');
-    badge.textContent = h + '% hydration';
-    badge.className = 'hydration-badge ' + (h <= 74 ? 'low' : h <= 76 ? 'medium' : h <= 85 ? 'high' : 'extreme');
+    const pillsContainer = document.getElementById('ingredientPills');
+    pillsContainer.innerHTML = `
+      <span class="ingredient-pill hydration-pill">${h}% hydration</span>
+      <span class="ingredient-pill levain-pill">${levainPct}% levain</span>
+      ${isDoubled ? '<span class="ingredient-pill doubled-pill">2× Doubled</span>' : ''}
+    `;
 
     document.getElementById('totalWeight').textContent = '~' + totalGrams + 'g';
   }
 
-  function updateSliderVisual() {
-    const f = formulas[currentFormula];
-    let range = currentFormula === 'fourfold' ? formulas.fourfold.levainRange : f.levainRange;
-    if (!range) {
-      document.getElementById('sliderFill').style.width = '50%';
-      document.getElementById('sliderThumb').style.left = '50%';
-      document.getElementById('sliderValue').textContent = levainPct + '%';
-      return;
-    }
-    const pct = ((levainPct - range[0]) / (range[1] - range[0])) * 100;
-    document.getElementById('sliderFill').style.width = pct + '%';
-    document.getElementById('sliderThumb').style.left = pct + '%';
-    document.getElementById('sliderValue').textContent = levainPct + '%';
-  }
-
-  function handleSliderClick(e) {
-    const f = formulas[currentFormula];
-    if (!f.levainRange && !f.variants) return;
-    const rect = document.getElementById('sliderTrack').getBoundingClientRect();
-    const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-    let range = currentFormula === 'fourfold' ? formulas.fourfold.levainRange : f.levainRange;
-    if (!range) return;
-    levainPct = Math.round((range[0] + pct * (range[1] - range[0])) * 2) / 2;
-    levainPct = Math.max(range[0], Math.min(range[1], levainPct));
-    updateSliderVisual();
-    updateIngredients();
-  }
-
   // ===== WHEN CONTROL =====
+  // TODO: After user taps "Start Bake" with a future Start At / Finish By time,
+  // prompt to set a system notification 5 min (configurable in Settings) before start time.
+
   function selectWhenMode(mode, btn) {
     whenMode = mode;
     document.querySelectorAll('.when-seg-btn').forEach(b => b.classList.remove('active'));
@@ -1750,12 +2520,35 @@
     }
   }
 
+  // ===== PROOF STYLE =====
+  function setProofStyle(style) {
+    proofStyle = style;
+    renderTimeline();
+  }
+
   // ===== DDT =====
-  function openDDT() { document.getElementById('ddtOverlay').classList.add('visible'); }
-  window.closeDDT = function(e) {
-    if (!e) { document.getElementById('ddtOverlay').classList.remove('visible'); return; }
-    if (e.target === document.getElementById('ddtOverlay')) document.getElementById('ddtOverlay').classList.remove('visible');
-  };
+  function toggleDDTSettings() {
+    const popover = document.getElementById('ddtSettingsPopover');
+    const backdrop = document.getElementById('ddtBackdrop');
+    const trigger = document.querySelector('.water-temp-ref');
+    const isVisible = popover.classList.contains('visible');
+    if (isVisible) {
+      closeDDTSettings();
+    } else {
+      // Position the popover above the trigger
+      const rect = trigger.getBoundingClientRect();
+      popover.style.left = (rect.left + rect.width / 2 - 135) + 'px';
+      popover.style.top = (rect.top - 10) + 'px';
+      popover.style.transform = 'translateY(-100%)';
+      popover.classList.add('visible');
+      backdrop.classList.add('visible');
+    }
+  }
+
+  function closeDDTSettings() {
+    document.getElementById('ddtSettingsPopover').classList.remove('visible');
+    document.getElementById('ddtBackdrop').classList.remove('visible');
+  }
 
   function selectMethod(btn, friction) {
     frictionFactor = friction;
@@ -1769,44 +2562,38 @@
     const rT = parseFloat(document.getElementById('ddtRoom').value) || 72;
     const lT = parseFloat(document.getElementById('ddtLevain').value) || 40;
     const waterTemp = (4 * 78 - fT - rT - frictionFactor - lT).toFixed(1);
-    document.getElementById('ddtResult').innerHTML = waterTemp + '<sup>°F</sup>';
-    document.getElementById('ddtCollapsedValue').textContent = Math.round(waterTemp) + '°F';
-    const names = { 5: 'hand mixing', 25: 'stand mixer', 30: 'food processor' };
-    document.getElementById('ddtNote').textContent = `Friction factor: ${frictionFactor} (${names[frictionFactor]})`;
+    document.getElementById('ddtResult').innerHTML = Math.round(waterTemp) + '<sup>°F</sup>';
+    const methods = { 5: 'by hand', 25: 'in a stand mixer', 30: 'in a food processor' };
+    document.getElementById('ddtRefText').textContent = `DDT of 78°F ${methods[frictionFactor]}`;
   }
 
-  // ===== CAROUSEL SCROLL TRACKING =====
+  // ===== CAROUSEL SCROLL TRACKING (vertical) =====
   function updateCarouselHints() {
     const wrapper = document.getElementById('carouselWrapper');
     const cards = document.getElementById('formulaCards');
-    const scrollLeft = cards.scrollLeft;
-    const maxScroll = cards.scrollWidth - cards.clientWidth;
+    const scrollTop = cards.scrollTop;
+    const maxScroll = cards.scrollHeight - cards.clientHeight;
 
     wrapper.classList.remove('scrolled-start', 'scrolled-end', 'scrolled-mid');
-    if (scrollLeft <= 2) {
+    if (maxScroll <= 2) {
+      // No scrolling needed
+    } else if (scrollTop <= 2) {
       wrapper.classList.add('scrolled-start');
-    } else if (scrollLeft >= maxScroll - 2) {
+    } else if (scrollTop >= maxScroll - 2) {
       wrapper.classList.add('scrolled-end');
     } else {
       wrapper.classList.add('scrolled-mid');
     }
   }
 
-  document.getElementById('formulaCards').addEventListener('scroll', updateCarouselHints);
-
-  // Scroll selected card into view on formula select
-  function scrollToSelected() {
-    const selected = document.querySelector('.formula-card.selected');
-    if (selected) {
-      selected.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    }
-  }
-
   // ===== INIT =====
+  renderFormulaCards();
+  renderKnobs();
   calcDDT();
   updateIngredients();
   renderTimeline();
   updateCarouselHints();
+  document.getElementById('formulaCards').addEventListener('scroll', updateCarouselHints);
 </script>
 </body>
 </html>

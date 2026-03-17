@@ -6,13 +6,14 @@ Fournil ("bakehouse" in French) is an iPad app for managing sourdough bread baki
 ## Core Features
 
 ### 1. Baker's Math Calculator
-- Select from built-in formulas via horizontal carousel (3 visible at a time with peek slivers): No-Knead PAL, Four-Fold PAL, Tartine Basic Country, 100% Whole Grain, 72h Slow Ferment
+- Select from built-in formulas via a vertical scroll carousel with full-width cards: No-Knead PAL, Four-Fold PAL, Tartine Basic Country, 100% Whole Grain, 72h Slow Ferment
+- Each formula card shows: long name, difficulty badge, timing, technique, 1-sentence description, link to previous bakes
 - Input desired dough weight (200-3000g)
+- Doubler toggle (2×) doubles the entire recipe weight and all ingredient quantities
 - See all ingredient weights calculated from baker's percentages
-- DDT (Desired Dough Temperature) calculator
-- Adjustable hydration and levain percentages
-- Difficulty badge shown for every formula/variant: Beginner (1 dot, sage), Intermediate (2 dots, golden), Advanced (3 dots, clay), Expert (4 dots, burned red)
-- Formula selector is a horizontal scroll carousel with scroll-snap, showing 3 cards at a time with peek slivers on edges
+- DDT (Desired Dough Temperature) calculator — always visible inline, not in a separate tab
+- Adjustable hydration and levain percentages via sliders with preset snap points (interactive for Four-Fold PAL; read-only for other formulas)
+- Difficulty badge shown for every formula: Beginner (1 dot, sage), Intermediate (2 dots, golden), Advanced (3 dots, clay), Expert (4 dots, burned red)
 
 ### 2. Starter Tracker
 - Track starter health with visual indicator
@@ -25,8 +26,8 @@ Fournil ("bakehouse" in French) is an iPad app for managing sourdough bread baki
 - Choose formula and method
 - Generate timestamped schedule from start time or desired bake time
 - Scaled ingredient list
-- Two timeline methods: No-Knead (~22h) and Four-Fold (~16.5h)
 - Schedule modes: Start Now (use current time), Start At (pick a start time), Finish By (pick a desired finish time, reverse-calculates start)
+- After tapping Start Bake with a future Start At or Finish By time, prompt user to enable a system notification 5 minutes before the scheduled start time. Notification lead time is configurable in Settings (default: 5 min).
 
 ### 4. Bake Tracker
 - Step-by-step guided walkthrough
@@ -50,6 +51,12 @@ Fournil ("bakehouse" in French) is an iPad app for managing sourdough bread baki
 - Links to further reading
 - Equipment recommendations
 
+### 7. Formula Builder (Future)
+- Accessed via the "+" button in the formula carousel
+- Create custom formulas with name, description, difficulty, ingredient percentages, and timeline steps
+- Saved formulas appear in the carousel alongside built-in formulas
+- Entry point: tapping "+" in the formula selector launches the Formula Builder/Editor
+
 ## Target Platform
 - iPad (primary), all orientations
 - iOS 17+
@@ -59,7 +66,7 @@ Fournil ("bakehouse" in French) is an iPad app for managing sourdough bread baki
 ### Tab Order
 The app uses a three-tab navigation structure:
 1. **Starter** - Tracker for starter health and feedings
-2. **Bake** - Planner and execution (formerly "Plan")
+2. **Bake** - Planner and execution
 3. **Log** - Bread log for recording completed bakes
 
 ## Sources

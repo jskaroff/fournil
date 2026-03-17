@@ -1,4 +1,4 @@
-# Wireframe: Plan Tab (Calculator + Planner Merged)
+# Wireframe: Plan Tab (Bake Screen)
 
 This is the primary tab. It combines formula selection, baker's math calculation,
 DDT calculator, timeline generation, and the entry point to start a bake.
@@ -7,101 +7,253 @@ DDT calculator, timeline generation, and the entry point to start a bake.
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────┐
-│  Plan                                                          [⚙️]         │
+│  Bake                                                          [⚙️]         │
 │                                                                              │
-│  ┌─ LEFT COLUMN (40%) ──────────────────┐  ┌─ RIGHT COLUMN (60%) ─────────┐ │
-│  │                                      │  │                               │ │
-│  │  FORMULA                             │  │  ┌─ SEGMENT: Ingredients | Timeline | DDT ─┐ │
-│  │  ┌──────────┐ ┌──────────┐           │  │                               │ │
-│  │  │ No-Knead │ │Four-Fold │           │  │  ═══ INGREDIENTS VIEW ═══     │ │
-│  │  │  PAL     │ │  PAL     │           │  │                               │ │
-│  │  │  ●       │ │          │           │  │  ┌───────────────────────────┐│ │
-│  │  └──────────┘ └──────────┘           │  │  │ AP Flour      95%   456g ││ │
-│  │  ┌──────────┐                        │  │  ├───────────────────────────┤│ │
-│  │  │ Tartine  │                        │  │  │ Rye Flour      5%    24g ││ │
-│  │  │ Country  │                        │  │  ├───────────────────────────┤│ │
-│  │  └──────────┘                        │  │  │ Water         74%   355g ││ │
-│  │                                      │  │  ├───────────────────────────┤│ │
-│  │  ─── FOUR-FOLD VARIANT ──────        │  │  │ Salt          2.2%   11g ││ │
-│  │  (only visible when Four-Fold        │  │  ├───────────────────────────┤│ │
-│  │   is selected)                       │  │  │ Levain         5%    24g ││ │
-│  │                                      │  │  └───────────────────────────┘│ │
-│  │  Hydration       Levain              │  │                               │ │
-│  │  ┌──────┐        ┌──────┐            │  │  Hydration: 74%              │ │
-│  │  │ 75%  │        │ 25%  │            │  │  Total: ~870g                │ │
-│  │  │      │        │      │            │  │                               │ │
-│  │  └──────┘        └──────┘            │  │  ═══ TIMELINE VIEW ═══       │ │
-│  │  ┌──────┐        ┌──────┐            │  │  (shown when Timeline        │ │
-│  │  │ 80%  │        │ 35%  │            │  │   segment selected)          │ │
-│  │  │      │        │      │            │  │                               │ │
-│  │  └──────┘        └──────┘            │  │  ═══ DDT VIEW ═══            │ │
-│  │  ⚠️ Difficulty: ●●●○ Advanced       │  │  (shown when DDT             │ │
-│  │  "80% hydration is stickier and     │  │   segment selected)          │ │
-│  │   harder to shape"                   │  │                               │ │
-│  │                                      │  │                               │ │
-│  │  DOUGH WEIGHT                        │  │  ─────────────────────────── │ │
-│  │  [ - ]    900g     [ + ]             │  │                               │ │
-│  │                                      │  │  WHEN                         │ │
-│  │  LEVAIN % (No-Knead only)            │  │  ◉ Start now (6:00 AM)       │ │
-│  │  ○ 1% ────●──────────── 10%         │  │  ○ Bake by: [picker]         │ │
-│  │                                      │  │                               │ │
-│  │                                      │  │  ┌──────────────────────────┐│ │
-│  │  ┌────────────────────────────────┐  │  │  │  [ Save for Later 📌 ]  ││ │
-│  │  │                                │  │  │  │  [ Start Bake ▶ ]       ││ │
-│  │  │                                │  │  │  └──────────────────────────┘│ │
-│  │  └────────────────────────────────┘  │  │                               │ │
-│  └──────────────────────────────────────┘  └───────────────────────────────┘ │
+│  ┌─ LEFT COLUMN (40%) ──────────────────┐  ┌─ RIGHT COLUMN (60%) ──────────┐ │
+│  │                                      │  │                                │ │
+│  │  FORMULA                             │  │  ┌─ Ingredients ──────────────┐│ │
+│  │  ┌────────────────────────────────┐  │  │  │ 74% hydration  5% levain  ││ │
+│  │  │ 🍞 No-Knead Pain au Levain  ●○○○│  │  │                            ││ │
+│  │  │ Beginner · 22h · minimal handling│  │  │ INGREDIENT   BAKER'S%  GRAMS││ │
+│  │  │ A hands-off loaf with a crispy  │  │  │ AP Flour        95%    456g ││ │
+│  │  │ crust and mild, tangy crumb.    │  │  │ Rye Flour        5%     24g ││ │
+│  │  │ View previous bakes →           │  │  │ Water           74%    355g ││ │
+│  │  └────────────────────────────────┘  │  │ Salt            2.2%    11g ││ │
+│  │  ┌────────────────────────────────┐  │  │ Levain           5%     24g ││ │
+│  │  │ 🌾 Four-Fold Pain au Levain ●●○○│  │  │ ─────────────────────────  ││ │
+│  │  │ Intermediate · 16.5h · structure │  │  │ Total                 ~870g ││ │
+│  │  │ ...                             │  │  └────────────────────────────┘│ │
+│  │  └────────────────────────────────┘  │  │                                │ │
+│  │  ┌ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐  │  │  ┌─ Timeline ─────────────────┐│ │
+│  │    + New Formula                    │  │  │                            ││ │
+│  │  └ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┘  │  │  │  ● 6:00 AM  Mix (autolyse)││ │
+│  │                                      │  │  │  │          30 min        ││ │
+│  │  DOUGH WEIGHT                        │  │  │  ○ 6:30 AM  Add Salt      ││ │
+│  │  [ − ]    900g    [ + ]       [2×]   │  │  │  │                        ││ │
+│  │                                      │  │  │  ○ 7:00 AM  Bulk Proof    ││ │
+│  │  FORMULA (Hydration / Levain)        │  │  │  │  ╔════════════════════╗ ││ │
+│  │  Hydration              Levain       │  │  │  │  ║ ▓▓▓▓▓ Bulk ▓▓▓▓▓  ║ ││ │
+│  │  74%                    5%           │  │  │  │  ║ 12-16 hours        ║ ││ │
+│  │  ○────●──────────────── ○────●────── │  │  │  ╚════════════════════╝ ││ │
+│  │  Fixed        Fixed                  │  │  │  ...                      ││ │
+│  │                                      │  │  └────────────────────────────┘│ │
+│  │  WATER TEMPERATURE                   │  │                                │ │
+│  │  Flour    Room     Levain            │  │  ─────────────────────────────  │ │
+│  │  [ 68°F ] [ 72°F ] [ 40°F ]         │  │                                │ │
+│  │                                      │  │  WHEN                          │ │
+│  │       Use water at                   │  │  [● Start Now] [Start At] [Finish By]│ │
+│  │           127°F                      │  │                                │ │
+│  │                                      │  │  Starting now, bread ready ~   │ │
+│  │  DDT of 78°F · Hand mixing  [✎]      │  │  4:40 AM tomorrow              │ │
+│  │                                      │  │                                │ │
+│  └──────────────────────────────────────┘  │  [ 📌 Save ]  [ Start Bake ▶ ]│ │
+│                                            └────────────────────────────────┘ │
 │                                                                              │
-├────────────────┬────────────────┬────────────────────────────────────────────┤
-│     Plan       │   Starter      │     Log                                    │
-└────────────────┴────────────────┴────────────────────────────────────────────┘
+├────────────────┬────────────────┬──────────────────────────────────────────┤
+│    Starter     │   Bake (●)     │     Log                                  │
+└────────────────┴────────────────┴──────────────────────────────────────────┘
 ```
 
-## Four-Fold Variant Picker (Detail)
+---
 
-When "Four-Fold PAL" is selected, a variant grid appears with hydration × levain combinations:
+## Left Column Detail
+
+### Formula Selector (Vertical Carousel)
+
+A scrollable vertical carousel with `scroll-snap-type: y mandatory`. Max height ~230px
+(shows ~2 cards at a time). Cards are full-width with:
 
 ```
-  FOUR-FOLD VARIANT
-
-  Select hydration and levain:
-
-  ┌─────────────────────────────────────────────┐
-  │           │  25% levain  │  35% levain      │
-  │───────────┼──────────────┼─────────────────│
-  │  75%      │  ● 75/25    │    75/35         │
-  │  hydration│  Beginner    │    Intermediate  │
-  │           │  ●○○○        │    ●●○○          │
-  │───────────┼──────────────┼─────────────────│
-  │  80%      │    80/25     │    80/35         │
-  │  hydration│  Intermediate│    Advanced      │
-  │           │  ●●○○        │    ●●●○          │
-  └─────────────────────────────────────────────┘
-
-  DIFFICULTY: ●○○○ Beginner
-  "75% hydration with 25% levain. A great starting
-  point — forgiving dough, easy to shape."
-
-  ─────────────────────────────────────────────
-
-  Lower levain (12.5%) → warm kitchen
-  Higher levain (35%) → cold kitchen
-  Lower hydration (75%) → easier to shape
-  Higher hydration (80%) → more open crumb, stickier
+┌────────────────────────────────────────────────────────┐
+│  [🍞]  No-Knead Pain au Levain           ●○○○ Beginner │
+│        22h · minimal handling                          │
+│        A hands-off loaf with a crispy crust and mild,  │
+│        tangy crumb.                                    │
+│        View previous bakes →                           │
+└────────────────────────────────────────────────────────┘
 ```
 
-### Four-Fold Pre-Calculated Variants (from Janjigian pp. 12-13)
+Card fields:
+- Emoji icon (48×48px thumbnail)
+- Long formula name (Fraunces serif)
+- Difficulty dots (●○○○ = Beginner, ●●○○ = Intermediate, ●●●○ = Advanced, ●●●● = Expert)
+- Timing + technique (one-liner meta)
+- 1-sentence description (clamped to 2 lines)
+- "View previous bakes →" log link
 
-| Variant | Hydration | Levain | Water | AP Flour | Rye | Levain (g) | Salt | Difficulty |
-|---------|-----------|--------|-------|----------|-----|------------|------|------------|
-| 75/25 | 75% | 25% | 315g | 420g | 25g | 130g | 11g | Beginner |
-| 75/35 | 75% | 35% | 290g | 395g | 25g | 180g | 11g | Intermediate |
-| 80/25 | 80% | 25% | 330g | 405g | 25g | 125g | 11g | Intermediate |
-| 80/35 | 80% | 35% | 310g | 380g | 25g | 175g | 11g | Advanced |
+**"+" Add Formula button** — dashed-border card at bottom of carousel:
+```
+┌ - - - - - - - - - - - - - - - - - - - - ┐
+   + New Formula
+└ - - - - - - - - - - - - - - - - - - - - ┘
+```
+Tapping shows a "Coming soon" popover. Future: launches Formula Builder/Editor.
+TODO: Wire to Formula Builder when implemented.
 
-Note: Janjigian also mentions 12.5% levain for very warm kitchens. We can support this via the levain slider as a manual override beyond the grid presets.
+---
 
-### Difficulty Indicator
+### Dough Weight
+
+```
+   [ − ]     900g     [ + ]                         [2×]
+```
+
+- `−` and `+` are rounded square buttons (38×38px)
+- Weight display is large Fraunces number
+- **2× Doubler** is a rectangular pill badge at the far right — visually distinct from
+  the square +/− controls. Inactive: outlined. Active: filled golden, all quantities doubled.
+
+---
+
+### Formula Sliders (Hydration / Levain)
+
+Two horizontal sliders showing current Hydration % and Levain %:
+
+```
+  Hydration              Levain
+  74%                    5%
+  ───────●───────────    ────●──────────────
+  Fixed                  Fixed
+```
+
+- **Interactive** (with snap points to presets) only for Four-Fold PAL
+- **Read-only** ("Fixed" label) for all other formulas
+- Preset snap points for Four-Fold: Hydration 75%/80%, Levain 25%/35%
+
+TODO: Improve visual richness — custom thumb style, gradient fill, better tick marks.
+
+---
+
+### Water Temperature (DDT Calculator — always visible)
+
+```
+  Flour      Room       Levain
+  [ 68 °F ]  [ 72 °F ]  [ 40 °F ]
+
+       Use water at
+           127°F
+
+  DDT of 78°F · Hand mixing  [✎]
+```
+
+- Three inline inputs with °F suffix inside each field
+- Large result display (Fira Mono, 32px)
+- Reference row: "DDT of 78°F · [method]" with pencil/edit icon
+  → Tapping opens an iPad-style fixed-position popover:
+    ```
+    ┌───────────────────────────────┐
+    │  DDT Settings                 │
+    │  Target DDT        78°F       │
+    │                               │
+    │  Mixing Method                │
+    │  [● Hand] [Mixer] [Processor] │
+    └───────────────────────────────┘
+    ```
+- Friction factors: Hand = 5, Mixer = 25, Processor = 30
+- DDT formula: waterTemp = 4×78 − flour − room − levain − frictionFactor
+
+---
+
+## Right Column Detail
+
+### Ingredients Panel
+
+```
+  Ingredients
+  ┌──────────────────────────────────────────────────────┐
+  │  [74% hydration]  [5% levain]  [2× Doubled]         │
+  │                                                      │
+  │  INGREDIENT        BAKER'S %        GRAMS            │
+  │  AP Flour             95%            456g            │
+  │  Rye Flour             5%             24g            │
+  │  Water                74%            355g            │
+  │  Salt                2.2%             11g            │
+  │  Levain                5%             24g            │
+  │  ────────────────────────────────────────────        │
+  │  Total                                ~870g          │
+  └──────────────────────────────────────────────────────┘
+```
+
+- Pills row: hydration %, levain %, and "2× Doubled" badge (red) when doubler is on
+- Total row is inside the same `<table>` as ingredients (via `<tfoot>`) so it
+  aligns perfectly with the Grams column
+
+### Timeline Panel
+
+Vertical step-by-step timeline with day boundary markers and proof blocks:
+
+```
+  Timeline                                    ~23 hours
+
+  ● 6:00 AM   Mix
+  │            Combine water, levain, flours.
+  ○ 6:30 AM   Add Salt
+  │            Add reserved water + salt.
+  ○ 7:00 AM   Coil Fold
+  │
+  │  ╔══════════════════════════════╗
+  │  ║ ▓▓▓▓ Bulk Proof ▓▓▓▓▓▓▓▓▓  ║  12-16 hours
+  │  ╚══════════════════════════════╝
+  │  until ~7:25 PM today
+  │
+  🌙 tomorrow
+  ...
+  ● 4:40 AM   Bake
+               Bread ready ~4:40 AM tomorrow
+```
+
+Proof block style: **hatched** (diagonal fill, default). TODO: refine visual treatment.
+
+---
+
+## Bottom Bar
+
+```
+  WHEN  [ Start Now ]  [ Start At ]  [ Finish By ]
+
+  Starting now, bread ready ~4:40 AM tomorrow
+
+  [ 📌 Save ]                    [ Start Bake ▶ ]
+```
+
+- **Start Now**: uses current time, updates hint in real-time
+- **Start At**: reveals time picker, calculates finish
+- **Finish By**: reveals time picker, reverse-calculates start time
+
+**Notification prompt (future):** After tapping "Start Bake" with a future Start At or
+Finish By time, prompt user to enable a system notification 5 minutes before the
+scheduled start time. Lead time is configurable in Settings.
+
+---
+
+## iPad Portrait Layout
+
+Same content, single-column stack:
+1. Formula Selector
+2. Dough Weight + Doubler
+3. Formula Sliders
+4. Water Temperature
+5. Ingredients Table
+6. Timeline
+7. When + Action Buttons
+
+---
+
+## Interactions
+
+- Selecting a formula updates ingredients, timeline, and DDT defaults instantly
+- Selecting Four-Fold unlocks hydration and levain sliders with preset snap points
+- Changing dough weight rescales all ingredient quantities (timeline unchanged)
+- Toggling 2× doubles all ingredient quantities; pill badge appears in Ingredients
+- "Start now" auto-updates time hint; "Start At" / "Finish By" show time inputs
+- DDT reference row tap opens popover; click-outside closes
+- "+" New Formula tap shows "Coming soon" popover; click-outside closes
+- `@AppStorage`: last formula, weight, temp unit
+- "Save" stores named plan snapshots
+
+---
+
+## Difficulty Indicator
 
 ```
 ●○○○  Beginner       "Forgiving dough, easy to shape"
@@ -110,148 +262,17 @@ Note: Janjigian also mentions 12.5% levain for very warm kitchens. We can suppor
 ●●●●  Expert         "Very wet, challenging — for experienced bakers"
 ```
 
-- Displayed below the variant grid when Four-Fold is selected
-- Color: `risingGreen` for beginner, `goldenCrust` for intermediate, `overProofAmber` for advanced, `burnedRed` for expert
-- Includes a one-line description of what makes it harder/easier
-- Also relevant if user overrides hydration beyond 80% via a future formula builder
+Colors: `risingGreen` (beginner), `goldenCrust` (intermediate), `overProofAmber` (advanced), `burnedRed` (expert)
 
 ---
 
-## Right Column: Segmented Content
+## Four-Fold Preset Values (from Janjigian pp. 12-13)
 
-The right column has a segmented control at the top to switch between three views:
+| Variant | Hydration | Levain | Water | AP Flour | Rye | Levain (g) | Salt | Difficulty |
+|---------|-----------|--------|-------|----------|-----|------------|------|------------|
+| 75/25 | 75% | 25% | 315g | 420g | 25g | 130g | 11g | Beginner |
+| 75/35 | 75% | 35% | 290g | 395g | 25g | 180g | 11g | Intermediate |
+| 80/25 | 80% | 25% | 330g | 405g | 25g | 125g | 11g | Intermediate |
+| 80/35 | 80% | 35% | 310g | 380g | 25g | 175g | 11g | Advanced |
 
-### Segment 1: Ingredients (default)
-
-```
-  Ingredients                                  900g
-  ┌────────────────────────────────────────────────┐
-  │ AP Flour              95%              456g    │
-  │ Rye Flour              5%               24g    │
-  │ Water                 74%              355g    │
-  │ Salt                  2.2%              11g    │
-  │ Levain                 5%               24g    │
-  ├────────────────────────────────────────────────┤
-  │ Hydration: 74%         Total: ~870g            │
-  └────────────────────────────────────────────────┘
-```
-
-### Segment 2: Timeline
-
-```
-  Timeline                              Est. 22h
-
-  ● 6:00 AM   Mix (autolyse)
-  │            Combine water, levain, flours. Rest 30 min.
-  │
-  ○ 6:30 AM   Add salt
-  │            Add reserved water + salt. Knead. Rest 30 min.
-  │
-  ○ 7:00 AM   Coil fold
-  │            One set of coil folds. Bulk proof 12-16h.
-  │
-  ○ 7:00 PM   Preshape
-  │            Preshape into round. Rest 30 min.
-  │
-  ○ 7:30 PM   Final shape
-  │            Shape, transfer to proofing basket. Rest 30 min.
-  │
-  ○ 8:00 PM   Fridge
-  │            Cold proof 8-24h.
-  │
-  ○ 4:00 AM   Bake!
-               Preheat 475°F, Dutch oven. ~40 min total.
-```
-
-### Segment 3: DDT Calculator
-
-```
-  Water Temperature (DDT)
-
-  Target DDT: 78°F
-
-  ┌────────────────────────────────────────────────┐
-  │ Flour temperature      [  68  ] °F             │
-  │ Room temperature       [  72  ] °F             │
-  │ Levain temperature     [  40  ] °F             │
-  │                                                │
-  │ Mixing method:                                 │
-  │ [● Hand]  [○ Stand Mixer]  [○ Food Processor]  │
-  │                                                │
-  │ ─────────────────────────────────────────────  │
-  │                                                │
-  │         Use water at: 104.5°F                  │
-  │                                                │
-  │ ⓘ Friction factor: 5 (hand mixing)            │
-  └────────────────────────────────────────────────┘
-```
-
----
-
-## Bottom Actions
-
-```
-┌─────────────────────────────────┐  ┌─────────────────────────────────┐
-│  📌  Save for Later             │  │  ▶  Start This Bake             │
-│  Save this plan to revisit      │  │  Begin guided bake tracker      │
-└─────────────────────────────────┘  └─────────────────────────────────┘
-```
-
-- **Save for Later:** Stores the current formula + configuration for quick access
-- **Start This Bake:** Launches full-screen Bake Tracker with this plan
-- Both buttons anchored at bottom of right column
-
----
-
-## iPad Portrait Layout
-
-```
-┌────────────────────────────────────────────┐
-│  Plan                              [⚙️]    │
-│                                            │
-│  FORMULA                                   │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐   │
-│  │ No-Knead │ │Four-Fold │ │ Tartine  │   │
-│  │  PAL  ●  │ │  PAL     │ │ Country  │   │
-│  └──────────┘ └──────────┘ └──────────┘   │
-│                                            │
-│  DOUGH WEIGHT                              │
-│  [ - ]    900g     [ + ]                   │
-│                                            │
-│  LEVAIN %:  5%                             │
-│                                            │
-│  [Ingredients] [Timeline] [DDT]            │
-│  ┌────────────────────────────────────┐    │
-│  │ AP Flour      95%          456g    │    │
-│  │ Rye Flour      5%           24g    │    │
-│  │ Water         74%          355g    │    │
-│  │ Salt          2.2%          11g    │    │
-│  │ Levain         5%           24g    │    │
-│  │                                    │    │
-│  │ Hydration: 74%  Total: ~870g       │    │
-│  └────────────────────────────────────┘    │
-│                                            │
-│  WHEN: ◉ Start now  ○ Bake by             │
-│                                            │
-│  [📌 Save]          [▶ Start Bake]        │
-│                                            │
-├────────────┬──────────┬───────────────────┤
-│   Plan     │ Starter  │    Log            │
-└────────────┴──────────┴───────────────────┘
-```
-
----
-
-## Interactions
-
-- Selecting a formula updates ingredients, timeline, and DDT defaults instantly
-- Selecting a Four-Fold variant updates ingredient list to match pre-calculated values
-- Changing dough weight rescales all ingredients (timeline unchanged)
-- No-Knead: levain % slider (1-10%) with free adjustment
-- Four-Fold: variant grid for preset combos, OR manual slider for fine-tuning (12.5-35%)
-- Tartine: fixed percentages (no sliders)
-- Difficulty indicator updates dynamically based on hydration selection
-- "Start now" auto-updates time; "Bake by" reverse-calculates start
-- Segment control remembers last selection
-- `@AppStorage`: last formula, variant, weight, temp unit
-- "Save for Later" stores named plan snapshots (future: list of saved plans)
+Sliders snap to these preset values. Fine-tuning between presets is allowed.
