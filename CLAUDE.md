@@ -28,12 +28,13 @@ Move the corresponding wireframe card from "Wireframes" to "Ready to preview" â€
 - Prefix maps to tabs: `01`=Starter, `02`=Bake, `03`=Log; sheets/modals use descriptive names
 
 ## Deploying
-Push to `main` on GitHub. Vercel auto-deploys from `main`.
+Vercel requires a manual deploy â€” it is NOT connected to GitHub for auto-deployment.
 
 ```
 git add -A
 git commit -m "..."
 git push
+vercel --prod
 ```
 
 ## Design System
