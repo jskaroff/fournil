@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1194 834"
+     font-family="'Source Serif 4', 'Georgia', serif" font-size="14">
+
+  <!-- Background -->
+  <rect width="1194" height="834" fill="#FEFBF5"/>
+
+  <!-- ==================== TOP NAV BAR ==================== -->
+  <rect x="0" y="0" width="1194" height="56" fill="#FEFBF5"/>
+  <line x1="0" y1="56" x2="1194" y2="56" stroke="#E5DDD0"/>
+  <text x="32" y="37" font-size="14" fill="#C07A2E">&#9664; Back</text>
+  <text x="120" y="37" font-size="18" font-weight="700" fill="#4A3228"
+        font-family="'Fraunces', 'Georgia', serif">Find a Starter</text>
+
+  <!-- ==================== CENTERED CONTENT ==================== -->
+
+  <!-- Header -->
+  <text x="597" y="110" text-anchor="middle" font-size="40">🔍</text>
+  <text x="597" y="150" text-anchor="middle" font-family="'Fraunces', 'Georgia', serif"
+        font-size="18" fill="#6B4D3E">There are lots of ways to get your hands on a starter.</text>
+
+  <!-- Section: Buy Online -->
+  <text x="247" y="196" font-size="11" font-weight="600" fill="#8B7355" letter-spacing="1.2">🏪  BUY A STARTER ONLINE</text>
+
+  <rect x="247" y="210" width="700" height="56" rx="8" fill="#F2EBE0" stroke="#E5DDD0"/>
+  <text x="271" y="234" font-size="15" font-weight="600" fill="#4A3228">King Arthur Baking — Fresh Sourdough Starter</text>
+  <text x="271" y="254" font-size="12" fill="#8B7355">A reliable, active starter shipped to your door.</text>
+  <text x="920" y="244" font-size="14" fill="#C07A2E">&#8594;</text>
+
+  <rect x="247" y="278" width="700" height="56" rx="8" fill="#F2EBE0" stroke="#E5DDD0"/>
+  <text x="271" y="302" font-size="15" font-weight="600" fill="#4A3228">Cultures for Health — Sourdough Starter</text>
+  <text x="271" y="322" font-size="12" fill="#8B7355">Dehydrated starter cultures in several varieties.</text>
+  <text x="920" y="312" font-size="14" fill="#C07A2E">&#8594;</text>
+
+  <rect x="247" y="346" width="700" height="56" rx="8" fill="#F2EBE0" stroke="#E5DDD0"/>
+  <text x="271" y="370" font-size="15" font-weight="600" fill="#4A3228">Breadtopia — Sourdough Starter</text>
+  <text x="271" y="390" font-size="12" fill="#8B7355">Organic, well-established starter culture.</text>
+  <text x="920" y="380" font-size="14" fill="#C07A2E">&#8594;</text>
+
+  <!-- Section: Community -->
+  <text x="247" y="440" font-size="11" font-weight="600" fill="#8B7355" letter-spacing="1.2">🤝  ASK THE COMMUNITY</text>
+
+  <rect x="247" y="454" width="700" height="56" rx="8" fill="#F2EBE0" stroke="#E5DDD0"/>
+  <text x="271" y="478" font-size="15" font-weight="600" fill="#4A3228">r/Sourdough — Reddit Community</text>
+  <text x="271" y="498" font-size="12" fill="#8B7355">Ask for a starter share in your area.</text>
+  <text x="920" y="488" font-size="14" fill="#C07A2E">&#8594;</text>
+
+  <rect x="247" y="522" width="700" height="56" rx="8" fill="#F2EBE0" stroke="#E5DDD0"/>
+  <text x="271" y="546" font-size="15" font-weight="600" fill="#4A3228">r/Breadit — Reddit Bread Community</text>
+  <text x="271" y="566" font-size="12" fill="#8B7355">General bread baking community, many share starters.</text>
+  <text x="920" y="556" font-size="14" fill="#C07A2E">&#8594;</text>
+
+  <!-- Section: Other Ideas -->
+  <text x="247" y="616" font-size="11" font-weight="600" fill="#8B7355" letter-spacing="1.2">💡  OTHER IDEAS</text>
+
+  <text x="271" y="642" font-size="14" fill="#4A3228">• Ask a friend who bakes sourdough — most are happy to share!</text>
+  <text x="271" y="666" font-size="14" fill="#4A3228">• Check your local bakery — many will sell or give away starter</text>
+  <text x="271" y="690" font-size="14" fill="#4A3228">• Visit a local farmers market — artisan bakers often share</text>
+
+  <!-- Footer note -->
+  <line x1="247" y1="720" x2="947" y2="720" stroke="#E5DDD0"/>
+  <text x="597" y="750" text-anchor="middle" font-size="13" fill="#8B7355">Once you have a starter, head back and tap "I've got a starter" to start tracking.</text>
+
+</svg>

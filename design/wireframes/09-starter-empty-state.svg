@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1194 834"
+     font-family="'Source Serif 4', 'Georgia', serif" font-size="14">
+  <defs>
+    <style>
+      .bg { fill: #FEFBF5; }
+      .card { fill: #F2EBE0; stroke: #E4D9C8; stroke-width: 1; }
+      .tab-bar { fill: #F2EBE0; }
+      .divider { stroke: #E4D9C8; stroke-width: 1; }
+      .accent { fill: #C07A2E; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1194" height="834" class="bg"/>
+
+  <!-- ==================== TOP NAV BAR ==================== -->
+  <rect x="0" y="0" width="1194" height="56" fill="#FEFBF5"/>
+  <line x1="0" y1="56" x2="1194" y2="56" class="divider"/>
+  <text x="48" y="36" font-family="'Fraunces', 'Georgia', serif"
+        font-size="22" font-weight="600" fill="#4A3228">Starters</text>
+
+  <!-- Gear icon -->
+  <g transform="translate(1130, 20)" fill="none" stroke="#8B7355"
+     stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <circle cx="12" cy="12" r="3.5"/>
+    <line x1="12" y1="0" x2="12" y2="4"/>
+    <line x1="12" y1="20" x2="12" y2="24"/>
+    <line x1="0" y1="12" x2="4" y2="12"/>
+    <line x1="20" y1="12" x2="24" y2="12"/>
+    <line x1="3.5" y1="3.5" x2="6.3" y2="6.3"/>
+    <line x1="17.7" y1="17.7" x2="20.5" y2="20.5"/>
+    <line x1="20.5" y1="3.5" x2="17.7" y2="6.3"/>
+    <line x1="6.3" y1="17.7" x2="3.5" y2="20.5"/>
+  </g>
+
+  <!-- ==================== CENTERED CONTENT ==================== -->
+
+  <!-- Jar Emoji -->
+  <text x="597" y="150" text-anchor="middle" font-size="56">🫙</text>
+
+  <!-- Tagline -->
+  <text x="597" y="200" text-anchor="middle"
+        font-family="'Fraunces', 'Georgia', serif" font-size="20"
+        font-weight="400" fill="#6B4D3E">Every great loaf starts with a great starter.</text>
+
+  <!-- ==================== CARD 1: I've got a starter ==================== -->
+  <!-- Card: y=248, h=120, vertical center=308 -->
+  <rect x="297" y="248" width="600" height="120" rx="12" class="card"/>
+  <!-- Icon: centered vertically in card (248+60=308), adjust for emoji rendering -->
+  <text x="330" y="316" font-size="36" dominant-baseline="central"
+        text-anchor="middle">🍞</text>
+  <!-- Text block: vertically centered (title at ~292, sub1 at ~316, sub2 at ~334) -->
+  <text x="370" y="292" font-family="'Fraunces', 'Georgia', serif"
+        font-size="20" font-weight="600" fill="#4A3228">I've got a starter</text>
+  <text x="370" y="316" font-size="14" fill="#8B7355">Already have an active starter? Add it here and start</text>
+  <text x="370" y="334" font-size="14" fill="#8B7355">tracking your feedings.</text>
+  <!-- Chevron -->
+  <text x="872" y="312" fill="#A89478" font-size="24"
+        dominant-baseline="central">›</text>
+
+  <!-- ==================== CARD 2: Cultivate a new starter ==================== -->
+  <!-- Card: y=388, h=120, vertical center=448 -->
+  <rect x="297" y="388" width="600" height="120" rx="12" class="card"/>
+  <text x="330" y="456" font-size="36" dominant-baseline="central"
+        text-anchor="middle">🌱</text>
+  <text x="370" y="432" font-family="'Fraunces', 'Georgia', serif"
+        font-size="20" font-weight="600" fill="#4A3228">Cultivate a new starter</text>
+  <text x="370" y="456" font-size="14" fill="#8B7355">Create a starter from scratch. We'll walk you through</text>
+  <text x="370" y="474" font-size="14" fill="#8B7355">the process step by step.</text>
+  <text x="872" y="452" fill="#A89478" font-size="24"
+        dominant-baseline="central">›</text>
+
+  <!-- ==================== CARD 3: Find a starter ==================== -->
+  <!-- Card: y=528, h=120, vertical center=588 -->
+  <rect x="297" y="528" width="600" height="120" rx="12" class="card"/>
+  <text x="330" y="596" font-size="36" dominant-baseline="central"
+        text-anchor="middle">🔍</text>
+  <text x="370" y="572" font-family="'Fraunces', 'Georgia', serif"
+        font-size="20" font-weight="600" fill="#4A3228">Find a starter</text>
+  <text x="370" y="596" font-size="14" fill="#8B7355">Get a starter from a friend, bakery, or online source.</text>
+  <text x="370" y="614" font-size="14" fill="#8B7355">We'll help you find one.</text>
+  <text x="872" y="592" fill="#A89478" font-size="24"
+        dominant-baseline="central">›</text>
+
+  <!-- ==================== BOTTOM TAB BAR ==================== -->
+  <!-- Tab bar: y=770, h=64, content vertically centered -->
+  <rect x="0" y="770" width="1194" height="64" class="tab-bar"/>
+  <line x1="0" y1="770" x2="1194" y2="770" class="divider"/>
+
+  <!-- Tab 1: Starter (Active) — centered at x=199 -->
+  <g text-anchor="middle">
+    <text x="199" y="797" font-size="20">🫙</text>
+    <text x="199" y="818" font-size="12" font-weight="600" fill="#C07A2E">Starter</text>
+    <rect x="169" y="824" width="60" height="2.5" rx="1" class="accent"/>
+  </g>
+
+  <!-- Tab 2: Bake — centered at x=597 -->
+  <g text-anchor="middle">
+    <text x="597" y="797" font-size="20">📋</text>
+    <text x="597" y="818" font-size="12" font-weight="500" fill="#8B7355">Bake</text>
+  </g>
+
+  <!-- Tab 3: Log — centered at x=995 -->
+  <g text-anchor="middle">
+    <text x="995" y="797" font-size="20">📖</text>
+    <text x="995" y="818" font-size="12" font-weight="500" fill="#8B7355">Log</text>
+  </g>
+
+</svg>

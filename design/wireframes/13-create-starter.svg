@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1194 834"
+     font-family="'Source Serif 4', 'Georgia', serif" font-size="14">
+
+  <!-- Background -->
+  <rect width="1194" height="834" fill="#FEFBF5"/>
+
+  <!-- ==================== TOP NAV BAR ==================== -->
+  <rect x="0" y="0" width="1194" height="56" fill="#FEFBF5"/>
+  <line x1="0" y1="56" x2="1194" y2="56" stroke="#E5DDD0"/>
+  <text x="32" y="37" font-size="18" font-weight="700" fill="#4A3228"
+        font-family="'Fraunces', 'Georgia', serif">Create a Starter</text>
+
+  <!-- Save / Cancel -->
+  <rect x="1036" y="14" width="72" height="30" rx="6" fill="#C07A2E" opacity="0.4"/>
+  <text x="1072" y="33" text-anchor="middle" font-size="13" font-weight="600" fill="#FFFFFF">Save</text>
+  <rect x="1116" y="14" width="64" height="30" rx="6" fill="#FFFFFF" stroke="#D9CEBD"/>
+  <text x="1148" y="33" text-anchor="middle" font-size="13" fill="#8B7355">Cancel</text>
+
+  <!-- ==================== CENTERED FORM ==================== -->
+
+  <!-- Jar icon -->
+  <text x="597" y="140" text-anchor="middle" font-size="48">🫙</text>
+
+  <!-- Prompt -->
+  <text x="597" y="180" text-anchor="middle" font-family="'Fraunces', 'Georgia', serif"
+        font-size="20" font-weight="400" fill="#6B4D3E">Give your starter a name</text>
+
+  <!-- Name field -->
+  <text x="347" y="230" font-size="11" font-weight="600" fill="#8B7355" letter-spacing="1.2">NAME *</text>
+  <rect x="347" y="242" width="500" height="44" rx="8" fill="#FFFFFF" stroke="#C07A2E" stroke-width="1.5"/>
+  <text x="367" y="270" font-size="15" fill="#4A3228">Rye Baby</text>
+
+  <!-- Source field -->
+  <text x="347" y="316" font-size="11" font-weight="600" fill="#8B7355" letter-spacing="1.2">SOURCE</text>
+  <rect x="347" y="328" width="500" height="44" rx="8" fill="#FFFFFF" stroke="#D9CEBD"/>
+  <text x="367" y="356" font-size="14" fill="#B8A898">Friend, King Arthur, Cultivated...</text>
+  <text x="347" y="390" font-size="12" fill="#B8A898">Where did your starter come from?</text>
+
+  <!-- Description field -->
+  <text x="347" y="430" font-size="11" font-weight="600" fill="#8B7355" letter-spacing="1.2">DESCRIPTION</text>
+  <rect x="347" y="442" width="500" height="88" rx="8" fill="#FFFFFF" stroke="#D9CEBD"/>
+  <text x="367" y="470" font-size="14" fill="#B8A898">Tell us about your starter — anything</text>
+  <text x="367" y="490" font-size="14" fill="#B8A898">that makes it special.</text>
+  <text x="347" y="548" font-size="12" fill="#B8A898">Optional notes about your starter's history or personality.</text>
+
+</svg>

@@ -1,12 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1194 834"
      font-family="'Source Serif 4', 'Georgia', serif" font-size="14">
-  <defs>
-    <!-- Health ring gradient -->
-    <linearGradient id="healthGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#5E8A50;stop-opacity:0.15"/>
-      <stop offset="100%" style="stop-color:#5E8A50;stop-opacity:0"/>
-    </linearGradient>
-  </defs>
 
   <!-- Background -->
   <rect width="1194" height="834" fill="#FEFBF5"/>
@@ -14,14 +7,16 @@
   <!-- ==================== TOP NAV BAR ==================== -->
   <rect x="0" y="0" width="1194" height="56" fill="#FEFBF5"/>
   <line x1="0" y1="56" x2="1194" y2="56" stroke="#E5DDD0"/>
-  <text x="32" y="37" font-size="22" font-weight="700" fill="#4A3228" font-family="'Fraunces', 'Georgia', serif">Starter</text>
+  <text x="32" y="37" font-size="22" font-weight="700" fill="#4A3228"
+        font-family="'Fraunces', 'Georgia', serif">Starters</text>
+  <text x="32" y="52" font-size="11" fill="#8B7355">3 starters</text>
 
-  <!-- Feed button (top-right) -->
-  <rect x="1044" y="14" width="118" height="36" rx="8" fill="#C07A2E"/>
-  <text x="1103" y="37" text-anchor="middle" font-size="14" font-weight="600" fill="#FFFFFF">Feed</text>
+  <!-- + New Starter button -->
+  <rect x="1020" y="14" width="140" height="34" rx="8" fill="#C07A2E"/>
+  <text x="1090" y="36" text-anchor="middle" font-size="13" font-weight="600" fill="#FFFFFF">+ New Starter</text>
 
   <!-- Gear icon -->
-  <g transform="translate(1008, 18)" stroke="#8B7355">
+  <g transform="translate(980, 18)" stroke="#8B7355">
     <circle cx="10" cy="10" r="9" fill="none" stroke-width="1.5"/>
     <circle cx="10" cy="10" r="3" fill="none" stroke-width="1.5"/>
     <line x1="10" y1="0" x2="10" y2="3" stroke-width="2" stroke-linecap="round"/>
@@ -34,6 +29,59 @@
     <line x1="5.5" y1="14.5" x2="3" y2="17" stroke-width="2" stroke-linecap="round"/>
   </g>
 
+  <!-- ==================== STARTER CARDS ==================== -->
+
+  <!-- Card 1: Rye Baby (Thriving) -->
+  <rect x="32" y="80" width="370" height="280" rx="12" fill="#F2EBE0" stroke="#E5DDD0"/>
+
+  <!-- Health dot + Name -->
+  <circle cx="56" cy="108" r="6" fill="#5E8A50"/>
+  <text x="72" y="114" font-size="20" font-weight="700" fill="#4A3228"
+        font-family="'Fraunces', 'Georgia', serif">Rye Baby</text>
+
+  <!-- Feeding info -->
+  <text x="56" y="142" font-size="13" fill="#5E8A50">Fed 6 hours ago</text>
+  <text x="56" y="164" font-size="13" fill="#8B7355">AP 125g + Rye 25g · 150g water</text>
+  <text x="56" y="186" font-size="13" fill="#8B7355">Peaked at 4.5h</text>
+
+  <!-- Photo placeholder -->
+  <rect x="56" y="206" width="322" height="130" rx="8" fill="#E5DDD0"/>
+  <line x1="56" y1="206" x2="378" y2="336" stroke="#D9CEBD" stroke-width="0.5"/>
+  <line x1="378" y1="206" x2="56" y2="336" stroke="#D9CEBD" stroke-width="0.5"/>
+  <text x="217" y="274" text-anchor="middle" font-size="12" fill="#B8A898">Last feed photo</text>
+
+  <!-- Card 2: Old Faithful (Needs Feeding) -->
+  <rect x="418" y="80" width="370" height="280" rx="12" fill="#F2EBE0" stroke="#E5DDD0"/>
+
+  <circle cx="442" cy="108" r="6" fill="#C9962E"/>
+  <text x="458" y="114" font-size="20" font-weight="700" fill="#4A3228"
+        font-family="'Fraunces', 'Georgia', serif">Old Faithful</text>
+
+  <text x="442" y="142" font-size="13" fill="#C9962E">Fed 3 days ago</text>
+  <text x="442" y="164" font-size="13" fill="#8B7355">Bread flour 150g · 150g water</text>
+  <text x="442" y="186" font-size="13" fill="#8B7355">Last peak: 5.2h</text>
+
+  <rect x="442" y="206" width="322" height="130" rx="8" fill="#E5DDD0"/>
+  <line x1="442" y1="206" x2="764" y2="336" stroke="#D9CEBD" stroke-width="0.5"/>
+  <line x1="764" y1="206" x2="442" y2="336" stroke="#D9CEBD" stroke-width="0.5"/>
+  <text x="603" y="274" text-anchor="middle" font-size="12" fill="#B8A898">Last feed photo</text>
+
+  <!-- Card 3: Pumpernickel (Thriving) -->
+  <rect x="804" y="80" width="370" height="280" rx="12" fill="#F2EBE0" stroke="#E5DDD0"/>
+
+  <circle cx="828" cy="108" r="6" fill="#5E8A50"/>
+  <text x="844" y="114" font-size="20" font-weight="700" fill="#4A3228"
+        font-family="'Fraunces', 'Georgia', serif">Pumpernickel</text>
+
+  <text x="828" y="142" font-size="13" fill="#5E8A50">Fed 10 hours ago</text>
+  <text x="828" y="164" font-size="13" fill="#8B7355">Dark rye 100g · 100g water</text>
+  <text x="828" y="186" font-size="13" fill="#8B7355">Peaked at 6h</text>
+
+  <rect x="828" y="206" width="322" height="130" rx="8" fill="#E5DDD0"/>
+  <line x1="828" y1="206" x2="1150" y2="336" stroke="#D9CEBD" stroke-width="0.5"/>
+  <line x1="1150" y1="206" x2="828" y2="336" stroke="#D9CEBD" stroke-width="0.5"/>
+  <text x="989" y="274" text-anchor="middle" font-size="12" fill="#B8A898">Last feed photo</text>
+
   <!-- ==================== BOTTOM TAB BAR ==================== -->
   <rect x="0" y="774" width="1194" height="60" fill="#F2EBE0"/>
   <line x1="0" y1="774" x2="1194" y2="774" stroke="#E5DDD0"/>
@@ -45,7 +93,7 @@
     <line x1="4" y1="7" x2="10" y2="7" stroke="#8B7355" stroke-width="1"/>
     <line x1="4" y1="11" x2="10" y2="11" stroke="#8B7355" stroke-width="1"/>
     <line x1="4" y1="15" x2="8" y2="15" stroke="#8B7355" stroke-width="1"/>
-    <text x="7" y="34" text-anchor="middle" font-size="11" fill="#8B7355">Plan</text>
+    <text x="7" y="34" text-anchor="middle" font-size="11" fill="#8B7355">Bake</text>
   </g>
 
   <!-- Starter tab (active) -->
@@ -63,95 +111,5 @@
     <line x1="3" y1="8" x2="6" y2="8" stroke="#8B7355" stroke-width="0.8"/>
     <text x="7" y="34" text-anchor="middle" font-size="11" fill="#8B7355">Log</text>
   </g>
-
-  <!-- ==================== VERTICAL DIVIDER ==================== -->
-  <line x1="418" y1="72" x2="418" y2="758" stroke="#E5DDD0"/>
-
-  <!-- ==================== LEFT COLUMN (35%) ==================== -->
-
-  <!-- Health Indicator Ring -->
-  <circle cx="209" cy="200" r="72" fill="url(#healthGlow)"/>
-  <circle cx="209" cy="200" r="60" fill="none" stroke="#5E8A50" stroke-width="5" stroke-linecap="round"/>
-  <circle cx="209" cy="200" r="48" fill="#FEFBF5"/>
-  <!-- Inner icon area -->
-  <circle cx="209" cy="190" r="8" fill="#5E8A50" opacity="0.8"/>
-  <text x="209" y="220" text-anchor="middle" font-size="16" font-weight="700" fill="#5E8A50" font-family="'Fraunces', 'Georgia', serif">THRIVING</text>
-
-  <!-- Last fed info -->
-  <text x="209" y="296" text-anchor="middle" font-size="14" fill="#4A3228">Last fed: 8 hours ago</text>
-  <text x="209" y="318" text-anchor="middle" font-size="13" fill="#8B7355">Next feeding: ~4 hours</text>
-
-  <!-- Starter Notes -->
-  <text x="32" y="370" font-size="11" font-weight="600" fill="#8B7355" letter-spacing="1.2">STARTER NOTES</text>
-  <rect x="32" y="382" width="354" height="72" rx="8" fill="#F2EBE0" stroke="#E5DDD0"/>
-  <text x="48" y="406" font-size="13" fill="#4A3228">"Fed with KA bread flour,</text>
-  <text x="48" y="424" font-size="13" fill="#4A3228">room at 72°F"</text>
-
-  <!-- Quick Stats -->
-  <text x="32" y="494" font-size="11" font-weight="600" fill="#8B7355" letter-spacing="1.2">QUICK STATS</text>
-
-  <rect x="32" y="510" width="354" height="104" rx="8" fill="#F2EBE0" stroke="#E5DDD0"/>
-
-  <!-- Stat row 1 -->
-  <text x="48" y="538" font-size="13" fill="#8B7355">Avg peak time</text>
-  <text x="370" y="538" text-anchor="end" font-size="14" font-weight="600" fill="#4A3228">4.8h</text>
-  <line x1="48" y1="550" x2="370" y2="550" stroke="#E5DDD0"/>
-
-  <!-- Stat row 2 -->
-  <text x="48" y="572" font-size="13" fill="#8B7355">Feedings this week</text>
-  <text x="370" y="572" text-anchor="end" font-size="14" font-weight="600" fill="#4A3228">5</text>
-  <line x1="48" y1="584" x2="370" y2="584" stroke="#E5DDD0"/>
-
-  <!-- Stat row 3 -->
-  <text x="48" y="604" font-size="13" fill="#8B7355">Days since revival</text>
-  <text x="370" y="604" text-anchor="end" font-size="14" font-weight="600" fill="#4A3228">42</text>
-
-  <!-- ==================== RIGHT COLUMN (65%) ==================== -->
-
-  <text x="450" y="92" font-size="11" font-weight="600" fill="#8B7355" letter-spacing="1.2">FEEDING HISTORY</text>
-
-  <!-- Feeding entry 1 -->
-  <rect x="450" y="108" width="712" height="108" rx="8" fill="#FFFFFF" stroke="#E5DDD0"/>
-  <text x="470" y="134" font-size="15" font-weight="600" fill="#4A3228">Mar 15, 8:30 AM</text>
-  <rect x="640" y="118" width="80" height="22" rx="11" fill="#F2EBE0"/>
-  <text x="680" y="134" text-anchor="middle" font-size="11" font-weight="500" fill="#8B7355">2:2:1</text>
-  <text x="470" y="162" font-size="13" fill="#8B7355">150g flour · 150g water · 75g starter</text>
-  <text x="470" y="184" font-size="13" fill="#5E8A50">Peaked at 4.5h</text>
-  <text x="470" y="204" font-size="12" fill="#8B7355" font-style="italic">"Used KA bread flour + rye"</text>
-
-  <!-- Feeding entry 2 -->
-  <rect x="450" y="228" width="712" height="96" rx="8" fill="#FFFFFF" stroke="#E5DDD0"/>
-  <text x="470" y="254" font-size="15" font-weight="600" fill="#4A3228">Mar 14, 7:00 AM</text>
-  <rect x="640" y="238" width="80" height="22" rx="11" fill="#F2EBE0"/>
-  <text x="680" y="254" text-anchor="middle" font-size="11" font-weight="500" fill="#8B7355">2:2:1</text>
-  <text x="470" y="282" font-size="13" fill="#8B7355">150g flour · 150g water · 75g starter</text>
-  <text x="470" y="304" font-size="13" fill="#5E8A50">Peaked at 5h</text>
-
-  <!-- Feeding entry 3 -->
-  <rect x="450" y="336" width="712" height="96" rx="8" fill="#FFFFFF" stroke="#E5DDD0"/>
-  <text x="470" y="362" font-size="15" font-weight="600" fill="#4A3228">Mar 13, 9:00 PM</text>
-  <rect x="640" y="346" width="100" height="22" rx="11" fill="#F2EBE0"/>
-  <text x="690" y="362" text-anchor="middle" font-size="11" font-weight="500" fill="#8B7355">20:20:1</text>
-  <text x="470" y="390" font-size="13" fill="#8B7355">150g flour · 150g water · 8g starter</text>
-  <text x="470" y="412" font-size="13" fill="#5E8A50">Peaked at 8h</text>
-
-  <!-- Feeding entry 4 -->
-  <rect x="450" y="444" width="712" height="96" rx="8" fill="#FFFFFF" stroke="#E5DDD0"/>
-  <text x="470" y="470" font-size="15" font-weight="600" fill="#4A3228">Mar 13, 8:00 AM</text>
-  <rect x="640" y="454" width="80" height="22" rx="11" fill="#F2EBE0"/>
-  <text x="680" y="470" text-anchor="middle" font-size="11" font-weight="500" fill="#8B7355">2:2:1</text>
-  <text x="470" y="498" font-size="13" fill="#8B7355">150g flour · 150g water · 75g starter</text>
-  <text x="470" y="520" font-size="13" fill="#5E8A50">Peaked at 4.2h</text>
-
-  <!-- Feeding entry 5 -->
-  <rect x="450" y="552" width="712" height="96" rx="8" fill="#FFFFFF" stroke="#E5DDD0"/>
-  <text x="470" y="578" font-size="15" font-weight="600" fill="#4A3228">Mar 12, 7:30 AM</text>
-  <rect x="640" y="562" width="80" height="22" rx="11" fill="#F2EBE0"/>
-  <text x="680" y="578" text-anchor="middle" font-size="11" font-weight="500" fill="#8B7355">2:2:1</text>
-  <text x="470" y="606" font-size="13" fill="#8B7355">150g flour · 150g water · 75g starter</text>
-  <text x="470" y="628" font-size="13" fill="#5E8A50">Peaked at 5.1h</text>
-
-  <!-- Scroll indicator -->
-  <text x="806" y="680" text-anchor="middle" font-size="12" fill="#D9CEBD">· · ·</text>
 
 </svg>
