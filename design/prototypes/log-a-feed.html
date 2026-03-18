@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1194, initial-scale=1">
+<title>Fournil — Log a Feed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --parchment:        #FEFBF5;
+    --parchment-warm:   #FAF5EC;
+    --flour-dust:       #F2EBE0;
+    --flour-dust-deep:  #E4D9C8;
+    --crust-brown:      #4A3228;
+    --crust-medium:     #6B4D3E;
+    --wheat-field:      #8B7355;
+    --wheat-light:      #A89478;
+    --golden-crust:     #C07A2E;
+    --golden-tint:      #FDF6EC;
+    --golden-glow:      rgba(192, 122, 46, 0.08);
+    --sage:             #7A9178;
+    --sage-bg:          rgba(122, 145, 120, 0.12);
+    --shadow-sm:        0 1px 3px rgba(74, 50, 40, 0.06);
+    --shadow-md:        0 3px 10px rgba(74, 50, 40, 0.08);
+    --shadow-lg:        0 8px 28px rgba(74, 50, 40, 0.12);
+    --shadow-golden:    0 4px 16px rgba(192, 122, 46, 0.22);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--parchment);
+    color: var(--crust-brown);
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Grain texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ===== BACKDROP ===== */
+  .backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(42, 26, 16, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease;
+    z-index: 100;
+  }
+
+  .backdrop.dismissing {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .backdrop.dismissing .modal {
+    transform: translateY(16px) scale(0.98);
+    opacity: 0;
+  }
+
+  /* ===== MODAL ===== */
+  .modal {
+    width: 520px;
+    max-height: min(762px, 92vh);
+    background: var(--parchment);
+    border-radius: 16px;
+    border: 0.5px solid #E5DDD0;
+    box-shadow: 0 24px 64px rgba(42, 26, 16, 0.38), 0 8px 24px rgba(42, 26, 16, 0.14);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  /* ===== DRAG HANDLE ===== */
+  .drag-handle {
+    width: 50px;
+    height: 4px;
+    background: #D9CEBD;
+    border-radius: 2px;
+    margin: 10px auto 0;
+    flex-shrink: 0;
+  }
+
+  /* ===== HEADER ===== */
+  .modal-header {
+    padding: 12px 28px 0;
+    flex-shrink: 0;
+  }
+
+  .modal-title {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--crust-brown);
+    text-align: center;
+    letter-spacing: 0.01em;
+  }
+
+  .modal-subtitle {
+    font-size: 12px;
+    color: var(--wheat-field);
+    text-align: center;
+    margin-top: 2px;
+  }
+
+  .header-divider {
+    height: 1px;
+    background: #E5DDD0;
+    margin: 12px 0 0;
+  }
+
+  /* ===== SCROLLABLE BODY ===== */
+  .modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 28px;
+    overscroll-behavior: contain;
+  }
+
+  .modal-body::-webkit-scrollbar { width: 3px; }
+  .modal-body::-webkit-scrollbar-track { background: transparent; }
+  .modal-body::-webkit-scrollbar-thumb { background: var(--flour-dust-deep); border-radius: 2px; }
+
+  /* ===== SECTION LABELS ===== */
+  .section-label {
+    font-family: 'Fraunces', serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--wheat-field);
+    margin-top: 20px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .section-label .hint {
+    font-family: 'Source Serif 4', serif;
+    font-size: 9px;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--wheat-light);
+  }
+
+  .section-divider {
+    height: 1px;
+    background: #E5DDD0;
+    margin: 20px 0;
+  }
+
+  /* ===== CHAIN UX ===== */
+  .chain-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .chain-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .chain-pill {
+    height: 28px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0 14px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .chain-pill-left {
+    background: var(--flour-dust);
+    border: 1px solid #D9CEBD;
+  }
+
+  .chain-pill-right {
+    background: var(--golden-tint);
+    border: 1.5px solid var(--golden-crust);
+  }
+
+  .chain-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .chain-pill-text {
+    font-size: 11px;
+    color: var(--crust-brown);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .chain-pill-right .chain-pill-text { font-weight: 600; }
+
+  .chain-pill-right .chain-time {
+    font-size: 10px;
+    color: var(--wheat-field);
+    font-weight: 400;
+  }
+
+  /* Connector lines + button */
+  .chain-line {
+    flex: 1;
+    height: 1.5px;
+    background: var(--golden-crust);
+    transition: opacity 0.25s ease;
+  }
+
+  .chain-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--flour-dust);
+    border: 1.5px solid var(--golden-crust);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 11px;
+    color: var(--wheat-field);
+    flex-shrink: 0;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    user-select: none;
+    -webkit-user-select: none;
+    line-height: 1;
+  }
+
+  .chain-btn:active { transform: scale(0.9); }
+
+  /* Disconnected state */
+  .chain-container.disconnected .chain-line {
+    opacity: 0;
+  }
+
+  .chain-container.disconnected .chain-btn {
+    border-color: var(--flour-dust-deep);
+    font-size: 13px;
+  }
+
+  .chain-label {
+    font-family: 'Source Serif 4', serif;
+    font-size: 10px;
+    font-style: italic;
+    color: var(--golden-crust);
+    transition: color 0.2s ease;
+  }
+
+  .chain-container.disconnected .chain-label {
+    color: var(--wheat-field);
+  }
+
+  /* Observations */
+  .obs-label {
+    font-size: 11px;
+    color: var(--wheat-light);
+    margin-top: 14px;
+    margin-bottom: 6px;
+    font-style: italic;
+  }
+
+  textarea {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #D9CEBD;
+    background: white;
+    padding: 9px 12px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 13px;
+    color: var(--crust-brown);
+    resize: none;
+    outline: none;
+    transition: border-color 0.15s ease;
+    line-height: 1.55;
+  }
+
+  textarea:focus { border-color: var(--golden-crust); }
+  textarea::placeholder { color: var(--wheat-light); font-style: italic; }
+
+  /* ===== PRESETS ===== */
+  .preset-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+
+  .preset-card {
+    border-radius: 8px;
+    padding: 10px 12px;
+    text-align: center;
+    cursor: pointer;
+    background: var(--flour-dust);
+    border: 1.5px solid var(--flour-dust-deep);
+    transition: all 0.15s ease;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .preset-card:active { transform: scale(0.97); }
+
+  .preset-card.selected {
+    background: var(--golden-tint);
+    border-color: var(--golden-crust);
+  }
+
+  .preset-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--crust-brown);
+    margin-bottom: 3px;
+  }
+
+  .preset-ratio {
+    font-family: 'Fira Mono', monospace;
+    font-size: 10px;
+    color: var(--wheat-field);
+    letter-spacing: 0.05em;
+  }
+
+  .preset-card.selected .preset-ratio { color: var(--golden-crust); }
+
+  /* ===== FLOUR ROWS ===== */
+  .flour-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .flour-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .flour-select {
+    flex: 1;
+    height: 36px;
+    border-radius: 6px;
+    border: 1px solid #D9CEBD;
+    background: white;
+    padding: 0 28px 0 10px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 13px;
+    color: var(--crust-brown);
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238B7355' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    transition: border-color 0.15s ease;
+  }
+
+  .flour-select:focus { border-color: var(--golden-crust); }
+
+  .flour-grams-wrap {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+
+  .flour-grams {
+    width: 72px;
+    height: 36px;
+    border-radius: 6px;
+    border: 1px solid #D9CEBD;
+    background: white;
+    text-align: center;
+    font-family: 'Fira Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--crust-brown);
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+
+  .flour-grams:focus { border-color: var(--golden-crust); }
+
+  .unit-label {
+    font-size: 12px;
+    color: var(--wheat-field);
+    flex-shrink: 0;
+  }
+
+  .flour-remove {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    color: var(--flour-dust-deep);
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: color 0.15s ease, background 0.15s ease;
+    line-height: 1;
+  }
+
+  .flour-remove:hover {
+    color: var(--wheat-field);
+    background: var(--flour-dust);
+  }
+
+  .flour-remove.hidden { visibility: hidden; pointer-events: none; }
+
+  .add-flour-btn {
+    background: none;
+    border: none;
+    font-family: 'Source Serif 4', serif;
+    font-size: 13px;
+    color: var(--golden-crust);
+    cursor: pointer;
+    padding: 8px 0 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    transition: opacity 0.15s ease;
+  }
+
+  .add-flour-btn:hover { opacity: 0.7; }
+
+  /* ===== WATER ===== */
+  .water-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .number-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .number-input {
+    height: 36px;
+    border-radius: 6px;
+    border: 1px solid #D9CEBD;
+    background: white;
+    text-align: center;
+    font-family: 'Fira Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--crust-brown);
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+
+  .number-input:focus { border-color: var(--golden-crust); }
+  .number-input.w-72 { width: 72px; }
+  .number-input.w-58 { width: 58px; }
+
+  /* Custom radio */
+  .radio-group {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .radio-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--crust-brown);
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .radio-label input[type="radio"] { display: none; }
+
+  .radio-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid var(--flour-dust-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: border-color 0.15s ease;
+  }
+
+  .radio-dot::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--golden-crust);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  .radio-label input[type="radio"]:checked + .radio-dot { border-color: var(--golden-crust); }
+  .radio-label input[type="radio"]:checked + .radio-dot::after { opacity: 1; }
+
+  .water-temp-group {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-left: auto;
+  }
+
+  .temp-label {
+    font-size: 12px;
+    color: var(--wheat-field);
+  }
+
+  /* ===== ADD DETAILS TRAY ===== */
+  .details-tray {
+    background: #F0E9DE;
+    border-radius: 21px;
+    padding: 4px;
+    display: flex;
+    gap: 4px;
+  }
+
+  .detail-pill {
+    flex: 1;
+    height: 34px;
+    border-radius: 17px;
+    border: none;
+    background: var(--parchment);
+    color: var(--wheat-field);
+    font-family: 'Source Serif 4', serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .detail-pill.active {
+    background: var(--golden-crust);
+    color: white;
+    font-weight: 600;
+  }
+
+  .detail-pill:active { transform: scale(0.96); }
+
+  /* Detail expanded cards */
+  .detail-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 0;
+    overflow: hidden;
+  }
+
+  .detail-card {
+    position: relative;
+    background: var(--golden-tint);
+    border-radius: 8px;
+    padding: 0 14px 0 18px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.28s ease, opacity 0.2s ease, margin-top 0.2s ease, padding-top 0.2s ease, padding-bottom 0.2s ease;
+    margin-top: 0;
+  }
+
+  .detail-card.visible {
+    max-height: 100px;
+    opacity: 1;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin-top: 8px;
+  }
+
+  .detail-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--golden-crust);
+    border-radius: 1.5px 0 0 1.5px;
+  }
+
+  /* Discard card */
+  .discard-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .check-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--crust-brown);
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .check-label input[type="checkbox"] { display: none; }
+
+  .check-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 1.5px solid var(--golden-crust);
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: transparent;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .check-label input[type="checkbox"]:checked + .check-box {
+    background: var(--golden-crust);
+    color: white;
+  }
+
+  .discard-amount {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+  }
+
+  .discard-amount label {
+    font-size: 12px;
+    color: var(--wheat-field);
+  }
+
+  .discard-grams {
+    width: 58px;
+    height: 26px;
+    border-radius: 4px;
+    border: 1px solid #D9CEBD;
+    background: white;
+    text-align: center;
+    font-family: 'Fira Mono', monospace;
+    font-size: 12px;
+    color: var(--crust-brown);
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+
+  .discard-grams:focus { border-color: var(--golden-crust); }
+
+  /* Photos card */
+  .add-photo-btn {
+    background: white;
+    border: 1.5px dashed var(--flour-dust-deep);
+    border-radius: 8px;
+    padding: 9px 16px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 13px;
+    color: var(--wheat-field);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .add-photo-btn:hover {
+    border-color: var(--golden-crust);
+    color: var(--golden-crust);
+  }
+
+  /* Temps card */
+  .temps-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .temp-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .temp-item label {
+    font-size: 11px;
+    color: var(--wheat-field);
+    white-space: nowrap;
+  }
+
+  .temp-input-sm {
+    width: 54px;
+    height: 28px;
+    border-radius: 5px;
+    border: 1px solid #D9CEBD;
+    background: white;
+    text-align: center;
+    font-family: 'Fira Mono', monospace;
+    font-size: 13px;
+    color: var(--crust-brown);
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+
+  .temp-input-sm:focus { border-color: var(--golden-crust); }
+
+  /* ===== WHEN ===== */
+  .when-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .when-now-time {
+    font-family: 'Fira Mono', monospace;
+    font-size: 11px;
+    color: var(--wheat-field);
+  }
+
+  .when-earlier-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 0;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease, opacity 0.2s ease, margin-top 0.2s ease;
+  }
+
+  .when-earlier-row.visible {
+    max-height: 50px;
+    opacity: 1;
+    margin-top: 10px;
+  }
+
+  .date-input, .time-input {
+    height: 34px;
+    border-radius: 6px;
+    border: 1px solid #D9CEBD;
+    background: white;
+    padding: 0 10px;
+    font-family: 'Fira Mono', monospace;
+    font-size: 12px;
+    color: var(--crust-brown);
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+
+  .date-input:focus, .time-input:focus { border-color: var(--golden-crust); }
+  .date-input { width: 148px; }
+  .time-input { width: 110px; }
+
+  /* ===== FOOTER ===== */
+  .modal-footer {
+    flex-shrink: 0;
+    border-top: 1px solid #E5DDD0;
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--parchment);
+  }
+
+  .cancel-btn {
+    background: none;
+    border: none;
+    font-family: 'Source Serif 4', serif;
+    font-size: 14px;
+    color: var(--wheat-field);
+    cursor: pointer;
+    padding: 8px 4px;
+    transition: color 0.15s ease;
+  }
+
+  .cancel-btn:hover { color: var(--crust-medium); }
+
+  .save-btn {
+    min-width: 120px;
+    height: 42px;
+    border-radius: 10px;
+    border: none;
+    background: var(--golden-crust);
+    color: white;
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0 24px;
+    box-shadow: var(--shadow-golden);
+    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+    letter-spacing: 0.01em;
+  }
+
+  .save-btn:active { transform: scale(0.97); }
+
+  .save-btn.success {
+    background: var(--sage);
+    box-shadow: 0 4px 16px rgba(122, 145, 120, 0.3);
+  }
+
+  /* Bottom spacer in body */
+  .body-spacer { height: 16px; }
+</style>
+</head>
+<body>
+
+<div class="backdrop" id="backdrop">
+  <div class="modal" id="modal">
+
+    <!-- Drag handle -->
+    <div class="drag-handle"></div>
+
+    <!-- Modal header -->
+    <div class="modal-header">
+      <div class="modal-title">Log a Feed</div>
+      <div class="modal-subtitle">Rye Baby</div>
+      <div class="header-divider"></div>
+    </div>
+
+    <!-- Scrollable body -->
+    <div class="modal-body">
+
+      <!-- 1. PREVIOUS FEED -->
+      <div class="section-label">Previous Feed</div>
+
+      <div class="chain-container" id="chain-container">
+        <div class="chain-row">
+          <!-- Left pill: previous feed -->
+          <div class="chain-pill chain-pill-left">
+            <div class="chain-dot" style="background: var(--sage);"></div>
+            <span class="chain-pill-text">Mar 17, 7:00 AM</span>
+          </div>
+          <!-- Connector: left line + button + right line -->
+          <div class="chain-line" id="chain-line-l"></div>
+          <button class="chain-btn" id="chain-btn" onclick="toggleChain()" aria-label="Disconnect chain">✕</button>
+          <div class="chain-line" id="chain-line-r"></div>
+          <!-- Right pill: this feed -->
+          <div class="chain-pill chain-pill-right">
+            <div class="chain-dot" style="background: var(--golden-crust);"></div>
+            <span class="chain-pill-text">This feed</span>
+            <span class="chain-time"> · Now</span>
+          </div>
+        </div>
+        <span class="chain-label" id="chain-label">from previous feed</span>
+      </div>
+
+      <!-- Observations — always visible -->
+      <div class="obs-label">How did the previous cycle go?</div>
+      <textarea rows="3" placeholder="Doubled nicely in ~5h, good aroma…"></textarea>
+
+      <div class="section-divider"></div>
+
+      <!-- 2. PRESETS -->
+      <div class="section-label">Preset</div>
+      <div class="preset-row">
+        <div class="preset-card selected" onclick="selectPreset('standard', this)">
+          <div class="preset-name">Standard</div>
+          <div class="preset-ratio">2 : 2 : 1</div>
+        </div>
+        <div class="preset-card" onclick="selectPreset('overnight', this)">
+          <div class="preset-name">Overnight</div>
+          <div class="preset-ratio">20 : 20 : 1</div>
+        </div>
+        <div class="preset-card" onclick="selectPreset('revival', this)">
+          <div class="preset-name">Revival</div>
+          <div class="preset-ratio">Protocol</div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- 3. FLOUR(S) -->
+      <div class="section-label">Flour(s) <span class="hint">from last feed</span></div>
+      <div class="flour-rows" id="flour-rows"></div>
+      <button class="add-flour-btn" onclick="addFlourRow()">+ Add Flour</button>
+
+      <div class="section-divider"></div>
+
+      <!-- 4. WATER -->
+      <div class="section-label">Water</div>
+      <div class="water-row">
+        <div class="number-input-wrap">
+          <input type="number" class="number-input w-72" id="water-amount" value="150" min="0" max="9999" oninput="deselectPreset()">
+          <span class="unit-label">g</span>
+        </div>
+        <div class="radio-group">
+          <label class="radio-label">
+            <input type="radio" name="water-type" value="tap" checked>
+            <span class="radio-dot"></span>
+            Tap
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="water-type" value="filtered">
+            <span class="radio-dot"></span>
+            Filtered
+          </label>
+        </div>
+        <div class="water-temp-group">
+          <span class="temp-label">Temp:</span>
+          <input type="number" class="number-input w-58" value="80" min="0" max="212">
+          <span class="unit-label">°F</span>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- 5. ADD DETAILS -->
+      <div class="section-label">Add Details</div>
+      <div class="details-tray">
+        <button class="detail-pill" onclick="toggleDetail('discard', this)">Discard</button>
+        <button class="detail-pill" onclick="toggleDetail('photos', this)">Photos</button>
+        <button class="detail-pill" onclick="toggleDetail('temps', this)">Temps</button>
+        <button class="detail-pill" onclick="toggleDetail('notes', this)">Notes</button>
+      </div>
+
+      <div class="detail-cards">
+
+        <!-- Discard card -->
+        <div class="detail-card" id="card-discard">
+          <div class="discard-row">
+            <label class="check-label">
+              <input type="checkbox" id="discard-saved">
+              <span class="check-box">✓</span>
+              Saved discard
+            </label>
+            <div class="discard-amount">
+              <label for="discard-grams">Amount:</label>
+              <input type="number" class="discard-grams" id="discard-grams" placeholder="75" min="0" max="9999">
+              <span class="unit-label">g</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Photos card -->
+        <div class="detail-card" id="card-photos">
+          <button class="add-photo-btn">
+            <span>📷</span> Add Photo
+          </button>
+        </div>
+
+        <!-- Temps card -->
+        <div class="detail-card" id="card-temps">
+          <div class="temps-row">
+            <div class="temp-item">
+              <label>Starter</label>
+              <input type="number" class="temp-input-sm" placeholder="72" min="0" max="212">
+              <span class="unit-label">°F</span>
+            </div>
+            <div class="temp-item">
+              <label>Ambient</label>
+              <input type="number" class="temp-input-sm" placeholder="68" min="0" max="212">
+              <span class="unit-label">°F</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes card -->
+        <div class="detail-card" id="card-notes" style="max-height: 0;">
+          <textarea rows="2" placeholder="Any other notes…"></textarea>
+        </div>
+
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- 6. WHEN -->
+      <div class="section-label">When</div>
+      <div class="when-row">
+        <label class="radio-label">
+          <input type="radio" name="when" value="now" checked onchange="onWhenChange(this)">
+          <span class="radio-dot"></span>
+          Now
+          <span class="when-now-time" id="when-now-time"></span>
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="when" value="earlier" onchange="onWhenChange(this)">
+          <span class="radio-dot"></span>
+          Earlier…
+        </label>
+      </div>
+      <div class="when-earlier-row" id="when-earlier-row">
+        <input type="date" class="date-input" id="when-date">
+        <input type="time" class="time-input" id="when-time">
+      </div>
+
+      <div class="body-spacer"></div>
+    </div><!-- /modal-body -->
+
+    <!-- Sticky footer -->
+    <div class="modal-footer">
+      <button class="cancel-btn" onclick="dismissModal()">Cancel</button>
+      <button class="save-btn" id="save-btn" onclick="saveFeed()">Save Feed</button>
+    </div>
+
+  </div><!-- /modal -->
+</div><!-- /backdrop -->
+
+<script>
+// ===== CHAIN UX =====
+var chainConnected = true;
+
+function toggleChain() {
+  chainConnected = !chainConnected;
+  var container = document.getElementById('chain-container');
+  var btn = document.getElementById('chain-btn');
+  var label = document.getElementById('chain-label');
+
+  if (chainConnected) {
+    container.classList.remove('disconnected');
+    btn.textContent = '✕';
+    btn.setAttribute('aria-label', 'Disconnect chain');
+    label.textContent = 'from previous feed';
+  } else {
+    container.classList.add('disconnected');
+    btn.innerHTML = '&#8635;';
+    btn.setAttribute('aria-label', 'Reconnect chain');
+    label.textContent = 'missed a feed';
+  }
+}
+
+// ===== PRESETS =====
+var presets = {
+  standard:  { flours: [['All-Purpose', 125], ['Rye', 25]], water: 150 },
+  overnight: { flours: [['All-Purpose', 125], ['Rye', 25]], water: 150 },
+  revival:   { flours: [['All-Purpose', 50]],               water: 50  }
+};
+
+function selectPreset(key, el) {
+  document.querySelectorAll('.preset-card').forEach(function(c) { c.classList.remove('selected'); });
+  el.classList.add('selected');
+  var p = presets[key];
+  setFlourRows(p.flours);
+  document.getElementById('water-amount').value = p.water;
+}
+
+function deselectPreset() {
+  document.querySelectorAll('.preset-card').forEach(function(c) { c.classList.remove('selected'); });
+}
+
+// ===== FLOUR ROWS =====
+var flourOptions = ['All-Purpose', 'Bread Flour', 'Whole Wheat', 'Rye', 'Spelt'];
+
+function buildFlourRow(type, grams) {
+  var row = document.createElement('div');
+  row.className = 'flour-row';
+
+  // Select
+  var sel = document.createElement('select');
+  sel.className = 'flour-select';
+  flourOptions.forEach(function(opt) {
+    var o = document.createElement('option');
+    o.value = opt;
+    o.textContent = opt;
+    if (opt === type) o.selected = true;
+    sel.appendChild(o);
+  });
+  sel.addEventListener('change', deselectPreset);
+
+  // Grams input wrapper
+  var wrap = document.createElement('div');
+  wrap.className = 'flour-grams-wrap';
+
+  var inp = document.createElement('input');
+  inp.type = 'number';
+  inp.className = 'flour-grams';
+  if (grams !== '') inp.value = grams;
+  inp.min = 0;
+  inp.max = 9999;
+  inp.placeholder = 'g';
+  inp.addEventListener('input', deselectPreset);
+
+  var unit = document.createElement('span');
+  unit.className = 'unit-label';
+  unit.textContent = 'g';
+
+  wrap.appendChild(inp);
+  wrap.appendChild(unit);
+
+  // Remove button
+  var rm = document.createElement('button');
+  rm.className = 'flour-remove';
+  rm.innerHTML = '&#10005;';
+  rm.setAttribute('aria-label', 'Remove flour');
+  rm.addEventListener('click', function() {
+    row.remove();
+    updateRemoveBtns();
+    deselectPreset();
+  });
+
+  row.appendChild(sel);
+  row.appendChild(wrap);
+  row.appendChild(rm);
+  return row;
+}
+
+function updateRemoveBtns() {
+  var rows = document.querySelectorAll('#flour-rows .flour-row');
+  rows.forEach(function(r) {
+    var btn = r.querySelector('.flour-remove');
+    btn.classList.toggle('hidden', rows.length <= 1);
+  });
+}
+
+function addFlourRow(type, grams) {
+  var container = document.getElementById('flour-rows');
+  container.appendChild(buildFlourRow(type || 'All-Purpose', grams !== undefined ? grams : ''));
+  updateRemoveBtns();
+}
+
+function setFlourRows(flours) {
+  var container = document.getElementById('flour-rows');
+  container.innerHTML = '';
+  flours.forEach(function(f) { container.appendChild(buildFlourRow(f[0], f[1])); });
+  updateRemoveBtns();
+}
+
+// Initialize
+setFlourRows(presets.standard.flours);
+
+// ===== ADD DETAILS TRAY =====
+function toggleDetail(key, btn) {
+  var card = document.getElementById('card-' + key);
+  var active = btn.classList.contains('active');
+  btn.classList.toggle('active', !active);
+  card.classList.toggle('visible', !active);
+}
+
+// ===== WHEN =====
+function onWhenChange(radio) {
+  var earlier = radio.value === 'earlier';
+  document.getElementById('when-earlier-row').classList.toggle('visible', earlier);
+}
+
+// Init current time display and date/time inputs
+(function() {
+  var now = new Date();
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var h = now.getHours(), m = now.getMinutes();
+  var ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  var mStr = m < 10 ? '0' + m : '' + m;
+  document.getElementById('when-now-time').textContent =
+    '(' + months[now.getMonth()] + ' ' + now.getDate() + ', ' + h + ':' + mStr + ' ' + ampm + ')';
+
+  var yyyy = now.getFullYear();
+  var mm   = String(now.getMonth() + 1).padStart(2, '0');
+  var dd   = String(now.getDate()).padStart(2, '0');
+  document.getElementById('when-date').value = yyyy + '-' + mm + '-' + dd;
+  var hh = String(now.getHours()).padStart(2, '0');
+  var mi = String(now.getMinutes()).padStart(2, '0');
+  document.getElementById('when-time').value = hh + ':' + mi;
+})();
+
+// ===== SAVE / CANCEL =====
+function dismissModal() {
+  var backdrop = document.getElementById('backdrop');
+  backdrop.classList.add('dismissing');
+  setTimeout(function() { backdrop.classList.remove('dismissing'); }, 360);
+}
+
+function saveFeed() {
+  var btn = document.getElementById('save-btn');
+  if (btn.classList.contains('success')) return;
+  btn.classList.add('success');
+  btn.textContent = 'Saved ✓';
+  setTimeout(function() {
+    dismissModal();
+    setTimeout(function() {
+      btn.classList.remove('success');
+      btn.textContent = 'Save Feed';
+    }, 400);
+  }, 800);
+}
+</script>
+
+</body>
+</html>
