@@ -227,10 +227,10 @@
     border: 1px solid rgba(122, 145, 120, 0.2);
   }
 
-  .badge-planned {
-    background: var(--flour-dust);
-    color: var(--wheat-light);
-    border: 1px solid transparent;
+  .badge-wireframe {
+    background: rgba(139, 115, 85, 0.08);
+    color: var(--wheat-field);
+    border: 1px solid rgba(139, 115, 85, 0.2);
   }
 
   .card-arrow {
@@ -245,16 +245,25 @@
     transform: translateX(3px);
   }
 
-  /* Coming soon card */
-  .proto-card.coming-soon {
-    opacity: 0.55;
-    pointer-events: none;
+  /* Wireframe card */
+  .proto-card.wireframe-card {
     background: var(--parchment);
     border-style: dashed;
+    cursor: pointer;
   }
 
-  .proto-card.coming-soon::before {
-    display: none;
+  .proto-card.wireframe-card:hover {
+    border-color: var(--wheat-light);
+    border-style: solid;
+    box-shadow: 0 4px 20px rgba(139, 115, 85, 0.15);
+  }
+
+  .proto-card.wireframe-card::before {
+    background: linear-gradient(135deg, rgba(139, 115, 85, 0.05) 0%, transparent 60%);
+  }
+
+  .proto-card.wireframe-card .card-arrow {
+    color: var(--wheat-field);
   }
 
   /* Orientation hint for iPad */
@@ -306,6 +315,14 @@
   .proto-card:nth-child(4) { animation-delay: 0.15s; }
   .proto-card:nth-child(5) { animation-delay: 0.2s; }
   .proto-card:nth-child(6) { animation-delay: 0.25s; }
+  .proto-card:nth-child(7) { animation-delay: 0.3s; }
+  .proto-card:nth-child(8) { animation-delay: 0.35s; }
+  .proto-card:nth-child(9) { animation-delay: 0.4s; }
+  .proto-card:nth-child(10) { animation-delay: 0.45s; }
+  .proto-card:nth-child(11) { animation-delay: 0.5s; }
+  .proto-card:nth-child(12) { animation-delay: 0.55s; }
+  .proto-card:nth-child(13) { animation-delay: 0.6s; }
+  .proto-card:nth-child(14) { animation-delay: 0.65s; }
 
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(14px); }
@@ -314,6 +331,134 @@
 
   header {
     animation: fadeUp 0.4s ease backwards;
+  }
+
+  /* Lightbox */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(74, 50, 40, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+  }
+
+  .lightbox.open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .lightbox-inner {
+    position: relative;
+    background: white;
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+    width: min(1100px, 92vw);
+    max-height: 90vh;
+    overflow: auto;
+    animation: fadeUp 0.3s ease;
+  }
+
+  .lightbox-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--flour-dust);
+  }
+
+  .lightbox-title {
+    font-family: 'Fraunces', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--crust-brown);
+  }
+
+  .lightbox-close {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: var(--flour-dust);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--wheat-field);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+    line-height: 1;
+  }
+
+  .lightbox-close:hover {
+    background: var(--flour-dust-deep);
+  }
+
+  .lightbox-body {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .lightbox-body img {
+    width: 100%;
+    max-height: calc(90vh - 100px);
+    border-radius: 8px;
+    border: 1px solid var(--flour-dust);
+  }
+
+  .lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: white;
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--crust-brown);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+  }
+
+  .lightbox-nav:hover {
+    background: var(--flour-dust);
+  }
+
+  .lightbox-nav.prev { left: 12px; }
+  .lightbox-nav.next { right: 12px; }
+
+  .lightbox-dots {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    padding: 0 20px 16px;
+  }
+
+  .lightbox-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--flour-dust-deep);
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .lightbox-dot.active {
+    background: var(--golden-crust);
   }
 </style>
 </head>
@@ -342,8 +487,8 @@
     <div class="card-title">Bake Tab</div>
     <p class="card-desc">Formula selector, baker's math calculator, timeline planner, and ingredient scaling. Three scheduling modes: Start Now, Start At, Finish By.</p>
     <div class="card-meta">
-      <span class="card-badge badge-ready">✓ Ready</span>
-      <span class="card-arrow">→</span>
+      <span class="card-badge badge-ready">&#10003; Ready</span>
+      <span class="card-arrow">&rarr;</span>
     </div>
   </a>
 
@@ -352,41 +497,244 @@
     <div class="card-title">Bake Tracker</div>
     <p class="card-desc">Step-by-step guided bake with countdown timers, ingredient check-off, tools guidance, and shaping tips. Lives on top of the Bake tab during an active bake.</p>
     <div class="card-meta">
-      <span class="card-badge badge-ready">✓ Ready</span>
-      <span class="card-arrow">→</span>
+      <span class="card-badge badge-ready">&#10003; Ready</span>
+      <span class="card-arrow">&rarr;</span>
     </div>
   </a>
 
-  <div class="section-heading" style="margin-top: 8px;">Coming up</div>
+  <div class="section-heading" style="margin-top: 8px;">Wireframes</div>
 
-  <div class="proto-card coming-soon">
+  <div class="proto-card wireframe-card"
+       data-svg="design/wireframes/02-starter-tab.svg"
+       data-title="Starter Tab">
     <div class="card-eyebrow">Tab 01 · Starter</div>
-    <div class="card-title">Starter Tracker</div>
-    <p class="card-desc">Health indicator, feeding log with history, standard ratios (2:2:1, 20:20:1, revival protocol).</p>
+    <div class="card-title">Starter Tab</div>
+    <p class="card-desc">Multi-starter card grid with health indicator dots, feeding schedule, and quick-action buttons.</p>
     <div class="card-meta">
-      <span class="card-badge badge-planned">Planned</span>
+      <span class="card-badge badge-wireframe">&#9671; Wireframe</span>
+      <span class="card-arrow">&rarr;</span>
     </div>
   </div>
 
-  <div class="proto-card coming-soon">
+  <div class="proto-card wireframe-card"
+       data-svg="design/wireframes/09-starter-empty-state.svg"
+       data-title="Starter Empty State">
+    <div class="card-eyebrow">Tab 01 · Starter</div>
+    <div class="card-title">Starter Empty State</div>
+    <p class="card-desc">First-run experience with three onboarding paths: create a new starter, adopt an existing one, or find one nearby.</p>
+    <div class="card-meta">
+      <span class="card-badge badge-wireframe">&#9671; Wireframe</span>
+      <span class="card-arrow">&rarr;</span>
+    </div>
+  </div>
+
+  <div class="proto-card wireframe-card"
+       data-svg="design/wireframes/11-starter-details.svg"
+       data-title="Starter Details">
+    <div class="card-eyebrow">Tab 01 · Starter</div>
+    <div class="card-title">Starter Details</div>
+    <p class="card-desc">Feeding history timeline, health metrics, bake history, and starter profile with age and lineage.</p>
+    <div class="card-meta">
+      <span class="card-badge badge-wireframe">&#9671; Wireframe</span>
+      <span class="card-arrow">&rarr;</span>
+    </div>
+  </div>
+
+  <div class="proto-card wireframe-card"
+       data-svg="design/wireframes/13-create-starter.svg"
+       data-title="Create a Starter">
+    <div class="card-eyebrow">Tab 01 · Starter</div>
+    <div class="card-title">Create a Starter</div>
+    <p class="card-desc">Name your starter, set its source and origin story, choose a flour type and feeding schedule.</p>
+    <div class="card-meta">
+      <span class="card-badge badge-wireframe">&#9671; Wireframe</span>
+      <span class="card-arrow">&rarr;</span>
+    </div>
+  </div>
+
+  <div class="proto-card wireframe-card"
+       data-svg="design/wireframes/15-find-a-starter.svg"
+       data-title="Find a Starter">
+    <div class="card-eyebrow">Tab 01 · Starter</div>
+    <div class="card-title">Find a Starter</div>
+    <p class="card-desc">Buy online, join a community exchange, or find local bakers sharing starter cultures.</p>
+    <div class="card-meta">
+      <span class="card-badge badge-wireframe">&#9671; Wireframe</span>
+      <span class="card-arrow">&rarr;</span>
+    </div>
+  </div>
+
+  <div class="proto-card wireframe-card"
+       data-svg="design/wireframes/06-log-a-feed.svg,design/wireframes/06a-log-feed-no-extras.svg,design/wireframes/06b-log-feed-one-extra.svg,design/wireframes/06c-log-feed-all-extras.svg"
+       data-title="Log a Feed,Log a Feed — No Extras,Log a Feed — One Extra,Log a Feed — All Extras">
+    <div class="card-eyebrow">Sheet · Starter</div>
+    <div class="card-title">Log a Feed</div>
+    <p class="card-desc">Full feeding form with presets for common ratios, temperature logging, and optional extras. Three layout variants.</p>
+    <div class="card-meta">
+      <span class="card-badge badge-wireframe">&#9671; Wireframe · 4 variants</span>
+      <span class="card-arrow">&rarr;</span>
+    </div>
+  </div>
+
+  <div class="proto-card wireframe-card"
+       data-svg="design/wireframes/03-bread-log-tab.svg"
+       data-title="Bread Log">
     <div class="card-eyebrow">Tab 03 · Log</div>
     <div class="card-title">Bread Log</div>
-    <p class="card-desc">Record completed bakes with photos, notes, and multi-dimensional ratings (crumb, crust, flavor, rise).</p>
+    <p class="card-desc">Photo grid of completed bakes with filter bar for date, formula, and rating. Tap to view details.</p>
     <div class="card-meta">
-      <span class="card-badge badge-planned">Planned</span>
+      <span class="card-badge badge-wireframe">&#9671; Wireframe</span>
+      <span class="card-arrow">&rarr;</span>
+    </div>
+  </div>
+
+  <div class="proto-card wireframe-card"
+       data-svg="design/wireframes/07-bake-detail.svg"
+       data-title="Bake Detail">
+    <div class="card-eyebrow">Detail · Bake</div>
+    <div class="card-title">Bake Detail</div>
+    <p class="card-desc">Photo carousel, multi-dimensional ratings (crumb, crust, flavor, rise), tasting notes, and a "Bake Again" action.</p>
+    <div class="card-meta">
+      <span class="card-badge badge-wireframe">&#9671; Wireframe</span>
+      <span class="card-arrow">&rarr;</span>
+    </div>
+  </div>
+
+  <div class="proto-card wireframe-card"
+       data-svg="design/wireframes/08-bake-entry-form.svg"
+       data-title="Bake Entry Form">
+    <div class="card-eyebrow">Sheet · Bake</div>
+    <div class="card-title">Bake Entry Form</div>
+    <p class="card-desc">Log a completed bake with photos, formula used, ratings, and tasting notes.</p>
+    <div class="card-meta">
+      <span class="card-badge badge-wireframe">&#9671; Wireframe</span>
+      <span class="card-arrow">&rarr;</span>
+    </div>
+  </div>
+
+  <div class="proto-card wireframe-card"
+       data-svg="design/wireframes/05-settings-screen.svg"
+       data-title="Settings">
+    <div class="card-eyebrow">Screen · Settings</div>
+    <div class="card-title">Settings</div>
+    <p class="card-desc">Split-view sidebar with preferences, equipment guide, unit toggles, and about section.</p>
+    <div class="card-meta">
+      <span class="card-badge badge-wireframe">&#9671; Wireframe</span>
+      <span class="card-arrow">&rarr;</span>
     </div>
   </div>
 
 </div>
 
 <div class="orientation-hint">
-  🍞 Best experienced in landscape orientation on iPad
+  &#x1F35E; Best experienced in landscape orientation on iPad
 </div>
 
 <footer>
   <span class="footer-text">Inspired by Andrew Janjigian's Sourdough Lifestyle &amp; Chad Robertson's Tartine Bread</span>
-  <span class="footer-credit">FOURNIL · v0.1</span>
+  <span class="footer-credit">FOURNIL · v0.2</span>
 </footer>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <div class="lightbox-header">
+      <span class="lightbox-title" id="lightbox-title"></span>
+      <button class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+    </div>
+    <div class="lightbox-body">
+      <button class="lightbox-nav prev" id="lightbox-prev" aria-label="Previous">&#8592;</button>
+      <img id="lightbox-img" src="" alt="">
+      <button class="lightbox-nav next" id="lightbox-next" aria-label="Next">&#8594;</button>
+    </div>
+    <div class="lightbox-dots" id="lightbox-dots"></div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var lightbox = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lightbox-img');
+  var lbTitle = document.getElementById('lightbox-title');
+  var lbDots = document.getElementById('lightbox-dots');
+  var lbPrev = document.getElementById('lightbox-prev');
+  var lbNext = document.getElementById('lightbox-next');
+
+  var svgs = [], titles = [], currentIdx = 0;
+
+  function renderSlide() {
+    lbImg.src = svgs[currentIdx];
+    lbImg.alt = titles[currentIdx];
+    lbTitle.textContent = titles[currentIdx];
+    var multi = svgs.length > 1;
+    lbPrev.style.display = multi ? '' : 'none';
+    lbNext.style.display = multi ? '' : 'none';
+    lbDots.innerHTML = '';
+    if (multi) {
+      svgs.forEach(function(_, i) {
+        var dot = document.createElement('span');
+        dot.className = 'lightbox-dot' + (i === currentIdx ? ' active' : '');
+        dot.addEventListener('click', function() { currentIdx = i; renderSlide(); });
+        lbDots.appendChild(dot);
+      });
+    }
+  }
+
+  function openLightbox(svgList, titleList) {
+    svgs = svgList;
+    titles = titleList;
+    currentIdx = 0;
+    renderSlide();
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.wireframe-card').forEach(function(card) {
+    card.addEventListener('click', function(e) {
+      e.preventDefault();
+      var s = card.getAttribute('data-svg').split(',');
+      var t = card.getAttribute('data-title').split(',');
+      openLightbox(s, t);
+    });
+  });
+
+  document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+
+  lightbox.addEventListener('click', function(e) {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft' && svgs.length > 1) {
+      currentIdx = (currentIdx - 1 + svgs.length) % svgs.length;
+      renderSlide();
+    }
+    if (e.key === 'ArrowRight' && svgs.length > 1) {
+      currentIdx = (currentIdx + 1) % svgs.length;
+      renderSlide();
+    }
+  });
+
+  lbPrev.addEventListener('click', function(e) {
+    e.stopPropagation();
+    currentIdx = (currentIdx - 1 + svgs.length) % svgs.length;
+    renderSlide();
+  });
+
+  lbNext.addEventListener('click', function(e) {
+    e.stopPropagation();
+    currentIdx = (currentIdx + 1) % svgs.length;
+    renderSlide();
+  });
+})();
+</script>
 
 </body>
 </html>

@@ -52,12 +52,12 @@ Settings ⚙️ → Inspiration, Preferences, Equipment Guide, About Fournil
 | `03-bread-log-tab.svg` | Bread Log | Photo grid with filter bar |
 | `04-bake-tracker.svg` | Bake Tracker | Full-screen during active bake |
 | `05-settings-screen.svg` | Settings | Split-view sidebar + detail |
-| `06-feed-sheet.svg` | Legacy feed sheet | Superseded by 12-log-a-feed.svg |
+| `06-log-a-feed.svg` | Log a Feed | Modal sheet with chain UX, progressive disclosure |
+| `06a/b/c-log-feed-*.svg` | Log a Feed variants | Exploration: no extras / one / all expanded |
 | `07-bake-detail.svg` | Bake Detail | Photo carousel, ratings, "Bake this Again" CTA |
 | `08-bake-entry-form.svg` | Bake Entry Form | Log a completed bake |
 | `09-starter-empty-state.svg` | Starter empty state | 3 onboarding buttons |
 | `11-starter-details.svg` | Starter Details | Feeding history, bake history, health |
-| `12-log-a-feed.svg` | Log a Feed | Full feeding form with presets |
 | `13-create-starter.svg` | Create a Starter | Name, source, description |
 | `15-find-a-starter.svg` | Find a Starter | Buy online, community links |
 
@@ -189,21 +189,42 @@ Three interchangeable styles (toggle: Arc / Slider / Steps):
 
 ---
 
-## Log a Feed (12-log-a-feed.svg)
+## Log a Feed (06-log-a-feed.svg)
 
-### Layout (two columns)
-- **Left**: Preset shortcuts (Standard/Overnight/Revival), Flour(s), Water, Previous feed chain + observations, Notes
-- **Right**: Temperatures, Discard, Photos, Timestamp
+### Presentation
+- Modal sheet over Starter Details (not full-screen)
+- Drag handle at top, dimmed backdrop
 
-### Preset Shortcuts
-- 3 tappable cards that auto-fill flour/water/starter amounts
-- Selecting a preset highlights it; modifying values deselects
+### Section Order (top to bottom)
+1. **Previous Feed** — chain toggle + observations (comes first)
+2. **Presets** — ratio shortcut cards (Standard / Overnight / Revival)
+3. **Flour(s)** — autocomplete with previously entered flours, defaults from last feed
+4. **Water** — amount, type (tap/filtered), temp
+5. **Add Details** — progressive disclosure toggle tray: Discard, Photos, Temps, Notes (TODO: refine toggle design)
+6. **When** — Now (default) / Earlier
+7. **Footer** — Cancel (text only, left) / Save Feed (large primary, bottom-right)
 
-### Previous Feed Chain
-- Radio: "Chained to last feed" (default, shows observations field) / "Missed a feed" (breaks chain)
+### Chain UX (Previous Feed Connection)
+Horizontal flow diagram with two pills side by side and a break/reconnect control between them:
+
+**Layout**: `[Prev feed pill] ——— (✕) ——— [This feed pill]`
+- Left pill: previous feed timestamp + green health dot
+- Center: connector lines on both sides of a circular break/reconnect button
+- Right pill: "This feed · Now" with amber dot and golden border
+- "from previous feed" label centered below the connector
+
+**Connected (default)**: amber connector lines, ✕ in center circle. Tap ✕ to disconnect.
+**Disconnected**: lines removed, ✕ swaps to reconnect icon, label changes to "missed a feed". Tap to reconnect.
+
+Observations on previous cycle are **always visible** regardless of chain state.
+
+### Flour Selector
+- Autocompletes any previously entered flour types
+- Prepopulated with 5 common: All-Purpose, Bread Flour, Whole Wheat, Rye, Spelt
+- Defaults to flours from the last feed of this starter
 
 ### Timestamp
-- Radio: "Now" (default) / "Earlier today" (reveals date picker)
+- Radio: "Now" (default, shows current time) / "Earlier…" (reveals date picker)
 
 ---
 

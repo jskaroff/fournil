@@ -1,4 +1,7 @@
-# Fournil - Requirements
+# Fournil - Requirements (LEGACY)
+
+> **This file is superseded.** Requirements are now decomposed by feature area in [`requirements/`](requirements/README.md).
+> This file is kept for reference but is no longer the source of truth.
 
 ## App Summary
 Fournil ("bakehouse" in French) is an iPad app for managing sourdough bread baking end-to-end.

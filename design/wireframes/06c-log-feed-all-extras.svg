@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1194 834"
+     font-family="'Source Serif 4', 'Georgia', serif" font-size="14">
+
+  <!-- Dimmed background -->
+  <rect width="1194" height="834" fill="#FEFBF5"/>
+  <rect width="1194" height="834" fill="#2A1A10" opacity="0.45"/>
+
+  <!-- ==================== MODAL ==================== -->
+  <!-- Previous Feed is collapsed in this state to make room -->
+  <rect x="337" y="37" width="520" height="781" rx="16" fill="#FEFBF5"
+        stroke="#E5DDD0" stroke-width="0.5"/>
+  <rect x="572" y="46" width="50" height="4" rx="2" fill="#D9CEBD"/>
+
+  <!-- State label -->
+  <text x="597" y="24" text-anchor="middle" font-size="11" fill="#B8A898"
+        font-style="italic">State: All extras expanded (Previous Feed collapsed)</text>
+
+  <!-- ==================== HEADER ==================== -->
+  <text x="597" y="80" text-anchor="middle" font-size="18" font-weight="700"
+        fill="#4A3228" font-family="'Fraunces', 'Georgia', serif">Log a Feed</text>
+  <text x="597" y="96" text-anchor="middle" font-size="12" fill="#8B7355">Rye Baby</text>
+  <line x1="357" y1="108" x2="837" y2="108" stroke="#E5DDD0"/>
+
+  <!-- ==================== PRESETS ==================== -->
+  <text x="357" y="128" font-size="10" font-weight="600" fill="#8B7355"
+        letter-spacing="1">PRESET</text>
+  <rect x="357" y="138" width="148" height="40" rx="8" fill="#FDF6EC"
+        stroke="#C07A2E" stroke-width="2"/>
+  <text x="431" y="155" text-anchor="middle" font-size="13" font-weight="600"
+        fill="#4A3228">Standard</text>
+  <text x="431" y="170" text-anchor="middle" font-size="11" fill="#C07A2E">2 : 2 : 1</text>
+  <rect x="515" y="138" width="148" height="40" rx="8" fill="#F2EBE0" stroke="#D9CEBD"/>
+  <text x="589" y="155" text-anchor="middle" font-size="13" fill="#4A3228">Overnight</text>
+  <text x="589" y="170" text-anchor="middle" font-size="11" fill="#8B7355">20 : 20 : 1</text>
+  <rect x="673" y="138" width="148" height="40" rx="8" fill="#F2EBE0" stroke="#D9CEBD"/>
+  <text x="747" y="155" text-anchor="middle" font-size="13" fill="#4A3228">Revival</text>
+  <text x="747" y="170" text-anchor="middle" font-size="11" fill="#8B7355">Protocol</text>
+
+  <!-- ==================== FLOUR(S) ==================== -->
+  <text x="357" y="202" font-size="10" font-weight="600" fill="#8B7355"
+        letter-spacing="1">FLOUR(S)</text>
+  <rect x="357" y="212" width="260" height="36" rx="6" fill="#FFFFFF" stroke="#D9CEBD"/>
+  <text x="373" y="234" font-size="13" fill="#4A3228">AP Flour</text>
+  <text x="601" y="234" text-anchor="end" font-size="11" fill="#8B7355">&#9660;</text>
+  <rect x="627" y="212" width="100" height="36" rx="6" fill="#FFFFFF" stroke="#D9CEBD"/>
+  <text x="677" y="234" text-anchor="middle" font-size="14" font-weight="600"
+        fill="#4A3228">125</text>
+  <text x="737" y="234" font-size="12" fill="#8B7355">g</text>
+  <rect x="357" y="256" width="260" height="36" rx="6" fill="#FFFFFF" stroke="#D9CEBD"/>
+  <text x="373" y="278" font-size="13" fill="#4A3228">Rye</text>
+  <text x="601" y="278" text-anchor="end" font-size="11" fill="#8B7355">&#9660;</text>
+  <rect x="627" y="256" width="100" height="36" rx="6" fill="#FFFFFF" stroke="#D9CEBD"/>
+  <text x="677" y="278" text-anchor="middle" font-size="14" font-weight="600"
+        fill="#4A3228">25</text>
+  <text x="737" y="278" font-size="12" fill="#8B7355">g</text>
+  <text x="753" y="280" font-size="14" fill="#D9CEBD">&#10005;</text>
+  <text x="357" y="310" font-size="13" fill="#C07A2E">+ Add Flour</text>
+
+  <!-- ==================== WATER ==================== -->
+  <text x="357" y="338" font-size="10" font-weight="600" fill="#8B7355"
+        letter-spacing="1">WATER</text>
+  <rect x="357" y="348" width="100" height="36" rx="6" fill="#FFFFFF" stroke="#D9CEBD"/>
+  <text x="407" y="370" text-anchor="middle" font-size="14" font-weight="600"
+        fill="#4A3228">150</text>
+  <text x="467" y="370" font-size="12" fill="#8B7355">g</text>
+  <circle cx="510" cy="366" r="7" fill="none" stroke="#C07A2E" stroke-width="1.5"/>
+  <circle cx="510" cy="366" r="3.5" fill="#C07A2E"/>
+  <text x="524" y="370" font-size="13" fill="#4A3228">Tap</text>
+  <circle cx="576" cy="366" r="7" fill="none" stroke="#D9CEBD" stroke-width="1.5"/>
+  <text x="590" y="370" font-size="13" fill="#8B7355">Filtered</text>
+  <text x="665" y="370" font-size="12" fill="#8B7355">Temp:</text>
+  <rect x="710" y="350" width="72" height="32" rx="6" fill="#FFFFFF" stroke="#D9CEBD"/>
+  <text x="746" y="370" text-anchor="middle" font-size="14" font-weight="600"
+        fill="#4A3228">80</text>
+  <text x="790" y="370" font-size="12" fill="#8B7355">°F</text>
+  <line x1="357" y1="396" x2="837" y2="396" stroke="#E5DDD0"/>
+
+  <!-- ==================== PREVIOUS FEED (COLLAPSED) ==================== -->
+  <text x="357" y="418" font-size="10" font-weight="600" fill="#8B7355"
+        letter-spacing="1">PREVIOUS FEED</text>
+  <!-- Right chevron = collapsed -->
+  <text x="462" y="418" font-size="11" fill="#8B7355">&#9654;</text>
+  <!-- Inline summary when collapsed -->
+  <text x="480" y="418" font-size="11" fill="#B8A898">Chained · Mar 17, 7:00 AM</text>
+  <line x1="357" y1="434" x2="837" y2="434" stroke="#E5DDD0"/>
+
+  <!-- ==================== ADD DETAILS — all active ==================== -->
+  <text x="357" y="454" font-size="10" font-weight="600" fill="#8B7355"
+        letter-spacing="1">ADD DETAILS</text>
+
+  <!-- Tray -->
+  <rect x="357" y="464" width="480" height="42" rx="21" fill="#F0E9DE"/>
+
+  <!-- Pill: Discard (ACTIVE) -->
+  <rect x="361" y="468" width="112" height="34" rx="17" fill="#C07A2E"/>
+  <text x="417" y="490" text-anchor="middle" font-size="12" font-weight="600"
+        fill="#FFFFFF">Discard</text>
+
+  <!-- Pill: Photos (ACTIVE) -->
+  <rect x="481" y="468" width="112" height="34" rx="17" fill="#C07A2E"/>
+  <text x="537" y="490" text-anchor="middle" font-size="12" font-weight="600"
+        fill="#FFFFFF">Photos</text>
+
+  <!-- Pill: Temps (ACTIVE) -->
+  <rect x="601" y="468" width="112" height="34" rx="17" fill="#C07A2E"/>
+  <text x="657" y="490" text-anchor="middle" font-size="12" font-weight="600"
+        fill="#FFFFFF">Temps</text>
+
+  <!-- Pill: Notes (ACTIVE) -->
+  <rect x="721" y="468" width="112" height="34" rx="17" fill="#C07A2E"/>
+  <text x="777" y="490" text-anchor="middle" font-size="12" font-weight="600"
+        fill="#FFFFFF">Notes</text>
+
+  <!-- ==================== Expanded: Discard card ==================== -->
+  <rect x="357" y="514" width="480" height="34" rx="8" fill="#FDF6EC"/>
+  <rect x="357" y="514" width="3" height="34" rx="1.5" fill="#C07A2E"/>
+  <rect x="373" y="522" width="18" height="18" rx="3" fill="#FFFFFF"
+        stroke="#C07A2E" stroke-width="1.5"/>
+  <text x="382" y="536" text-anchor="middle" font-size="12" fill="#C07A2E"
+        font-weight="700">&#10003;</text>
+  <text x="400" y="536" font-size="13" fill="#4A3228">Saved discard</text>
+  <text x="530" y="536" font-size="12" fill="#8B7355">Amount:</text>
+  <rect x="590" y="523" width="72" height="20" rx="4" fill="#FFFFFF" stroke="#D9CEBD"/>
+  <text x="626" y="537" text-anchor="middle" font-size="12" fill="#4A3228">75</text>
+  <text x="670" y="537" font-size="11" fill="#8B7355">g</text>
+
+  <!-- ==================== Expanded: Photos card ==================== -->
+  <rect x="357" y="554" width="480" height="56" rx="8" fill="#FDF6EC"/>
+  <rect x="357" y="554" width="3" height="56" rx="1.5" fill="#C07A2E"/>
+
+  <!-- Thumbnail 1 -->
+  <rect x="373" y="560" width="44" height="44" rx="4" fill="#F2EBE0"/>
+  <line x1="373" y1="560" x2="417" y2="604" stroke="#D9CEBD" stroke-width="0.5"/>
+  <line x1="417" y1="560" x2="373" y2="604" stroke="#D9CEBD" stroke-width="0.5"/>
+
+  <!-- Thumbnail 2 -->
+  <rect x="425" y="560" width="44" height="44" rx="4" fill="#F2EBE0"/>
+  <line x1="425" y1="560" x2="469" y2="604" stroke="#D9CEBD" stroke-width="0.5"/>
+  <line x1="469" y1="560" x2="425" y2="604" stroke="#D9CEBD" stroke-width="0.5"/>
+
+  <!-- Add photo -->
+  <rect x="477" y="560" width="44" height="44" rx="4" fill="none"
+        stroke="#D9CEBD" stroke-dasharray="3 2"/>
+  <text x="499" y="586" text-anchor="middle" font-size="18" fill="#D9CEBD">+</text>
+
+  <!-- ==================== Expanded: Temps card ==================== -->
+  <rect x="357" y="616" width="480" height="34" rx="8" fill="#FDF6EC"/>
+  <rect x="357" y="616" width="3" height="34" rx="1.5" fill="#C07A2E"/>
+
+  <text x="373" y="638" font-size="12" fill="#8B7355">Starter</text>
+  <rect x="430" y="623" width="68" height="20" rx="4" fill="#FFFFFF" stroke="#D9CEBD"/>
+  <text x="464" y="637" text-anchor="middle" font-size="12" fill="#B8A898">72</text>
+  <text x="506" y="637" font-size="11" fill="#8B7355">°F</text>
+
+  <text x="545" y="638" font-size="12" fill="#8B7355">Ambient</text>
+  <rect x="610" y="623" width="68" height="20" rx="4" fill="#FFFFFF" stroke="#D9CEBD"/>
+  <text x="644" y="637" text-anchor="middle" font-size="12" fill="#B8A898">70</text>
+  <text x="686" y="637" font-size="11" fill="#8B7355">°F</text>
+
+  <!-- ==================== Expanded: Notes card ==================== -->
+  <rect x="357" y="656" width="480" height="48" rx="8" fill="#FDF6EC"/>
+  <rect x="357" y="656" width="3" height="48" rx="1.5" fill="#C07A2E"/>
+
+  <rect x="373" y="662" width="448" height="36" rx="4" fill="#FFFFFF" stroke="#D9CEBD"/>
+  <text x="389" y="684" font-size="12" fill="#B8A898">Used KA bread flour + rye…</text>
+
+  <!-- ==================== WHEN ==================== -->
+  <line x1="357" y1="718" x2="837" y2="718" stroke="#E5DDD0"/>
+  <text x="357" y="738" font-size="10" font-weight="600" fill="#8B7355"
+        letter-spacing="1">WHEN</text>
+  <circle cx="369" cy="756" r="6" fill="none" stroke="#C07A2E" stroke-width="1.5"/>
+  <circle cx="369" cy="756" r="3" fill="#C07A2E"/>
+  <text x="384" y="760" font-size="13" fill="#4A3228">Now</text>
+  <text x="420" y="760" font-size="11" fill="#8B7355">(Mar 18, 8:30 AM)</text>
+  <circle cx="570" cy="756" r="6" fill="none" stroke="#D9CEBD" stroke-width="1.5"/>
+  <text x="585" y="760" font-size="13" fill="#8B7355">Earlier…</text>
+
+  <!-- ==================== FOOTER ==================== -->
+  <line x1="357" y1="778" x2="837" y2="778" stroke="#E5DDD0"/>
+  <text x="370" y="804" font-size="14" fill="#8B7355">Cancel</text>
+  <rect x="717" y="788" width="120" height="40" rx="10" fill="#C07A2E"/>
+  <text x="777" y="812" text-anchor="middle" font-size="16" font-weight="700"
+        fill="#FFFFFF">Save Feed</text>
+
+</svg>
