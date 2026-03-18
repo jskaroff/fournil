@@ -95,9 +95,134 @@ UNSELECTED                           SELECTED
 
 ---
 
+## Starter Card
+
+Used in: Starter tab (non-empty state)
+
+```
+┌─────────────────────────────────────┐
+│  🟢 Rye Baby                       │
+│                                     │
+│  Fed 6 hours ago                    │
+│  AP + Rye · 150g each              │
+│  Peaked at 4.5h                     │
+│                                     │
+│  ┌──────────┐                       │
+│  │  [photo] │                       │
+│  └──────────┘                       │
+└─────────────────────────────────────┘
+```
+
+- Health indicator dot (🟢/🟡/🔴) next to starter name
+- Name in Fraunces serif
+- Time since last feeding (relative)
+- Last feeding summary (flour types, amounts)
+- Last peak time (if recorded)
+- Thumbnail photo from most recent feeding (if available, otherwise placeholder)
+- Tap navigates to Starter Details
+- Long-press for context menu (Delete)
+- Card background: `flourDust` surface
+
+---
+
+## Starter Selector
+
+Used in: Plan tab, Bake Entry Form
+
+```
+COMPACT (Plan tab left column)
+┌─────────────────────────────────────┐
+│  🟢 Rye Baby                   ▼   │
+│     Fed 6 hours ago                 │
+└─────────────────────────────────────┘
+
+DROPDOWN (Bake Entry Form)
+┌─────────────────────────────────────┐
+│  Starter    [Rye Baby ▼]           │
+└─────────────────────────────────────┘
+```
+
+- Compact variant: shows health dot, name, and time since last feed
+- Dropdown variant: simple picker for forms
+- Tap opens a list of all starters to pick from
+- "No starters yet" state shows link to Starter tab
+
+---
+
+## Filter Bar
+
+Used in: Bread Log tab
+
+```
+┌─────────────────────────────────────────────────┐
+│  Starter: [All Starters ▼]  Formula: [All ▼]   │
+└─────────────────────────────────────────────────┘
+```
+
+- Horizontal row of dropdown filters
+- Each filter defaults to "All" (no filter active)
+- Active filter uses `goldenCrust` accent
+- Filters apply immediately to the content below
+- Content count updates to reflect filtered results
+
+---
+
+## Photo Carousel
+
+Used in: Bake Detail, Starter Details
+
+```
+┌──────────────────────────────────────────────┐
+│                                              │
+│         ◀  [Current Photo]  ▶                │
+│                                              │
+└──────────────────────────────────────────────┘
+● ○ ○ ○
+
+┌──────┐ ┌──────┐ ┌──────┐ ┌──────────┐
+│thumb │ │thumb │ │thumb │ │  + Add   │
+│  1   │ │  2   │ │  3   │ │  Photo   │
+└──────┘ └──────┘ └──────┘ └──────────┘
+```
+
+- Horizontal scrollable main photo with swipe/arrow navigation
+- Dot indicator for current position
+- Thumbnail strip below (scrollable if many photos)
+- "+ Add Photo" button at end of thumbnail strip
+- Uses `PhotosPicker` for adding photos
+- Empty state: single placeholder with "+ Add Photo"
+
+---
+
+## Flour Entry Row
+
+Used in: Log a Feed form
+
+```
+SINGLE ROW
+┌─────────────────────────────────────────────────┐
+│  [AP Flour ▼]    [  150  ] g          [✕]       │
+└─────────────────────────────────────────────────┘
+
+MULTIPLE ROWS
+┌─────────────────────────────────────────────────┐
+│  [AP Flour ▼]    [  125  ] g          [✕]       │
+│  [Rye ▼]         [   25  ] g          [✕]       │
+│  [ + Add Flour ]                                │
+└─────────────────────────────────────────────────┘
+```
+
+- Flour type dropdown: AP, Bread, Rye, Whole Wheat, Other (free-text)
+- Weight in grams input
+- ✕ button to remove a flour row (disabled if only one row)
+- "+ Add Flour" button to add another row
+- Used in the feeding form for multi-flour feeds
+
+---
+
 ## Difficulty Indicator
 
-Used in: Plan tab (Four-Fold variant picker)
+Used in: Plan tab (formula cards, Four-Fold variant picker)
 
 ```
 ●○○○  Beginner       risingGreen
@@ -118,12 +243,6 @@ Full component:
 - Color matches difficulty: green → gold → amber → red
 - One-line description below
 - Animated transition when difficulty changes
-- Maps to hydration level:
-  - 75% = Beginner (●○○○)
-  - 75% + high levain = Intermediate (●●○○)
-  - 80% = Intermediate (●●○○)
-  - 80% + high levain = Advanced (●●●○)
-  - >80% (future custom formulas) = Expert (●●●●)
 
 ---
 
@@ -189,10 +308,7 @@ EXPANDED
 │  A 15-60 minute rest at the start   │
 │  of mixing prior to the addition    │
 │  of salt and sometimes the yeast    │
-│  or levain. It serves two           │
-│  purposes: easy mixing of flour     │
-│  and liquids, and passive           │
-│  development of gluten.             │
+│  or levain...                       │
 └─────────────────────────────────────┘
 ```
 
@@ -226,7 +342,7 @@ COMPLETED    CURRENT      UPCOMING
 
 ## Empty State
 
-Used in: Bread Log (no bakes yet), Starter (no feedings yet)
+Used in: Bread Log (no bakes yet), Starter (simple variant)
 
 ```
 ┌─────────────────────────────────────┐
@@ -248,3 +364,6 @@ Used in: Bread Log (no bakes yet), Starter (no feedings yet)
 - SF Symbol icon
 - Brief helpful message
 - CTA button to get started
+
+Note: The Starter tab has its own specialized empty state with 3 onboarding buttons
+(see 09-starter-empty-state.md), not this generic component.

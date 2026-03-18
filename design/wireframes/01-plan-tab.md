@@ -1,7 +1,8 @@
 # Wireframe: Plan Tab (Bake Screen)
 
-This is the primary tab. It combines formula selection, baker's math calculation,
-DDT calculator, timeline generation, and the entry point to start a bake.
+This is the primary baking tab. It combines formula selection, starter selection, baker's math
+calculation, DDT calculator, recipe instructions, timeline generation, and the entry point to
+start a bake.
 
 ## iPad Landscape Layout
 
@@ -18,33 +19,40 @@ DDT calculator, timeline generation, and the entry point to start a bake.
 │  │  │ A hands-off loaf with a crispy  │  │  │ AP Flour        95%    456g ││ │
 │  │  │ crust and mild, tangy crumb.    │  │  │ Rye Flour        5%     24g ││ │
 │  │  │ View previous bakes →           │  │  │ Water           74%    355g ││ │
-│  │  └────────────────────────────────┘  │  │ Salt            2.2%    11g ││ │
-│  │  ┌────────────────────────────────┐  │  │ Levain           5%     24g ││ │
+│  │  └────────────────────────────────┘  │  │  │ Salt            2.2%    11g ││ │
+│  │  ┌────────────────────────────────┐  │  │  │ Levain           5%     24g ││ │
 │  │  │ 🌾 Four-Fold Pain au Levain ●●○○│  │  │ ─────────────────────────  ││ │
 │  │  │ Intermediate · 16.5h · structure │  │  │ Total                 ~870g ││ │
 │  │  │ ...                             │  │  └────────────────────────────┘│ │
 │  │  └────────────────────────────────┘  │  │                                │ │
-│  │  ┌ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐  │  │  ┌─ Timeline ─────────────────┐│ │
-│  │    + New Formula                    │  │  │                            ││ │
-│  │  └ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┘  │  │  │  ● 6:00 AM  Mix (autolyse)││ │
-│  │                                      │  │  │  │          30 min        ││ │
-│  │  DOUGH WEIGHT                        │  │  │  ○ 6:30 AM  Add Salt      ││ │
-│  │  [ − ]    900g    [ + ]       [2×]   │  │  │  │                        ││ │
-│  │                                      │  │  │  ○ 7:00 AM  Bulk Proof    ││ │
-│  │  FORMULA (Hydration / Levain)        │  │  │  │  ╔════════════════════╗ ││ │
-│  │  Hydration              Levain       │  │  │  │  ║ ▓▓▓▓▓ Bulk ▓▓▓▓▓  ║ ││ │
-│  │  74%                    5%           │  │  │  │  ║ 12-16 hours        ║ ││ │
-│  │  ○────●──────────────── ○────●────── │  │  │  ╚════════════════════╝ ││ │
-│  │  Fixed        Fixed                  │  │  │  ...                      ││ │
-│  │                                      │  │  └────────────────────────────┘│ │
-│  │  WATER TEMPERATURE                   │  │                                │ │
-│  │  Flour    Room     Levain            │  │  ─────────────────────────────  │ │
-│  │  [ 68°F ] [ 72°F ] [ 40°F ]         │  │                                │ │
-│  │                                      │  │  WHEN                          │ │
-│  │       Use water at                   │  │  [● Start Now] [Start At] [Finish By]│ │
-│  │           127°F                      │  │                                │ │
-│  │                                      │  │  Starting now, bread ready ~   │ │
-│  │  DDT of 78°F · Hand mixing  [✎]      │  │  4:40 AM tomorrow              │ │
+│  │  ┌ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐  │  │  ┌─ Recipe Instructions ──────┐│ │
+│  │    + New Formula                    │  │  │  Step 1: Combine water and  ││ │
+│  │  └ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┘  │  │  │ levain in mixing bowl...   ││ │
+│  │                                      │  │  │ Step 2: Add flours...      ││ │
+│  │  STARTER                             │  │  │ ...                        ││ │
+│  │  ┌────────────────────────────────┐  │  │  └────────────────────────────┘│ │
+│  │  │ 🟢 Rye Baby         ▼        │  │  │                                │ │
+│  │  │    Fed 6h ago                  │  │  │  ┌─ Timeline ─────────────────┐│ │
+│  │  └────────────────────────────────┘  │  │  │                            ││ │
+│  │                                      │  │  │  ● 6:00 AM  Mix (autolyse)││ │
+│  │  DOUGH WEIGHT                        │  │  │  │          30 min        ││ │
+│  │  [ − ]    900g    [ + ]       [2×]   │  │  │  ○ 6:30 AM  Add Salt      ││ │
+│  │                                      │  │  │  │                        ││ │
+│  │  FORMULA (Hydration / Levain)        │  │  │  ○ 7:00 AM  Bulk Proof    ││ │
+│  │  Hydration              Levain       │  │  │  │  ╔════════════════════╗ ││ │
+│  │  74%                    5%           │  │  │  │  ║ ▓▓▓▓▓ Bulk ▓▓▓▓▓  ║ ││ │
+│  │  ○────●──────────────── ○────●────── │  │  │  │  ║ 12-16 hours        ║ ││ │
+│  │  Fixed        Fixed                  │  │  │  │  ╚════════════════════╝ ││ │
+│  │                                      │  │  │  ...                      ││ │
+│  │  WATER TEMPERATURE                   │  │  └────────────────────────────┘│ │
+│  │  Flour    Room     Levain            │  │                                │ │
+│  │  [ 68°F ] [ 72°F ] [ 40°F ]         │  │  ─────────────────────────────  │ │
+│  │                                      │  │                                │ │
+│  │       Use water at                   │  │  WHEN                          │ │
+│  │           127°F                      │  │  [● Start Now] [Start At] [Finish By]│ │
+│  │                                      │  │                                │ │
+│  │  DDT of 78°F · Hand mixing  [✎]      │  │  Starting now, bread ready ~   │ │
+│  │                                      │  │  4:40 AM tomorrow              │ │
 │  │                                      │  │                                │ │
 │  └──────────────────────────────────────┘  │  [ 📌 Save ]  [ Start Bake ▶ ]│ │
 │                                            └────────────────────────────────┘ │
@@ -88,7 +96,25 @@ Card fields:
 └ - - - - - - - - - - - - - - - - - - - - ┘
 ```
 Tapping shows a "Coming soon" popover. Future: launches Formula Builder/Editor.
-TODO: Wire to Formula Builder when implemented.
+
+---
+
+### Starter Selector
+
+Positioned between Formula Selector and Dough Weight. Compact card/dropdown:
+
+```
+┌────────────────────────────────────────────────────────┐
+│  🟢 Rye Baby                                     ▼    │
+│     Fed 6 hours ago                                    │
+└────────────────────────────────────────────────────────┘
+```
+
+- Shows selected starter name with health indicator dot (🟢/🟡/🔴)
+- Shows time since last feeding
+- Dropdown chevron (▼) — tap to pick from list of all starters
+- Defaults to first starter in list, or last-used starter if a completed bake exists
+- If no starters exist, shows "No starter — add one in the Starter tab" with link
 
 ---
 
@@ -143,12 +169,15 @@ TODO: Improve visual richness — custom thumb style, gradient fill, better tick
     ```
     ┌───────────────────────────────┐
     │  DDT Settings                 │
+    │                               │
+    │  Desired Dough Temperature    │
     │  Target DDT        78°F       │
     │                               │
     │  Mixing Method                │
     │  [● Hand] [Mixer] [Processor] │
     └───────────────────────────────┘
     ```
+- "Desired Dough Temperature" label clarifies the DDT acronym
 - Friction factors: Hand = 5, Mixer = 25, Processor = 30
 - DDT formula: waterTemp = 4×78 − flour − room − levain − frictionFactor
 
@@ -177,6 +206,27 @@ TODO: Improve visual richness — custom thumb style, gradient fill, better tick
 - Pills row: hydration %, levain %, and "2× Doubled" badge (red) when doubler is on
 - Total row is inside the same `<table>` as ingredients (via `<tfoot>`) so it
   aligns perfectly with the Grams column
+
+### Recipe Instructions
+
+```
+  Recipe Instructions
+  ┌──────────────────────────────────────────────────────┐
+  │  1. Combine water and levain in a large mixing       │
+  │     bowl. Stir to dissolve the levain.               │
+  │                                                      │
+  │  2. Add the AP flour and rye flour. Mix until        │
+  │     no dry flour remains. Cover and rest             │
+  │     (autolyse) for 30 minutes.                       │
+  │                                                      │
+  │  3. Sprinkle salt over dough. Dimple in and          │
+  │     fold to incorporate. ...                         │
+  └──────────────────────────────────────────────────────┘
+```
+
+- Scrollable text area below ingredients, above timeline
+- Shows numbered step-by-step instructions from the Formula's `instructions` field
+- Read-only display (instructions are part of the formula, not user-editable for built-ins)
 
 ### Timeline Panel
 
@@ -220,9 +270,9 @@ Proof block style: **hatched** (diagonal fill, default). TODO: refine visual tre
 - **Start At**: reveals time picker, calculates finish
 - **Finish By**: reveals time picker, reverse-calculates start time
 
-**Notification prompt (future):** After tapping "Start Bake" with a future Start At or
-Finish By time, prompt user to enable a system notification 5 minutes before the
-scheduled start time. Lead time is configurable in Settings.
+**Notification prompt:** After tapping "Start Bake" with a future Start At or
+Finish By time, prompt user to enable a system notification before the
+scheduled start time. Lead time is configurable in Settings (default 5 min).
 
 ---
 
@@ -230,25 +280,28 @@ scheduled start time. Lead time is configurable in Settings.
 
 Same content, single-column stack:
 1. Formula Selector
-2. Dough Weight + Doubler
-3. Formula Sliders
-4. Water Temperature
-5. Ingredients Table
-6. Timeline
-7. When + Action Buttons
+2. Starter Selector
+3. Dough Weight + Doubler
+4. Formula Sliders
+5. Water Temperature
+6. Ingredients Table
+7. Recipe Instructions
+8. Timeline
+9. When + Action Buttons
 
 ---
 
 ## Interactions
 
-- Selecting a formula updates ingredients, timeline, and DDT defaults instantly
+- Selecting a formula updates ingredients, instructions, timeline, and DDT defaults instantly
 - Selecting Four-Fold unlocks hydration and levain sliders with preset snap points
 - Changing dough weight rescales all ingredient quantities (timeline unchanged)
 - Toggling 2× doubles all ingredient quantities; pill badge appears in Ingredients
+- Changing starter updates the association for the planned bake
 - "Start now" auto-updates time hint; "Start At" / "Finish By" show time inputs
 - DDT reference row tap opens popover; click-outside closes
 - "+" New Formula tap shows "Coming soon" popover; click-outside closes
-- `@AppStorage`: last formula, weight, temp unit
+- `@AppStorage`: last formula, last starter, weight, temp unit
 - "Save" stores named plan snapshots
 
 ---

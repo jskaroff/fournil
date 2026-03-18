@@ -62,6 +62,9 @@ Presented as a navigation push or sheet.
   │  • No-knead PAL recipe template                              │
   │  • Quarantinystarter 2.0                                     │
   │                                                              │
+  │  Note: All outbound links may include affiliate links.       │
+  │  See Preferences to manage this setting.                     │
+  │                                                              │
   │  SOURDOUGH GLOSSARY                                          │
   │  ┌────────────────────────────────────────────────────┐      │
   │  │ ▶ Autolyse                                        │      │
@@ -103,6 +106,7 @@ When built (later phase), the Formula Builder will allow:
 - Set whether each ingredient is a flour (contributes to 100% base)
 - Set hydration range
 - Set levain range and type
+- Add recipe instructions
 - Preview calculated weights at a given dough weight
 - Save as a named custom formula that appears alongside built-in formulas in Plan tab
 
@@ -122,8 +126,21 @@ When built (later phase), the Formula Builder will allow:
   │  Default Formula                                             │
   │  [No-Knead PAL ▼]                                            │
   │                                                              │
+  │  ─────────────────────────────────────────                   │
+  │                                                              │
+  │  LINKS & PRIVACY                                             │
+  │                                                              │
+  │  Affiliate Links                                             │
+  │  Fournil may include affiliate links on product              │
+  │  recommendations and external resources. These help          │
+  │  support development at no extra cost to you.                │
+  │                                                              │
+  │  [● On]  [○ Off]                                             │
+  │                                                              │
   └──────────────────────────────────────────────────────────────┘
 ```
+
+When affiliate links are turned off, a subtle note appears: "Consider leaving a tip instead — it goes directly to the developer."
 
 ---
 
@@ -150,6 +167,8 @@ When built (later phase), the Formula Builder will allow:
   │  • Baking stone or steel                                     │
   │  • Cooling rack                                              │
   │                                                              │
+  │  Note: Product links may include affiliate links.            │
+  │  See Preferences to manage this setting.                     │
   └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -167,21 +186,25 @@ When built (later phase), the Formula Builder will allow:
   │  "Fournil" is French for bakehouse — the room                │
   │  where bread is made.                                        │
   │                                                              │
-  │  Built with love by a home baker.                            │
+  │  Fournil is made with love (and Claude) by Josh Skaroff.     │
   │                                                              │
   │  ─────────────────────────────────────────                   │
   │                                                              │
   │  ┌────────────────────────────────────────────────────┐      │
-  │  │  ☕  Support the Developer                          │      │
+  │  │  🌾  Leave a Tip                                    │      │
   │  │                                                    │      │
-  │  │  If Fournil helps your baking, consider buying     │      │
-  │  │  the developer a coffee (or a bag of flour).       │      │
+  │  │  Leave a tip to help the developer buy their       │      │
+  │  │  next bag of flour.                                │      │
   │  │                                                    │      │
-  │  │  [ Tip $3 ]  [ Tip $5 ]  [ Tip $10 ]             │      │
+  │  │  [ Tip $1 ]  [ Tip $5 ]  [ Tip $10 ]             │      │
   │  └────────────────────────────────────────────────────┘      │
   │                                                              │
   └──────────────────────────────────────────────────────────────┘
 ```
+
+When affiliate links are disabled, the tip section gets slightly increased
+visual emphasis (e.g., a subtle `goldenCrust` border or highlight) to encourage
+supporting the developer directly.
 
 ---
 
@@ -193,7 +216,7 @@ When built (later phase), the Formula Builder will allow:
 - "Formula Builder" row shows "Coming Soon" badge, dimmed
 
 ### Tip Bucket
-- Three tier options ($3, $5, $10)
+- Three tier options ($1, $5, $10)
 - Uses StoreKit 2 for in-app purchases (or tip jar via App Store)
 - Thank-you animation on successful tip
 
@@ -202,8 +225,14 @@ When built (later phase), the Formula Builder will allow:
 - Alphabetically sorted
 - All 15 terms from Janjigian's glossary
 
+### Affiliate Links
+- Toggle in Preferences section
+- On by default
+- When off, outbound product links are plain URLs (no tracking)
+- Subtle emphasis on Tip section when affiliate links are disabled
+
 ### Interactions
 - Sidebar list items are tappable, detail pane updates
-- External links open in Safari
+- External links open in Safari (with or without affiliate parameters)
 - Preferences changes take effect immediately via `@AppStorage`
 - Tip buttons trigger StoreKit purchase flow
