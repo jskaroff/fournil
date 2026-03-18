@@ -4,63 +4,66 @@ This is the primary baking tab. It combines formula selection, starter selection
 calculation, DDT calculator, recipe instructions, timeline generation, and the entry point to
 start a bake.
 
+The right column is split into two side-by-side sub-panels: Ingredients and Timeline.
+This matches the HTML prototype layout.
+
 ## iPad Landscape Layout
 
 ```
-┌──────────────────────────────────────────────────────────────────────────────┐
-│  Bake                                                          [⚙️]         │
-│                                                                              │
-│  ┌─ LEFT COLUMN (40%) ──────────────────┐  ┌─ RIGHT COLUMN (60%) ──────────┐ │
-│  │                                      │  │                                │ │
-│  │  FORMULA                             │  │  ┌─ Ingredients ──────────────┐│ │
-│  │  ┌────────────────────────────────┐  │  │  │ 74% hydration  5% levain  ││ │
-│  │  │ 🍞 No-Knead Pain au Levain  ●○○○│  │  │                            ││ │
-│  │  │ Beginner · 22h · minimal handling│  │  │ INGREDIENT   BAKER'S%  GRAMS││ │
-│  │  │ A hands-off loaf with a crispy  │  │  │ AP Flour        95%    456g ││ │
-│  │  │ crust and mild, tangy crumb.    │  │  │ Rye Flour        5%     24g ││ │
-│  │  │ View previous bakes →           │  │  │ Water           74%    355g ││ │
-│  │  └────────────────────────────────┘  │  │  │ Salt            2.2%    11g ││ │
-│  │  ┌────────────────────────────────┐  │  │  │ Levain           5%     24g ││ │
-│  │  │ 🌾 Four-Fold Pain au Levain ●●○○│  │  │ ─────────────────────────  ││ │
-│  │  │ Intermediate · 16.5h · structure │  │  │ Total                 ~870g ││ │
-│  │  │ ...                             │  │  └────────────────────────────┘│ │
-│  │  └────────────────────────────────┘  │  │                                │ │
-│  │  ┌ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐  │  │  ┌─ Recipe Instructions ──────┐│ │
-│  │    + New Formula                    │  │  │  Step 1: Combine water and  ││ │
-│  │  └ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┘  │  │  │ levain in mixing bowl...   ││ │
-│  │                                      │  │  │ Step 2: Add flours...      ││ │
-│  │  STARTER                             │  │  │ ...                        ││ │
-│  │  ┌────────────────────────────────┐  │  │  └────────────────────────────┘│ │
-│  │  │ 🟢 Rye Baby         ▼        │  │  │                                │ │
-│  │  │    Fed 6h ago                  │  │  │  ┌─ Timeline ─────────────────┐│ │
-│  │  └────────────────────────────────┘  │  │  │                            ││ │
-│  │                                      │  │  │  ● 6:00 AM  Mix (autolyse)││ │
-│  │  DOUGH WEIGHT                        │  │  │  │          30 min        ││ │
-│  │  [ − ]    900g    [ + ]       [2×]   │  │  │  ○ 6:30 AM  Add Salt      ││ │
-│  │                                      │  │  │  │                        ││ │
-│  │  FORMULA (Hydration / Levain)        │  │  │  ○ 7:00 AM  Bulk Proof    ││ │
-│  │  Hydration              Levain       │  │  │  │  ╔════════════════════╗ ││ │
-│  │  74%                    5%           │  │  │  │  ║ ▓▓▓▓▓ Bulk ▓▓▓▓▓  ║ ││ │
-│  │  ○────●──────────────── ○────●────── │  │  │  │  ║ 12-16 hours        ║ ││ │
-│  │  Fixed        Fixed                  │  │  │  │  ╚════════════════════╝ ││ │
-│  │                                      │  │  │  ...                      ││ │
-│  │  WATER TEMPERATURE                   │  │  └────────────────────────────┘│ │
-│  │  Flour    Room     Levain            │  │                                │ │
-│  │  [ 68°F ] [ 72°F ] [ 40°F ]         │  │  ─────────────────────────────  │ │
-│  │                                      │  │                                │ │
-│  │       Use water at                   │  │  WHEN                          │ │
-│  │           127°F                      │  │  [● Start Now] [Start At] [Finish By]│ │
-│  │                                      │  │                                │ │
-│  │  DDT of 78°F · Hand mixing  [✎]      │  │  Starting now, bread ready ~   │ │
-│  │                                      │  │  4:40 AM tomorrow              │ │
-│  │                                      │  │                                │ │
-│  └──────────────────────────────────────┘  │  [ 📌 Save ]  [ Start Bake ▶ ]│ │
-│                                            └────────────────────────────────┘ │
-│                                                                              │
-├────────────────┬────────────────┬──────────────────────────────────────────┤
-│    Starter     │   Bake (●)     │     Log                                  │
-└────────────────┴────────────────┴──────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│  Bake                                                                    [⚙️]       │
+│                                                                                      │
+│  ┌─ LEFT COL (380px) ─────────┐  ┌─ RIGHT: INGREDIENTS ──┐ ┌─ RIGHT: TIMELINE ────┐│
+│  │  bg: parchment-warm        │  │                        │ │                       ││
+│  │  border-right: flour-dust  │  │  Ingredients    ~870g  │ │  Timeline     ~23h    ││
+│  │                            │  │                        │ │                       ││
+│  │  FORMULA                   │  │  [74% hyd] [5% lev]   │ │  ● 6:00 AM  Mix      ││
+│  │  ┌──────────────────────┐  │  │                        │ │  │          30 min    ││
+│  │  │ 🍞 No-Knead PAL     │  │  │  INGREDIENT  %   GRAMS│ │  ○ 6:30 AM  Add Salt ││
+│  │  │   ●○○○ Beginner      │  │  │  AP Flour   95%  456g │ │  │                    ││
+│  │  │   22h · minimal      │  │  │  Rye Flour   5%   24g │ │  ○ 7:00 AM  Coil Fold││
+│  │  │   View prev bakes →  │  │  │  Water      74%  355g │ │  │                    ││
+│  │  └──────────────────────┘  │  │  Salt      2.2%   11g │ │  │  ┌── Bulk Proof ─┐││
+│  │  ┌──────────────────────┐  │  │  Levain      5%   24g │ │  │  │ 12-16 hours   │││
+│  │  │ 🌾 Four-Fold PAL    │  │  │  ─────────────────────│ │  │  └────────────────┘││
+│  │  │   ●●○○ Intermediate  │  │  │  Total          ~870g │ │  │                    ││
+│  │  │   16.5h · 4 folds    │  │  │                        │ │  🌙 tomorrow         ││
+│  │  └──────────────────────┘  │  │                        │ │  ...                  ││
+│  │  ┌ - + New Formula - - ┐  │  │                        │ │  ○ 7:00 PM  Preshape ││
+│  │  └ - - - - - - - - - - ┘  │  │                        │ │  ○ 7:30 PM  Shape    ││
+│  │                            │  │                        │ │  │                    ││
+│  │  STARTER                   │  │                        │ │  │  ┌── Cold Proof ──┐││
+│  │  ┌──────────────────────┐  │  │                        │ │  │  │ 8-24 hours    │││
+│  │  │ 🟢 Rye Baby      ▼  │  │  │                        │ │  │  └────────────────┘││
+│  │  │    Fed 6h ago        │  │  │                        │ │  │                    ││
+│  │  └──────────────────────┘  │  │                        │ │  ● 4:00 AM  Bake!   ││
+│  │                            │  │                        │ │                       ││
+│  │  DOUGH WEIGHT              │  └────────────────────────┘ └───────────────────────┘│
+│  │  [ − ]   900g   [ + ] [2×]│                                                      │
+│  │                            │  ┌─ SCHEDULE + ACTIONS ─────────────────────────────┐│
+│  │  HYDRATION / LEVAIN        │  │                                                   ││
+│  │  ○──●──── ○──●────         │  │  WHEN  [● Start Now]  [Start At]  [Finish By]    ││
+│  │  74% Fixed  5% Fixed       │  │                                                   ││
+│  │                            │  │  Starting now, bread ready ~4:40 AM tomorrow      ││
+│  │  WATER TEMPERATURE         │  │                                                   ││
+│  │  Flour   Room    Levain    │  │  [ 📌 Save ]                  [ Start Bake ▶ ]   ││
+│  │  [68°F] [72°F]  [40°F]    │  └───────────────────────────────────────────────────┘│
+│  │                            │                                                      │
+│  │     Use water at 127°F     │                                                      │
+│  │  DDT of 78°F · Hand [✎]    │                                                      │
+│  └────────────────────────────┘                                                      │
+│                                                                                      │
+├────────────────┬────────────────┬────────────────────────────────────────────────────┤
+│    Starter     │   Bake (●)     │     Log                                            │
+└────────────────┴────────────────┴────────────────────────────────────────────────────┘
 ```
+
+### Key Layout Notes (from prototype)
+- Left column is a fixed 380px scrollable sidebar with parchment-warm background
+- Right area splits into **two sub-panels** side by side: Ingredients (left) and Timeline (right)
+  - Each sub-panel scrolls independently
+  - Separated by a thin flour-dust border
+- Schedule/actions bar sits below the two sub-panels at the bottom
 
 ---
 
@@ -131,22 +134,46 @@ Positioned between Formula Selector and Dough Weight. Compact card/dropdown:
 
 ---
 
-### Formula Sliders (Hydration / Levain)
+### Formula Controls (Hydration / Levain)
 
-Two horizontal sliders showing current Hydration % and Levain %:
+Controls for Hydration % and Levain %. Three interchangeable display styles
+(toggle in top-right: Arc / Slider / Steps):
 
+**Arc Style (default):**
+```
+     Hydration              Levain
+      ╭─────╮               ╭─────╮
+     │  74% │              │   5% │
+      ╰─────╯               ╰─────╯
+       Fixed                  Fixed
+```
+- Circular arc knob with golden-crust fill
+- Value displayed in center (Fira Mono, 20px)
+- Read-only formulas show at 50% opacity
+
+**Slider Style:**
 ```
   Hydration              Levain
   74%                    5%
   ───────●───────────    ────●──────────────
   Fixed                  Fixed
 ```
+- Horizontal slider with golden-crust fill and thumb
+- Tick marks at preset snap points
+
+**Stepper Style:**
+```
+  Hydration              Levain
+  74%                    5%
+  [75%] [80%]           [25%] [35%]
+    [ − ] [ + ]           [ − ] [ + ]
+```
+- Preset buttons with golden-crust active state
+- Fine-tune +/− round buttons below
 
 - **Interactive** (with snap points to presets) only for Four-Fold PAL
-- **Read-only** ("Fixed" label) for all other formulas
+- **Read-only** (dimmed, no interaction) for all other formulas
 - Preset snap points for Four-Fold: Hydration 75%/80%, Levain 25%/35%
-
-TODO: Improve visual richness — custom thumb style, gradient fill, better tick marks.
 
 ---
 
@@ -209,6 +236,8 @@ TODO: Improve visual richness — custom thumb style, gradient fill, better tick
 
 ### Recipe Instructions
 
+Displayed below the ingredients table within the Ingredients sub-panel:
+
 ```
   Recipe Instructions
   ┌──────────────────────────────────────────────────────┐
@@ -224,35 +253,64 @@ TODO: Improve visual richness — custom thumb style, gradient fill, better tick
   └──────────────────────────────────────────────────────┘
 ```
 
-- Scrollable text area below ingredients, above timeline
+- Positioned within the Ingredients sub-panel (scrolls with it)
 - Shows numbered step-by-step instructions from the Formula's `instructions` field
 - Read-only display (instructions are part of the formula, not user-editable for built-ins)
 
 ### Timeline Panel
 
-Vertical step-by-step timeline with day boundary markers and proof blocks:
+Vertical step-by-step timeline with day boundary markers and proof blocks.
+The timeline line uses a gradient: golden-crust at top → flour-dust-deep middle → sage at bottom (bake step).
 
 ```
   Timeline                                    ~23 hours
 
-  ● 6:00 AM   Mix
-  │            Combine water, levain, flours.
-  ○ 6:30 AM   Add Salt
-  │            Add reserved water + salt.
+  ● 6:00 AM   Mix              30 min
+  │
+  ○ 6:30 AM   Add Salt         30 min
+  │
   ○ 7:00 AM   Coil Fold
   │
-  │  ╔══════════════════════════════╗
-  │  ║ ▓▓▓▓ Bulk Proof ▓▓▓▓▓▓▓▓▓  ║  12-16 hours
-  │  ╚══════════════════════════════╝
+  │  ┌── Bulk Proof ──────────────────┐
+  │  │ 12-16 hours                     │
+  │  └────────────────────────────────┘
   │  until ~7:25 PM today
   │
   🌙 tomorrow
-  ...
-  ● 4:40 AM   Bake
-               Bread ready ~4:40 AM tomorrow
+  ○ 7:00 PM   Preshape         30 min
+  ○ 7:30 PM   Final Shape      30 min
+  │
+  │  ┌── Cold Proof ──────────────────┐
+  │  │ 8-24 hours                      │
+  │  └────────────────────────────────┘
+  │
+  ● 4:00 AM   Bake!            40 min
 ```
 
-Proof block style: **hatched** (diagonal fill, default). TODO: refine visual treatment.
+#### Step Dots
+- **First step**: golden-crust filled, golden glow
+- **Regular steps**: open circle, flour-dust-deep border
+- **Bake step** (final): sage filled, sage glow
+
+#### Step Duration Badges
+- Short durations (≤30 min): sage-bg background, sage text
+- Long durations (hours): golden-glow background, golden-crust text
+- Overnight: clay-bg background, clay text
+
+#### Proof Blocks
+Interchangeable display styles (toggle: Gradient / Thick / Hatched / Bracket):
+
+- **Gradient (default)**: Rounded card with gradient background and left border
+  - Bulk: golden-glow gradient, golden-crust-light left border
+  - Cold: night-bg gradient, night-blue left border
+- **Thick**: Thick vertical line alongside label text
+- **Hatched**: Diagonal repeating lines (45°), same card shape
+  - Bulk: golden-crust hatching
+  - Cold: night-blue hatching
+- **Bracket**: Top/bottom horizontal bracket lines with label between
+
+Each proof block shows: label ("Bulk Proof" / "Cold Proof") + duration badge.
+Finish hint in italic below: "until ~7:25 PM today".
 
 ---
 
@@ -278,16 +336,15 @@ scheduled start time. Lead time is configurable in Settings (default 5 min).
 
 ## iPad Portrait Layout
 
-Same content, single-column stack:
-1. Formula Selector
+Same content, single-column stack (sub-panels collapse to stacked):
+1. Formula Selector (horizontal scroll)
 2. Starter Selector
 3. Dough Weight + Doubler
-4. Formula Sliders
-5. Water Temperature
-6. Ingredients Table
-7. Recipe Instructions
-8. Timeline
-9. When + Action Buttons
+4. Formula Controls (Hydration / Levain)
+5. Water Temperature (DDT)
+6. Ingredients Table + Recipe Instructions
+7. Timeline
+8. When + Action Buttons
 
 ---
 
