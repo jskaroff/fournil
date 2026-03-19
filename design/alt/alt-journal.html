@@ -1,0 +1,2196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1194, initial-scale=1">
+<title>Fournil — Field Journal Alt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400;1,6..72,500;1,6..72,600&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Abril+Fatface&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F5F0E8;
+    --paper-aged: #EDE5D5;
+    --paper-dark: #E0D5C0;
+    --paper-rule: #D8CEBC;
+    --ink: #1C1814;
+    --ink-mid: #3A342C;
+    --ink-faded: #6B6050;
+    --ink-ghost: #9A8E7E;
+    --rust: #8B3A1C;
+    --rust-light: rgba(139, 58, 28, 0.1);
+    --rust-mid: rgba(139, 58, 28, 0.2);
+    --forest: #2A4A30;
+    --forest-light: rgba(42, 74, 48, 0.1);
+    --forest-mid: rgba(42, 74, 48, 0.2);
+    --amber-ink: #7A5A18;
+    --amber-ink-light: rgba(122, 90, 24, 0.1);
+    --rule-h: 1px solid var(--paper-rule);
+    --rule-v: 1px solid var(--paper-rule);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #C8BCA8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Newsreader', serif;
+    padding: 40px;
+  }
+
+  /* Subtle linen texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(0,0,0,0.025) 20px),
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .design-label {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    color: #8A7E6E;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    z-index: 100;
+  }
+  .design-label a {
+    color: #7A6E5E;
+    text-decoration: none;
+    display: block;
+    margin-top: 4px;
+    font-size: 9px;
+  }
+  .design-label a:hover { color: var(--ink-faded); }
+
+  .screen-tabs {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 4px;
+    z-index: 100;
+  }
+  .screen-tab {
+    padding: 6px 14px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    background: var(--paper);
+    color: var(--ink-faded);
+    border: 1px solid var(--paper-rule);
+    text-transform: uppercase;
+    transition: all 0.15s ease;
+  }
+  .screen-tab:hover { color: var(--ink); }
+  .screen-tab.active {
+    background: var(--rust);
+    color: white;
+    border-color: var(--rust);
+  }
+
+  .ipad-frame {
+    width: 1194px;
+    height: 834px;
+    background: var(--paper);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.15);
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.08),
+      0 40px 100px rgba(0,0,0,0.25),
+      inset 0 0 80px rgba(0,0,0,0.02);
+  }
+
+  /* Grain overlay */
+  .ipad-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    border-radius: 8px;
+  }
+
+  .app {
+    display: none;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+  }
+  .app.visible { display: flex; }
+
+  /* === MASTHEAD === */
+  .masthead {
+    height: 58px;
+    background: var(--paper);
+    border-bottom: 2px solid var(--ink);
+    display: flex;
+    align-items: stretch;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  /* Ruled lines behind masthead */
+  .masthead::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      180deg,
+      transparent,
+      transparent 17px,
+      rgba(0,0,0,0.04) 18px
+    );
+    pointer-events: none;
+  }
+
+  .masthead-brand {
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    border-right: 2px solid var(--ink);
+    min-width: 160px;
+  }
+
+  .brand-text {
+    font-family: 'Abril Fatface', serif;
+    font-size: 26px;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+
+  .brand-sub {
+    font-family: 'Courier Prime', monospace;
+    font-size: 9px;
+    color: var(--ink-ghost);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .masthead-nav {
+    display: flex;
+    align-items: stretch;
+    flex: 1;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    padding: 0 22px;
+    font-family: 'Newsreader', serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-faded);
+    cursor: pointer;
+    border-right: 1px solid var(--paper-rule);
+    transition: all 0.15s ease;
+    letter-spacing: 0.01em;
+    position: relative;
+  }
+  .nav-item:hover { color: var(--ink); background: var(--paper-aged); }
+  .nav-item.active {
+    color: var(--ink);
+    font-weight: 600;
+    background: var(--paper-aged);
+  }
+  .nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0; right: 0;
+    height: 3px;
+    background: var(--rust);
+  }
+
+  .masthead-tools {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 8px;
+    border-left: 1px solid var(--paper-rule);
+  }
+
+  .tool-icon {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--ink-ghost);
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.15s ease;
+  }
+  .tool-icon:hover { background: var(--paper-dark); color: var(--ink-mid); }
+
+  /* === MAIN === */
+  .main { flex: 1; display: flex; overflow: hidden; }
+
+  /* === BAKE TAB === */
+  .bake-left {
+    width: 350px;
+    flex-shrink: 0;
+    background: var(--paper-aged);
+    border-right: 2px solid var(--paper-dark);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Ruled paper lines */
+  .ruled-bg {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      180deg,
+      transparent,
+      transparent 23px,
+      var(--paper-rule) 24px
+    );
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .col-head-row {
+    padding: 12px 22px 10px;
+    border-bottom: 1px solid var(--paper-dark);
+    position: relative;
+    background: var(--paper-aged);
+  }
+
+  .col-eyebrow {
+    font-family: 'Courier Prime', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 3px;
+  }
+
+  .col-heading {
+    font-family: 'Abril Fatface', serif;
+    font-size: 22px;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+
+  .col-scroll {
+    flex: 1;
+    overflow-y: auto;
+    position: relative;
+    scrollbar-width: thin;
+    scrollbar-color: var(--paper-dark) transparent;
+  }
+
+  /* Formula entries */
+  .formula-entry {
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--paper-rule);
+    cursor: pointer;
+    transition: background 0.15s ease;
+    background: transparent;
+    position: relative;
+  }
+  .formula-entry:hover { background: rgba(0,0,0,0.03); }
+  .formula-entry.selected {
+    background: white;
+    border-left: 3px solid var(--rust);
+    padding-left: 19px;
+  }
+
+  .fe-name {
+    font-family: 'Newsreader', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+
+  .fe-meta {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    margin-bottom: 4px;
+  }
+
+  .fe-diff {
+    font-family: 'Courier Prime', monospace;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--rust);
+  }
+
+  .fe-time {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    color: var(--ink-ghost);
+    letter-spacing: 0.04em;
+  }
+
+  .fe-desc {
+    font-family: 'Newsreader', serif;
+    font-size: 12px;
+    color: var(--ink-faded);
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  /* Subsection labels */
+  .subsec {
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--paper-rule);
+    background: transparent;
+    position: relative;
+  }
+
+  .subsec-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-ghost);
+    margin-bottom: 10px;
+  }
+
+  /* Starter row */
+  .starter-pick-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    background: white;
+    border: 1px solid var(--paper-dark);
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+  .starter-pick-row:hover { border-color: var(--ink-mid); }
+
+  .sp-health {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--forest);
+    flex-shrink: 0;
+  }
+
+  .sp-name-txt {
+    font-family: 'Newsreader', serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    flex: 1;
+  }
+
+  .sp-status-txt {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    color: var(--forest);
+    letter-spacing: 0.04em;
+  }
+
+  /* Weight */
+  .wt-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .wt-label-txt {
+    font-family: 'Newsreader', serif;
+    font-size: 13px;
+    color: var(--ink-mid);
+    flex: 1;
+  }
+
+  .wt-ctrl {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid var(--paper-dark);
+    overflow: hidden;
+  }
+
+  .wt-btn {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--ink-mid);
+    cursor: pointer;
+    transition: background 0.15s ease;
+    font-family: 'Newsreader', serif;
+  }
+  .wt-btn:hover { background: var(--paper-aged); }
+
+  .wt-val-txt {
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    color: var(--rust);
+    padding: 0 12px;
+    font-weight: 700;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  .double-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: white;
+    border: 1px solid var(--paper-dark);
+    cursor: pointer;
+  }
+
+  .dbl-mark {
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--paper-dark);
+    background: var(--paper-aged);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dbl-label {
+    font-family: 'Newsreader', serif;
+    font-size: 12px;
+    color: var(--ink-faded);
+  }
+
+  /* DDT */
+  .ddt-inputs-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .ddt-inp-wrap { display: flex; flex-direction: column; gap: 3px; }
+
+  .ddt-inp-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 9px;
+    color: var(--ink-ghost);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .ddt-inp-field {
+    background: white;
+    border: 1px solid var(--paper-dark);
+    padding: 7px 10px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    color: var(--ink);
+    text-align: center;
+  }
+
+  .ddt-result-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--rust-light);
+    border: 1px solid var(--rust-mid);
+    border-left: 3px solid var(--rust);
+  }
+
+  .ddt-res-lbl {
+    font-family: 'Newsreader', serif;
+    font-size: 12px;
+    font-style: italic;
+    color: var(--rust);
+  }
+
+  .ddt-res-big {
+    font-family: 'Courier Prime', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--rust);
+  }
+
+  /* === RIGHT PANELS === */
+  .bake-right { flex: 1; display: flex; overflow: hidden; }
+
+  .ingredients-panel {
+    flex: 1;
+    background: white;
+    border-right: 1px solid var(--paper-dark);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Subtle horizontal rules on white area */
+  .ingredients-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      180deg,
+      transparent,
+      transparent 27px,
+      var(--paper-rule) 28px
+    );
+    pointer-events: none;
+    opacity: 0.3;
+  }
+
+  .timeline-panel {
+    width: 290px;
+    flex-shrink: 0;
+    background: var(--paper-aged);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .timeline-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      180deg,
+      transparent,
+      transparent 23px,
+      var(--paper-rule) 24px
+    );
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .panel-top {
+    padding: 14px 22px 12px;
+    border-bottom: 1px solid var(--paper-dark);
+    position: relative;
+    background: transparent;
+  }
+
+  .pt-eyebrow {
+    font-family: 'Courier Prime', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-ghost);
+    margin-bottom: 2px;
+  }
+
+  .pt-title {
+    font-family: 'Newsreader', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .pills-line {
+    padding: 10px 22px;
+    border-bottom: 1px solid var(--paper-rule);
+    display: flex;
+    gap: 8px;
+    background: white;
+    position: relative;
+  }
+
+  .pill-tag {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    padding: 3px 10px;
+    border: 1px solid var(--rust-mid);
+    color: var(--rust);
+    background: var(--rust-light);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .pill-tag.forest {
+    border-color: var(--forest-mid);
+    color: var(--forest);
+    background: var(--forest-light);
+  }
+
+  .ing-body {
+    flex: 1;
+    overflow-y: auto;
+    position: relative;
+    scrollbar-width: thin;
+    scrollbar-color: var(--paper-dark) transparent;
+  }
+
+  .ing-table {
+    width: 100%;
+    border-collapse: collapse;
+    position: relative;
+  }
+
+  .ing-table thead th {
+    font-family: 'Courier Prime', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-ghost);
+    padding: 10px 22px;
+    border-bottom: 1px solid var(--paper-dark);
+    text-align: right;
+    background: var(--paper);
+    font-weight: 400;
+    position: sticky;
+    top: 0;
+  }
+  .ing-table thead th:first-child { text-align: left; }
+
+  .ing-table tbody td {
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    color: var(--ink-mid);
+    padding: 10px 22px;
+    border-bottom: 1px solid var(--paper-rule);
+    text-align: right;
+    vertical-align: middle;
+  }
+
+  .ing-table tbody td:first-child {
+    text-align: left;
+    font-family: 'Newsreader', serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .ing-table tbody tr.flour-row { background: var(--forest-light); }
+  .ing-table tbody tr.flour-row td:first-child {
+    color: var(--forest);
+    font-style: italic;
+  }
+
+  .ing-table tbody tr.total-row td {
+    font-weight: 700;
+    border-top: 1px solid var(--paper-dark);
+    color: var(--ink);
+    background: var(--paper-aged);
+  }
+  .ing-table tbody tr.total-row td:first-child {
+    font-family: 'Newsreader', serif;
+    font-style: normal;
+    font-size: 14px;
+  }
+
+  /* Schedule bar */
+  .sched-bar {
+    height: 52px;
+    border-top: 2px solid var(--paper-dark);
+    display: flex;
+    align-items: center;
+    padding: 0 22px;
+    gap: 12px;
+    flex-shrink: 0;
+    background: var(--paper-aged);
+    position: relative;
+  }
+
+  .sched-mode-tabs {
+    display: flex;
+    overflow: hidden;
+    border: 1px solid var(--paper-dark);
+    background: var(--paper);
+  }
+
+  .sm-tab {
+    padding: 6px 14px;
+    font-family: 'Newsreader', serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-faded);
+    cursor: pointer;
+    border-right: 1px solid var(--paper-rule);
+    transition: all 0.15s ease;
+  }
+  .sm-tab:last-child { border-right: none; }
+  .sm-tab:hover { color: var(--ink); background: var(--paper-aged); }
+  .sm-tab.active {
+    background: var(--ink);
+    color: white;
+  }
+
+  .sched-spacer { flex: 1; }
+
+  .btn-secondary {
+    padding: 7px 16px;
+    border: 1px solid var(--paper-dark);
+    background: var(--paper);
+    font-family: 'Newsreader', serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-mid);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .btn-secondary:hover { background: var(--paper-aged); color: var(--ink); }
+
+  .btn-primary {
+    padding: 8px 20px;
+    background: var(--rust);
+    border: 1px solid var(--rust);
+    font-family: 'Newsreader', serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    letter-spacing: 0.01em;
+  }
+  .btn-primary:hover { background: #6E2C14; }
+
+  /* Timeline */
+  .tl-inner {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 20px;
+    position: relative;
+    scrollbar-width: thin;
+    scrollbar-color: var(--paper-dark) transparent;
+  }
+
+  .tl-item {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+    position: relative;
+  }
+
+  .tl-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 24px;
+    bottom: -18px;
+    width: 1px;
+    border-left: 1px dashed var(--paper-rule);
+  }
+
+  .tl-circle {
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    border: 1px solid var(--paper-dark);
+    background: var(--paper);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 9px;
+    color: var(--ink-ghost);
+  }
+  .tl-circle.done { background: var(--forest); border-color: var(--forest); color: white; font-size: 10px; }
+  .tl-circle.current {
+    background: var(--rust);
+    border-color: var(--rust);
+    color: white;
+    font-size: 10px;
+  }
+
+  .tl-text { flex: 1; }
+
+  .tl-step-nm {
+    font-family: 'Newsreader', serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .tl-item .tl-circle.current ~ .tl-text .tl-step-nm { color: var(--rust); }
+
+  .tl-step-tm {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    color: var(--ink-ghost);
+    letter-spacing: 0.03em;
+  }
+
+  .tl-proof-lines {
+    margin-top: 5px;
+    height: 8px;
+    border: 1px solid var(--paper-dark);
+    background: repeating-linear-gradient(
+      45deg,
+      var(--paper-rule),
+      var(--paper-rule) 2px,
+      white 2px,
+      white 6px
+    );
+  }
+
+  /* === STARTER TAB === */
+  .starter-tab {
+    display: flex;
+    height: 100%;
+  }
+
+  .starter-sidebar {
+    width: 300px;
+    flex-shrink: 0;
+    border-right: 2px solid var(--paper-dark);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--paper-aged);
+    position: relative;
+  }
+
+  .starter-sidebar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      180deg,
+      transparent,
+      transparent 23px,
+      var(--paper-rule) 24px
+    );
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  .sb-head {
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--paper-dark);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    background: var(--paper-aged);
+  }
+
+  .sb-title {
+    font-family: 'Abril Fatface', serif;
+    font-size: 20px;
+    color: var(--ink);
+  }
+
+  .sb-add {
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--paper-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--rust);
+    cursor: pointer;
+    background: var(--paper);
+    font-family: 'Newsreader', serif;
+  }
+
+  .starter-list {
+    flex: 1;
+    overflow-y: auto;
+    position: relative;
+    scrollbar-width: thin;
+    scrollbar-color: var(--paper-dark) transparent;
+  }
+
+  .sc-item {
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--paper-rule);
+    cursor: pointer;
+    transition: background 0.15s ease;
+    background: transparent;
+    position: relative;
+  }
+  .sc-item:hover { background: rgba(0,0,0,0.03); }
+  .sc-item.active { background: white; border-left: 3px solid var(--rust); padding-left: 19px; }
+
+  .sci-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+  }
+
+  .sci-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .sci-dot.forest-dot { background: var(--forest); }
+  .sci-dot.rust-dot { background: var(--rust); }
+
+  .sci-name {
+    font-family: 'Newsreader', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    flex: 1;
+  }
+
+  .sci-when {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    color: var(--ink-ghost);
+  }
+
+  .sci-status {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .sci-status.healthy { color: var(--forest); }
+  .sci-status.needs { color: var(--rust); }
+
+  /* Starter detail */
+  .starter-detail {
+    flex: 1;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .starter-detail::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      180deg,
+      transparent,
+      transparent 27px,
+      var(--paper-rule) 28px
+    );
+    pointer-events: none;
+    opacity: 0.25;
+  }
+
+  .sd-top {
+    padding: 24px 32px 20px;
+    border-bottom: 2px solid var(--paper-dark);
+    background: var(--paper);
+    position: relative;
+  }
+
+  .sd-big-name {
+    font-family: 'Abril Fatface', serif;
+    font-size: 38px;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .sd-source-line {
+    font-family: 'Newsreader', serif;
+    font-size: 14px;
+    color: var(--ink-faded);
+    font-style: italic;
+    margin-bottom: 16px;
+  }
+
+  .sd-stats-row {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--paper-dark);
+    overflow: hidden;
+  }
+
+  .sd-stat-cell {
+    flex: 1;
+    padding: 10px 16px;
+    border-right: 1px solid var(--paper-rule);
+  }
+  .sd-stat-cell:last-child { border-right: none; }
+
+  .ssc-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-ghost);
+    margin-bottom: 4px;
+  }
+
+  .ssc-val {
+    font-family: 'Newsreader', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .ssc-val.forest { color: var(--forest); }
+  .ssc-val.rust { color: var(--rust); }
+
+  .sd-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 22px 32px;
+    position: relative;
+    scrollbar-width: thin;
+    scrollbar-color: var(--paper-dark) transparent;
+  }
+
+  .sd-body-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--paper-dark);
+    padding-bottom: 10px;
+    margin-bottom: 16px;
+  }
+
+  .sdbh-title {
+    font-family: 'Newsreader', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+    font-style: italic;
+  }
+
+  .log-feed-link {
+    font-family: 'Newsreader', serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--rust);
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: var(--rust-mid);
+    text-underline-offset: 2px;
+  }
+
+  .feed-record {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--paper-rule);
+  }
+
+  .fr-when {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    color: var(--ink-ghost);
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+  }
+
+  .fr-body { display: flex; flex-direction: column; gap: 3px; }
+
+  .fr-formula-line {
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    color: var(--ink-mid);
+  }
+
+  .fr-observation {
+    font-family: 'Newsreader', serif;
+    font-size: 12px;
+    color: var(--ink-faded);
+    font-style: italic;
+  }
+
+  /* === LOG TAB === */
+  .log-outer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--paper-aged);
+    position: relative;
+  }
+
+  .log-header {
+    padding: 14px 24px;
+    border-bottom: 2px solid var(--paper-dark);
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    background: var(--paper);
+    position: relative;
+  }
+
+  .log-header-title {
+    font-family: 'Abril Fatface', serif;
+    font-size: 22px;
+    color: var(--ink);
+  }
+
+  .log-filters {
+    display: flex;
+    gap: 0;
+    align-items: stretch;
+    border: 1px solid var(--paper-dark);
+    overflow: hidden;
+    margin-left: 16px;
+  }
+
+  .lf-item {
+    padding: 6px 14px;
+    font-family: 'Newsreader', serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-faded);
+    cursor: pointer;
+    border-right: 1px solid var(--paper-rule);
+    transition: all 0.15s ease;
+  }
+  .lf-item:last-child { border-right: none; }
+  .lf-item:hover { color: var(--ink); background: var(--paper-aged); }
+  .lf-item.active { background: var(--ink); color: white; }
+
+  .log-new-btn {
+    margin-left: auto;
+    padding: 6px 16px;
+    background: var(--rust);
+    border: none;
+    font-family: 'Newsreader', serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+  }
+
+  .log-grid {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    align-content: start;
+    position: relative;
+    scrollbar-width: thin;
+    scrollbar-color: var(--paper-dark) transparent;
+  }
+
+  .log-card {
+    background: white;
+    border: 1px solid var(--paper-dark);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+  .log-card:hover {
+    border-color: var(--ink-mid);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  /* Stamp-like corner */
+  .log-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 16px 16px 0;
+    border-color: transparent var(--paper-aged) transparent transparent;
+    z-index: 1;
+  }
+
+  .lc-photo {
+    aspect-ratio: 1;
+    background: var(--paper-aged);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 44px;
+    border-bottom: 1px solid var(--paper-rule);
+  }
+
+  .lc-info { padding: 10px 12px; }
+
+  .lc-formula {
+    font-family: 'Newsreader', serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+
+  .lc-date {
+    font-family: 'Courier Prime', monospace;
+    font-size: 9px;
+    color: var(--ink-ghost);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .lc-stars { display: flex; gap: 2px; }
+  .lc-star { font-size: 10px; color: var(--rust); }
+  .lc-star.empty { color: var(--paper-dark); }
+
+  /* === TRACKER === */
+  .tracker-outer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--paper);
+  }
+
+  .tracker-masthead {
+    height: 52px;
+    background: var(--ink);
+    display: flex;
+    align-items: center;
+    padding: 0 26px;
+    gap: 20px;
+    flex-shrink: 0;
+  }
+
+  .trm-formula {
+    font-family: 'Newsreader', serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    letter-spacing: 0.01em;
+    flex: 1;
+  }
+
+  .trm-count {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.06em;
+  }
+
+  .trm-end {
+    padding: 6px 16px;
+    border: 1px solid rgba(139,58,28,0.5);
+    background: rgba(139,58,28,0.2);
+    font-family: 'Newsreader', serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #C07060;
+    cursor: pointer;
+  }
+
+  .tracker-body {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
+
+  .tr-left-col {
+    width: 55%;
+    padding: 32px 40px;
+    display: flex;
+    flex-direction: column;
+    border-right: 2px solid var(--paper-dark);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--paper-dark) transparent;
+    position: relative;
+  }
+
+  .tr-left-col::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      180deg,
+      transparent,
+      transparent 27px,
+      var(--paper-rule) 28px
+    );
+    pointer-events: none;
+    opacity: 0.2;
+  }
+
+  .tr-step-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 9px;
+    color: var(--rust);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .tr-step-big {
+    font-family: 'Abril Fatface', serif;
+    font-size: 34px;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 14px;
+  }
+
+  .tr-step-text {
+    font-family: 'Newsreader', serif;
+    font-size: 14px;
+    color: var(--ink-faded);
+    font-style: italic;
+    line-height: 1.65;
+    margin-bottom: 32px;
+    max-width: 400px;
+    border-left: 3px solid var(--paper-dark);
+    padding-left: 16px;
+  }
+
+  /* Timer - circular clock face */
+  .clock-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  .clock-svg-wrap {
+    width: 200px;
+    height: 200px;
+    position: relative;
+  }
+
+  .clock-svg {
+    width: 200px;
+    height: 200px;
+    transform: rotate(-90deg);
+  }
+
+  .clock-track {
+    fill: none;
+    stroke: var(--paper-dark);
+    stroke-width: 1;
+  }
+
+  .clock-ticks-group {}
+
+  .clock-fill {
+    fill: none;
+    stroke: var(--rust);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 565;
+    stroke-dashoffset: 169;
+    transition: stroke-dashoffset 1s linear;
+  }
+
+  .clock-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .clock-digits {
+    font-family: 'Courier Prime', monospace;
+    font-size: 36px;
+    color: var(--ink);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .clock-unit {
+    font-family: 'Courier Prime', monospace;
+    font-size: 9px;
+    color: var(--ink-ghost);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .timer-btns {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .tbtn {
+    padding: 9px 22px;
+    font-family: 'Newsreader', serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid var(--paper-dark);
+    background: var(--paper);
+    color: var(--ink-mid);
+    transition: all 0.15s ease;
+  }
+  .tbtn:hover { background: var(--paper-aged); color: var(--ink); }
+  .tbtn.done-btn {
+    background: var(--rust);
+    border-color: var(--rust);
+    color: white;
+  }
+  .tbtn.done-btn:hover { background: #6E2C14; }
+
+  .tr-right-col {
+    flex: 1;
+    overflow-y: auto;
+    background: var(--paper-aged);
+    scrollbar-width: thin;
+    scrollbar-color: var(--paper-dark) transparent;
+    position: relative;
+  }
+
+  .tr-right-col::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      180deg,
+      transparent,
+      transparent 23px,
+      var(--paper-rule) 24px
+    );
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .trr-section {
+    border-bottom: 1px solid var(--paper-dark);
+    position: relative;
+  }
+
+  .trrs-head {
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--paper-rule);
+    background: var(--paper-aged);
+  }
+
+  .trrs-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-ghost);
+  }
+
+  .progress-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 20px;
+    border-bottom: 1px solid var(--paper-rule);
+    cursor: pointer;
+    transition: background 0.15s ease;
+    position: relative;
+  }
+  .progress-item:hover { background: rgba(0,0,0,0.03); }
+  .progress-item.pi-done { opacity: 0.4; }
+  .progress-item.pi-active { background: var(--rust-light); }
+
+  .pi-mark {
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--paper-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Courier Prime', monospace;
+    font-size: 9px;
+    color: var(--ink-ghost);
+    flex-shrink: 0;
+    background: var(--paper);
+  }
+  .pi-mark.done { background: var(--forest); border-color: var(--forest); color: white; }
+  .pi-mark.active { background: var(--rust); border-color: var(--rust); color: white; }
+
+  .pi-name {
+    font-family: 'Newsreader', serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink);
+    flex: 1;
+  }
+  .pi-done .pi-name { text-decoration: line-through; }
+  .pi-active .pi-name { color: var(--rust); font-weight: 600; }
+
+  .pi-time {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    color: var(--ink-ghost);
+  }
+
+  .ing-check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 20px;
+    border-bottom: 1px solid var(--paper-rule);
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .ing-check-item:hover { background: rgba(0,0,0,0.03); }
+  .ing-check-item.checked { opacity: 0.5; }
+
+  .ic-box {
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--paper-dark);
+    background: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .ic-box.checked { background: var(--forest); border-color: var(--forest); }
+
+  .ic-check-mark { color: white; font-size: 10px; }
+
+  .ic-name {
+    font-family: 'Newsreader', serif;
+    font-size: 12px;
+    color: var(--ink-mid);
+  }
+  .ing-check-item.checked .ic-name { text-decoration: line-through; }
+
+  .tools-area {
+    padding: 10px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tool-tag {
+    padding: 4px 10px;
+    border: 1px solid var(--paper-dark);
+    background: var(--paper);
+    font-family: 'Newsreader', serif;
+    font-size: 12px;
+    color: var(--ink-mid);
+  }
+</style>
+</head>
+<body>
+
+<div class="design-label">
+  ALT-03 · Field Journal
+  <a href="../../..">← Back to prototypes</a>
+</div>
+
+<div class="screen-tabs">
+  <div class="screen-tab active" onclick="showScreen('bake')">Bake Tab</div>
+  <div class="screen-tab" onclick="showScreen('starter')">Starter Tab</div>
+  <div class="screen-tab" onclick="showScreen('log')">Bread Log</div>
+  <div class="screen-tab" onclick="showScreen('tracker')">Bake Tracker</div>
+</div>
+
+<div class="ipad-frame">
+
+  <!-- BAKE TAB -->
+  <div class="app visible" id="screen-bake">
+    <div class="masthead">
+      <div class="masthead-brand">
+        <div>
+          <div class="brand-text">Fournil</div>
+          <div class="brand-sub">Sourdough · 2026</div>
+        </div>
+      </div>
+      <div class="masthead-nav">
+        <div class="nav-item">Starter</div>
+        <div class="nav-item active">Bake</div>
+        <div class="nav-item">Log</div>
+      </div>
+      <div class="masthead-tools">
+        <div class="tool-icon">⚙</div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="bake-left">
+        <div class="ruled-bg"></div>
+        <div class="col-head-row">
+          <div class="col-eyebrow">Choose a Recipe</div>
+          <div class="col-heading">Formula</div>
+        </div>
+        <div class="col-scroll">
+          <div class="formula-entry selected">
+            <div class="fe-name">Four-Fold PAL</div>
+            <div class="fe-meta">
+              <span class="fe-diff">●● Intermediate</span>
+              <span class="fe-time">16–20h</span>
+            </div>
+            <div class="fe-desc">Classic folded dough. Hydration and levain fully adjustable.</div>
+          </div>
+          <div class="formula-entry">
+            <div class="fe-name">No-Knead PAL</div>
+            <div class="fe-meta">
+              <span class="fe-diff" style="color: var(--forest)">● Beginner</span>
+              <span class="fe-time">14–18h</span>
+            </div>
+            <div class="fe-desc">Hands-off overnight loaf. Mix, wait, bake.</div>
+          </div>
+          <div class="formula-entry">
+            <div class="fe-name">Tartine Country</div>
+            <div class="fe-meta">
+              <span class="fe-diff">●● Intermediate</span>
+              <span class="fe-time">18–24h</span>
+            </div>
+            <div class="fe-desc">Chad Robertson's iconic open-crumb country loaf.</div>
+          </div>
+          <div class="formula-entry">
+            <div class="fe-name">100% Whole Grain</div>
+            <div class="fe-meta">
+              <span class="fe-diff" style="color: var(--ink-mid)">●●● Advanced</span>
+              <span class="fe-time">20–26h</span>
+            </div>
+            <div class="fe-desc">Dense, nutritious, complex flavor profile.</div>
+          </div>
+
+          <div class="subsec">
+            <div class="subsec-label">Starter</div>
+            <div class="starter-pick-row">
+              <div class="sp-health"></div>
+              <div class="sp-name-txt">Rye Baby</div>
+              <div class="sp-status-txt">Thriving · 4h ago</div>
+              <span style="color: var(--ink-ghost); font-family: 'Newsreader', serif; font-size: 14px;">›</span>
+            </div>
+          </div>
+
+          <div class="subsec">
+            <div class="subsec-label">Dough Weight</div>
+            <div class="wt-row">
+              <div class="wt-label-txt">Total dough</div>
+              <div class="wt-ctrl">
+                <div class="wt-btn">−</div>
+                <div class="wt-val-txt">900g</div>
+                <div class="wt-btn">+</div>
+              </div>
+            </div>
+            <div class="double-line">
+              <div class="dbl-mark"></div>
+              <div class="dbl-label">Double batch (2×)</div>
+            </div>
+          </div>
+
+          <div class="subsec">
+            <div class="subsec-label">Desired Dough Temperature</div>
+            <div class="ddt-inputs-row">
+              <div class="ddt-inp-wrap">
+                <div class="ddt-inp-label">Flour</div>
+                <div class="ddt-inp-field">68°</div>
+              </div>
+              <div class="ddt-inp-wrap">
+                <div class="ddt-inp-label">Room</div>
+                <div class="ddt-inp-field">72°</div>
+              </div>
+              <div class="ddt-inp-wrap">
+                <div class="ddt-inp-label">Levain</div>
+                <div class="ddt-inp-field">75°</div>
+              </div>
+            </div>
+            <div class="ddt-result-banner">
+              <div class="ddt-res-lbl">Water temperature →</div>
+              <div class="ddt-res-big">77°F</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bake-right">
+        <div class="ingredients-panel">
+          <div class="pills-line">
+            <span class="pill-tag">75% Hydration</span>
+            <span class="pill-tag">20% Levain</span>
+            <span class="pill-tag forest">900g Total</span>
+          </div>
+          <div class="ing-body">
+            <table class="ing-table">
+              <thead>
+                <tr>
+                  <th style="text-align:left">Ingredient</th>
+                  <th>Baker's %</th>
+                  <th>Grams</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="flour-row">
+                  <td>Bread Flour</td>
+                  <td>80%</td>
+                  <td>432g</td>
+                  <td>432g</td>
+                </tr>
+                <tr class="flour-row">
+                  <td>Whole Wheat</td>
+                  <td>20%</td>
+                  <td>108g</td>
+                  <td>108g</td>
+                </tr>
+                <tr>
+                  <td>Water</td>
+                  <td>75%</td>
+                  <td>405g</td>
+                  <td>405g</td>
+                </tr>
+                <tr>
+                  <td>Levain</td>
+                  <td>20%</td>
+                  <td>108g</td>
+                  <td>108g</td>
+                </tr>
+                <tr>
+                  <td>Salt</td>
+                  <td>2%</td>
+                  <td>10.8g</td>
+                  <td>10.8g</td>
+                </tr>
+                <tr class="total-row">
+                  <td colspan="2">Total Dough</td>
+                  <td>—</td>
+                  <td>900g</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="sched-bar">
+            <div class="sched-mode-tabs">
+              <div class="sm-tab active">Start Now</div>
+              <div class="sm-tab">Start At</div>
+              <div class="sm-tab">Finish By</div>
+            </div>
+            <div class="sched-spacer"></div>
+            <div class="btn-secondary">Save</div>
+            <div class="btn-primary">Start Bake</div>
+          </div>
+        </div>
+
+        <div class="timeline-panel">
+          <div class="panel-top">
+            <div class="pt-eyebrow">Today, starting now</div>
+            <div class="pt-title">Bake Timeline</div>
+          </div>
+          <div class="tl-inner">
+
+            <div class="tl-item">
+              <div class="tl-circle done">✓</div>
+              <div class="tl-text">
+                <div class="tl-step-nm">Mix & Autolyse</div>
+                <div class="tl-step-tm">9:00 AM · 30 min</div>
+              </div>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-circle current">→</div>
+              <div class="tl-text">
+                <div class="tl-step-nm" style="color: var(--rust)">Bulk Fermentation</div>
+                <div class="tl-step-tm">9:30 AM</div>
+                <div class="tl-proof-lines"></div>
+                <div style="font-family: 'Courier Prime', monospace; font-size: 10px; color: var(--ink-ghost); margin-top: 3px;">4–5 hours</div>
+              </div>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-circle">3</div>
+              <div class="tl-text">
+                <div class="tl-step-nm">Pre-Shape</div>
+                <div class="tl-step-tm">~2:00 PM · 15 min</div>
+              </div>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-circle">4</div>
+              <div class="tl-text">
+                <div class="tl-step-nm">Bench Rest</div>
+                <div class="tl-step-tm">~2:15 PM · 30 min</div>
+              </div>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-circle">5</div>
+              <div class="tl-text">
+                <div class="tl-step-nm">Final Shape</div>
+                <div class="tl-step-tm">~2:45 PM · 20 min</div>
+              </div>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-circle">6</div>
+              <div class="tl-text">
+                <div class="tl-step-nm">Cold Proof</div>
+                <div class="tl-step-tm">~3:00 PM</div>
+                <div class="tl-proof-lines"></div>
+                <div style="font-family: 'Courier Prime', monospace; font-size: 10px; color: var(--ink-ghost); margin-top: 3px;">~12 hours overnight</div>
+              </div>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-circle">7</div>
+              <div class="tl-text">
+                <div class="tl-step-nm">Bake</div>
+                <div class="tl-step-tm">Tomorrow · 8:00 AM</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STARTER TAB -->
+  <div class="app" id="screen-starter">
+    <div class="masthead">
+      <div class="masthead-brand">
+        <div>
+          <div class="brand-text">Fournil</div>
+          <div class="brand-sub">Sourdough · 2026</div>
+        </div>
+      </div>
+      <div class="masthead-nav">
+        <div class="nav-item active">Starter</div>
+        <div class="nav-item">Bake</div>
+        <div class="nav-item">Log</div>
+      </div>
+      <div class="masthead-tools">
+        <div class="tool-icon">⚙</div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="starter-tab">
+        <div class="starter-sidebar">
+          <div class="ruled-bg"></div>
+          <div class="sb-head">
+            <div class="sb-title">My Starters</div>
+            <div class="sb-add">+</div>
+          </div>
+          <div class="starter-list">
+            <div class="sc-item active">
+              <div class="sci-top">
+                <div class="sci-dot forest-dot"></div>
+                <div class="sci-name">Rye Baby</div>
+                <div class="sci-when">4h ago</div>
+              </div>
+              <div class="sci-status healthy">Thriving</div>
+            </div>
+            <div class="sc-item">
+              <div class="sci-top">
+                <div class="sci-dot rust-dot"></div>
+                <div class="sci-name">Old Faithful</div>
+                <div class="sci-when">2d ago</div>
+              </div>
+              <div class="sci-status needs">Needs Feeding</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="starter-detail">
+          <div class="sd-top">
+            <div class="sd-big-name">Rye Baby</div>
+            <div class="sd-source-line">From neighbor Maria · June 2022 · Rye flour, 100% hydration</div>
+            <div class="sd-stats-row">
+              <div class="sd-stat-cell">
+                <div class="ssc-label">Status</div>
+                <div class="ssc-val forest">Thriving</div>
+              </div>
+              <div class="sd-stat-cell">
+                <div class="ssc-label">Last Fed</div>
+                <div class="ssc-val rust">4h ago</div>
+              </div>
+              <div class="sd-stat-cell">
+                <div class="ssc-label">Age</div>
+                <div class="ssc-val">2y 9m</div>
+              </div>
+              <div class="sd-stat-cell">
+                <div class="ssc-label">Total Feeds</div>
+                <div class="ssc-val">147</div>
+              </div>
+              <div class="sd-stat-cell">
+                <div class="ssc-label">Bakes</div>
+                <div class="ssc-val">34</div>
+              </div>
+            </div>
+          </div>
+          <div class="sd-body">
+            <div class="sd-body-heading">
+              <div class="sdbh-title">Feeding History</div>
+              <div class="log-feed-link">+ Log a Feed</div>
+            </div>
+
+            <div class="feed-record">
+              <div class="fr-when">Mar 19<br>9:15 AM<br>4h ago</div>
+              <div class="fr-body">
+                <div class="fr-formula-line">150g flour · 150g water · 75g starter · 75g discard</div>
+                <div class="fr-observation">Looking super active, peaked at 3h. Beautiful dome formation.</div>
+              </div>
+            </div>
+
+            <div class="feed-record">
+              <div class="fr-when">Mar 18<br>8:30 AM<br>1d ago</div>
+              <div class="fr-body">
+                <div class="fr-formula-line">150g flour · 150g water · 75g starter</div>
+                <div class="fr-observation">Back to normal after the weekend bake.</div>
+              </div>
+            </div>
+
+            <div class="feed-record">
+              <div class="fr-when">Mar 16<br>7:00 PM<br>3d ago</div>
+              <div class="fr-body">
+                <div class="fr-formula-line">150g bread flour · 150g water · 75g starter</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOG TAB -->
+  <div class="app" id="screen-log">
+    <div class="masthead">
+      <div class="masthead-brand">
+        <div>
+          <div class="brand-text">Fournil</div>
+          <div class="brand-sub">Sourdough · 2026</div>
+        </div>
+      </div>
+      <div class="masthead-nav">
+        <div class="nav-item">Starter</div>
+        <div class="nav-item">Bake</div>
+        <div class="nav-item active">Log</div>
+      </div>
+      <div class="masthead-tools">
+        <div class="tool-icon">⚙</div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="log-outer">
+        <div class="log-header">
+          <div class="log-header-title">Bread Journal</div>
+          <div class="log-filters">
+            <div class="lf-item active">All</div>
+            <div class="lf-item">Four-Fold PAL</div>
+            <div class="lf-item">Tartine</div>
+            <div class="lf-item">No-Knead</div>
+            <div class="lf-item">Rye Baby</div>
+          </div>
+          <div class="log-new-btn">+ New Entry</div>
+        </div>
+
+        <div class="log-grid">
+          <div class="log-card">
+            <div class="lc-photo">🍞</div>
+            <div class="lc-info">
+              <div class="lc-formula">Four-Fold PAL</div>
+              <div class="lc-date">Mar 17, 2026</div>
+              <div class="lc-stars">
+                <span class="lc-star">★</span><span class="lc-star">★</span><span class="lc-star">★</span><span class="lc-star">★</span><span class="lc-star empty">★</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="log-card">
+            <div class="lc-photo">🥖</div>
+            <div class="lc-info">
+              <div class="lc-formula">Tartine Country</div>
+              <div class="lc-date">Mar 10, 2026</div>
+              <div class="lc-stars">
+                <span class="lc-star">★</span><span class="lc-star">★</span><span class="lc-star">★</span><span class="lc-star">★</span><span class="lc-star">★</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="log-card">
+            <div class="lc-photo">🍞</div>
+            <div class="lc-info">
+              <div class="lc-formula">No-Knead PAL</div>
+              <div class="lc-date">Mar 2, 2026</div>
+              <div class="lc-stars">
+                <span class="lc-star">★</span><span class="lc-star">★</span><span class="lc-star">★</span><span class="lc-star empty">★</span><span class="lc-star empty">★</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="log-card">
+            <div class="lc-photo">🫓</div>
+            <div class="lc-info">
+              <div class="lc-formula">Four-Fold PAL</div>
+              <div class="lc-date">Feb 22, 2026</div>
+              <div class="lc-stars">
+                <span class="lc-star">★</span><span class="lc-star">★</span><span class="lc-star">★</span><span class="lc-star">★</span><span class="lc-star empty">★</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="log-card">
+            <div class="lc-photo">🍞</div>
+            <div class="lc-info">
+              <div class="lc-formula">Tartine Country</div>
+              <div class="lc-date">Feb 14, 2026</div>
+              <div class="lc-stars">
+                <span class="lc-star">★</span><span class="lc-star">★</span><span class="lc-star">★</span><span class="lc-star">★</span><span class="lc-star">★</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="log-card" style="border-style: dashed; border-color: var(--paper-rule);">
+            <div class="lc-photo" style="font-size: 28px; opacity: 0.3; background: var(--paper);">+</div>
+            <div class="lc-info">
+              <div class="lc-formula" style="color: var(--ink-ghost);">New Entry</div>
+              <div class="lc-date">Log a Bake</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRACKER -->
+  <div class="app" id="screen-tracker">
+    <div class="tracker-outer">
+      <div class="tracker-masthead">
+        <div class="trm-formula">Baking: Four-Fold PAL</div>
+        <div class="trm-count">Step 2 of 8</div>
+        <div class="trm-end">✕ End Bake</div>
+      </div>
+
+      <div class="tracker-body">
+        <div class="tr-left-col">
+          <div class="tr-step-label">Step 02 of 08</div>
+          <div class="tr-step-big">Bulk<br>Fermentation</div>
+          <div class="tr-step-text">Perform 4 sets of stretch-and-folds, 30 minutes apart. Then rest undisturbed until the dough has increased in volume by 50–75% and shows signs of fermentation at the edges.</div>
+
+          <div class="clock-wrap">
+            <div class="clock-svg-wrap">
+              <svg class="clock-svg" viewBox="0 0 200 200">
+                <circle class="clock-track" cx="100" cy="100" r="90"/>
+                <!-- Tick marks -->
+                <g>
+                  <!-- major ticks at 0, 15, 30, 45 min positions -->
+                  <line x1="100" y1="10" x2="100" y2="22" stroke="#D8CEBC" stroke-width="2" transform="rotate(0, 100, 100)"/>
+                  <line x1="100" y1="10" x2="100" y2="22" stroke="#D8CEBC" stroke-width="2" transform="rotate(90, 100, 100)"/>
+                  <line x1="100" y1="10" x2="100" y2="22" stroke="#D8CEBC" stroke-width="2" transform="rotate(180, 100, 100)"/>
+                  <line x1="100" y1="10" x2="100" y2="22" stroke="#D8CEBC" stroke-width="2" transform="rotate(270, 100, 100)"/>
+                  <!-- minor ticks -->
+                  <line x1="100" y1="10" x2="100" y2="17" stroke="#E0D5C0" stroke-width="1" transform="rotate(30, 100, 100)"/>
+                  <line x1="100" y1="10" x2="100" y2="17" stroke="#E0D5C0" stroke-width="1" transform="rotate(60, 100, 100)"/>
+                  <line x1="100" y1="10" x2="100" y2="17" stroke="#E0D5C0" stroke-width="1" transform="rotate(120, 100, 100)"/>
+                  <line x1="100" y1="10" x2="100" y2="17" stroke="#E0D5C0" stroke-width="1" transform="rotate(150, 100, 100)"/>
+                  <line x1="100" y1="10" x2="100" y2="17" stroke="#E0D5C0" stroke-width="1" transform="rotate(210, 100, 100)"/>
+                  <line x1="100" y1="10" x2="100" y2="17" stroke="#E0D5C0" stroke-width="1" transform="rotate(240, 100, 100)"/>
+                  <line x1="100" y1="10" x2="100" y2="17" stroke="#E0D5C0" stroke-width="1" transform="rotate(300, 100, 100)"/>
+                  <line x1="100" y1="10" x2="100" y2="17" stroke="#E0D5C0" stroke-width="1" transform="rotate(330, 100, 100)"/>
+                </g>
+                <circle class="clock-fill" cx="100" cy="100" r="90"/>
+              </svg>
+              <div class="clock-center">
+                <div class="clock-digits">3:42</div>
+                <div class="clock-unit">remaining</div>
+              </div>
+            </div>
+
+            <div class="timer-btns">
+              <div class="tbtn">⏭ Skip</div>
+              <div class="tbtn">⏸ Pause</div>
+              <div class="tbtn done-btn">✓ Done</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tr-right-col">
+          <div class="trr-section">
+            <div class="trrs-head"><div class="trrs-label">Progress</div></div>
+            <div class="progress-item pi-done">
+              <div class="pi-mark done">✓</div>
+              <div class="pi-name">Levain Build</div>
+              <div class="pi-time">9:00 AM</div>
+            </div>
+            <div class="progress-item pi-active">
+              <div class="pi-mark active">→</div>
+              <div class="pi-name">Bulk Fermentation</div>
+              <div class="pi-time">9:30 AM</div>
+            </div>
+            <div class="progress-item">
+              <div class="pi-mark">3</div>
+              <div class="pi-name">Pre-Shape</div>
+              <div class="pi-time">~2:00 PM</div>
+            </div>
+            <div class="progress-item">
+              <div class="pi-mark">4</div>
+              <div class="pi-name">Bench Rest</div>
+              <div class="pi-time">~2:15 PM</div>
+            </div>
+            <div class="progress-item">
+              <div class="pi-mark">5</div>
+              <div class="pi-name">Final Shape</div>
+              <div class="pi-time">~2:45 PM</div>
+            </div>
+            <div class="progress-item">
+              <div class="pi-mark">6</div>
+              <div class="pi-name">Cold Proof</div>
+              <div class="pi-time">~3:00 PM</div>
+            </div>
+            <div class="progress-item">
+              <div class="pi-mark">7</div>
+              <div class="pi-name">Bake</div>
+              <div class="pi-time">Tomorrow</div>
+            </div>
+          </div>
+
+          <div class="trr-section">
+            <div class="trrs-head"><div class="trrs-label">Ingredients</div></div>
+            <div class="ing-check-item checked">
+              <div class="ic-box checked"><span class="ic-check-mark">✓</span></div>
+              <div class="ic-name">432g Bread Flour</div>
+            </div>
+            <div class="ing-check-item checked">
+              <div class="ic-box checked"><span class="ic-check-mark">✓</span></div>
+              <div class="ic-name">108g Whole Wheat</div>
+            </div>
+            <div class="ing-check-item">
+              <div class="ic-box"></div>
+              <div class="ic-name">405g Water (77°F)</div>
+            </div>
+            <div class="ing-check-item">
+              <div class="ic-box"></div>
+              <div class="ic-name">108g Levain</div>
+            </div>
+            <div class="ing-check-item">
+              <div class="ic-box"></div>
+              <div class="ic-name">10.8g Salt</div>
+            </div>
+          </div>
+
+          <div class="trr-section">
+            <div class="trrs-head"><div class="trrs-label">Tools</div></div>
+            <div class="tools-area">
+              <div class="tool-tag">Large bowl</div>
+              <div class="tool-tag">Bowl scraper</div>
+              <div class="tool-tag">Wet hands</div>
+            </div>
+            <div style="padding: 8px 20px 14px; font-family: 'Courier Prime', monospace; font-size: 10px; color: var(--ink-ghost); letter-spacing: 0.04em;">Next step: bench knife, banneton</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showScreen(name) {
+  document.querySelectorAll('.app').forEach(a => a.classList.remove('visible'));
+  document.getElementById('screen-' + name).classList.add('visible');
+  document.querySelectorAll('.screen-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

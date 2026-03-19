@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1024, initial-scale=1">
+<title>Fournil — Alternate Design Explorations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --parchment: #FEFBF5;
+    --flour-dust: #F2EBE0;
+    --flour-dust-deep: #E4D9C8;
+    --crust-brown: #4A3228;
+    --wheat-field: #8B7355;
+    --wheat-light: #A89478;
+    --golden-crust: #C07A2E;
+    --sage: #7A9178;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Serif 4', serif;
+    background: var(--parchment);
+    color: var(--crust-brown);
+    min-height: 100vh;
+    padding: 56px 64px 80px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .back {
+    font-family: 'Fira Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--wheat-light);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 40px;
+    transition: color 0.15s ease;
+  }
+  .back:hover { color: var(--wheat-field); }
+
+  header { margin-bottom: 48px; }
+
+  .eyebrow {
+    font-family: 'Fira Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--wheat-light);
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 34px;
+    font-weight: 600;
+    color: var(--crust-brown);
+    margin-bottom: 10px;
+    letter-spacing: 0.01em;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: var(--wheat-field);
+    line-height: 1.6;
+    max-width: 520px;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--flour-dust-deep);
+    margin: 40px 0;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+
+  .card {
+    display: block;
+    text-decoration: none;
+    background: white;
+    border: 1.5px solid var(--flour-dust-deep);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.25s ease;
+    box-shadow: 0 1px 3px rgba(74,50,40,0.06);
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(74,50,40,0.12);
+  }
+
+  .card-preview {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .preview-midnight {
+    background: linear-gradient(135deg, #0B0A08 0%, #1C1A17 50%, #252220 100%);
+  }
+  .preview-midnight::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(0deg, transparent 0%, rgba(232,160,64,0.04) 100%);
+  }
+
+  .preview-swiss {
+    background: linear-gradient(135deg, #F8F7F5 0%, #FFFFFF 100%);
+    border-bottom: 2px solid #EEECEB;
+  }
+
+  .preview-journal {
+    background: linear-gradient(135deg, #EDE5D5 0%, #F5F0E8 60%, #E0D5C0 100%);
+  }
+
+  /* Mini iPad in preview */
+  .mini-ipad {
+    width: 160px;
+    height: 112px;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    position: relative;
+  }
+
+  .mi-bar-midnight {
+    height: 14px;
+    background: #0B0A08;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    gap: 4px;
+  }
+  .mi-dot-m { width: 28px; height: 5px; background: rgba(232,160,64,0.6); border-radius: 2px; }
+  .mi-dot-m2 { width: 20px; height: 5px; background: rgba(255,255,255,0.12); border-radius: 2px; }
+  .mi-body-m {
+    background: #141210;
+    flex: 1;
+    padding: 8px;
+    display: flex;
+    gap: 6px;
+  }
+  .mi-col-m {
+    width: 50px;
+    background: #0B0A08;
+    border-radius: 3px;
+    padding: 6px 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .mi-card-m {
+    height: 14px;
+    background: #1C1A17;
+    border-radius: 2px;
+    border-left: 2px solid rgba(232,160,64,0.7);
+  }
+  .mi-main-m {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .mi-row-m { height: 8px; background: rgba(255,255,255,0.05); border-radius: 2px; }
+  .mi-glow { background: rgba(232,160,64,0.2); height: 16px; border-radius: 2px; }
+
+  .mi-bar-swiss {
+    height: 14px;
+    background: #0D0C0A;
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    gap: 6px;
+  }
+  .mi-dot-s { width: 16px; height: 4px; background: #CC2B00; border-radius: 0; }
+  .mi-dot-s2 { width: 10px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 0; }
+  .mi-body-s { background: white; flex: 1; padding: 6px; display: flex; gap: 5px; }
+  .mi-col-s { width: 40px; background: #F8F7F5; padding: 5px 4px; display: flex; flex-direction: column; gap: 3px; }
+  .mi-entry-s { height: 10px; background: #EEECEB; }
+  .mi-entry-s.sel { border-left: 2px solid #CC2B00; background: white; }
+  .mi-right-s { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+  .mi-table-s { height: 50px; background: #F8F7F5; }
+  .mi-tl-s { height: 30px; background: #F8F7F5; }
+
+  .mi-bar-j {
+    height: 14px;
+    background: #1C1814;
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    gap: 4px;
+  }
+  .mi-dot-j { width: 22px; height: 5px; background: rgba(255,255,255,0.7); border-radius: 0; font-family: serif; }
+  .mi-dot-j2 { width: 12px; height: 5px; background: rgba(255,255,255,0.2); border-radius: 0; }
+  .mi-body-j { background: #F5F0E8; flex: 1; padding: 6px; display: flex; gap: 5px; }
+  .mi-col-j { width: 42px; background: #EDE5D5; padding: 5px 4px; display: flex; flex-direction: column; gap: 3px; }
+  .mi-entry-j { height: 10px; background: rgba(0,0,0,0.07); }
+  .mi-entry-j.sel { border-left: 2px solid #8B3A1C; background: white; }
+  .mi-right-j { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+  .mi-table-j { height: 50px; background: white; }
+  .mi-tl-j { height: 30px; background: #EDE5D5; }
+
+  .mini-ipad { display: flex; flex-direction: column; }
+
+  .card-body { padding: 20px 22px 22px; }
+
+  .card-label {
+    font-family: 'Fira Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .label-midnight { color: rgba(232,160,64,0.7); }
+  .label-swiss { color: #CC2B00; }
+  .label-journal { color: #8B3A1C; }
+
+  .card-name {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--crust-brown);
+    margin-bottom: 8px;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--wheat-field);
+    line-height: 1.55;
+    margin-bottom: 16px;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    font-family: 'Fira Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    padding: 3px 9px;
+    border-radius: 20px;
+    background: var(--flour-dust);
+    color: var(--wheat-field);
+    border: 1px solid var(--flour-dust-deep);
+  }
+
+  .card-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--flour-dust-deep);
+  }
+
+  .arrow-text {
+    font-family: 'Fira Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--wheat-light);
+    text-transform: uppercase;
+  }
+
+  .arrow-icon {
+    font-size: 14px;
+    color: var(--golden-crust);
+  }
+
+  footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--flour-dust-deep);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-note {
+    font-size: 12px;
+    color: var(--wheat-light);
+    font-style: italic;
+  }
+
+  .footer-code {
+    font-family: 'Fira Mono', monospace;
+    font-size: 10px;
+    color: var(--flour-dust-deep);
+    letter-spacing: 0.08em;
+  }
+</style>
+</head>
+<body>
+
+<a class="back" href="../..">← Back to main prototypes</a>
+
+<header>
+  <div class="eyebrow">Fournil · Design Explorations</div>
+  <h1>Alternate Design Directions</h1>
+  <p class="subtitle">Three distinct aesthetic directions for Fournil, each covering all four main screens: Bake Tab, Starter Tab, Bread Log, and Bake Tracker.</p>
+</header>
+
+<div class="divider"></div>
+
+<div class="cards">
+
+  <a class="card" href="alt-midnight.html">
+    <div class="card-preview preview-midnight">
+      <div class="mini-ipad">
+        <div class="mi-bar-midnight">
+          <div class="mi-dot-m"></div>
+          <div class="mi-dot-m2"></div>
+          <div class="mi-dot-m2" style="width: 14px; margin-left: auto;"></div>
+        </div>
+        <div class="mi-body-m">
+          <div class="mi-col-m">
+            <div class="mi-card-m"></div>
+            <div class="mi-card-m" style="border-color: transparent;"></div>
+            <div class="mi-card-m" style="border-color: transparent;"></div>
+          </div>
+          <div class="mi-main-m">
+            <div class="mi-row-m mi-glow"></div>
+            <div class="mi-row-m"></div>
+            <div class="mi-row-m"></div>
+            <div class="mi-row-m" style="width: 70%;"></div>
+            <div class="mi-row-m"></div>
+            <div class="mi-row-m" style="background: rgba(90,125,95,0.2);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-label label-midnight">Alt 01</div>
+      <div class="card-name">Midnight Craftsman</div>
+      <p class="card-desc">Dark forge aesthetic. Amber glows against deep charcoal. The baker who rises at 4am. Intimate, focused, alive with warmth in the darkness.</p>
+      <div class="card-tags">
+        <span class="tag">Dark theme</span>
+        <span class="tag">DM Serif</span>
+        <span class="tag">JetBrains Mono</span>
+        <span class="tag">Amber gold</span>
+      </div>
+      <div class="card-arrow">
+        <span class="arrow-text">Open design</span>
+        <span class="arrow-icon">→</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="card" href="alt-swiss.html">
+    <div class="card-preview preview-swiss">
+      <div class="mini-ipad">
+        <div class="mi-bar-swiss">
+          <div class="mi-dot-s"></div>
+          <div class="mi-dot-s2"></div>
+          <div class="mi-dot-s2" style="margin-left: auto;"></div>
+        </div>
+        <div class="mi-body-s">
+          <div class="mi-col-s">
+            <div class="mi-entry-s sel"></div>
+            <div class="mi-entry-s"></div>
+            <div class="mi-entry-s"></div>
+            <div class="mi-entry-s"></div>
+          </div>
+          <div class="mi-right-s">
+            <div class="mi-table-s"></div>
+            <div class="mi-tl-s"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-label label-swiss">Alt 02</div>
+      <div class="card-name">Swiss Precision</div>
+      <p class="card-desc">Crisp white, black grids, one brutal red accent. Baker as scientist. Every gram measured, every process documented with rigor.</p>
+      <div class="card-tags">
+        <span class="tag">Light theme</span>
+        <span class="tag">Syne</span>
+        <span class="tag">Syne Mono</span>
+        <span class="tag">Vermillion red</span>
+      </div>
+      <div class="card-arrow">
+        <span class="arrow-text">Open design</span>
+        <span class="arrow-icon">→</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="card" href="alt-journal.html">
+    <div class="card-preview preview-journal">
+      <div class="mini-ipad">
+        <div class="mi-bar-j">
+          <div class="mi-dot-j"></div>
+          <div class="mi-dot-j2"></div>
+          <div class="mi-dot-j2" style="margin-left: auto;"></div>
+        </div>
+        <div class="mi-body-j">
+          <div class="mi-col-j">
+            <div class="mi-entry-j sel"></div>
+            <div class="mi-entry-j"></div>
+            <div class="mi-entry-j"></div>
+          </div>
+          <div class="mi-right-j">
+            <div class="mi-table-j"></div>
+            <div class="mi-tl-j"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-label label-journal">Alt 03</div>
+      <div class="card-name">Field Journal</div>
+      <p class="card-desc">Aged kraft paper, ruled lines, ink on parchment. Like a well-worn baker's notebook found in a farmhouse kitchen. Warm, handcrafted, analog.</p>
+      <div class="card-tags">
+        <span class="tag">Sepia theme</span>
+        <span class="tag">Abril Fatface</span>
+        <span class="tag">Courier Prime</span>
+        <span class="tag">Rust ink</span>
+      </div>
+      <div class="card-arrow">
+        <span class="arrow-text">Open design</span>
+        <span class="arrow-icon">→</span>
+      </div>
+    </div>
+  </a>
+
+</div>
+
+<footer>
+  <span class="footer-note">Each design explores all four screens — use the tab switcher in the upper right</span>
+  <span class="footer-code">FOURNIL · ALT · v1</span>
+</footer>
+
+</body>
+</html>

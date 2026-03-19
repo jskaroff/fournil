@@ -1,0 +1,2011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1194, initial-scale=1">
+<title>Fournil — Swiss Precision Alt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Syne+Mono&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --white: #FFFFFF;
+    --off: #F8F7F5;
+    --light-grey: #EEECEB;
+    --mid-grey: #D4D0CC;
+    --grey: #9A9692;
+    --dark-grey: #4A4744;
+    --near-black: #1A1916;
+    --black: #0D0C0A;
+    --red: #CC2B00;
+    --red-light: rgba(204, 43, 0, 0.08);
+    --red-mid: rgba(204, 43, 0, 0.18);
+    --border: 1px solid var(--mid-grey);
+    --border-thin: 1px solid var(--light-grey);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #D8D4CF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Syne', sans-serif;
+    padding: 40px;
+  }
+
+  .design-label {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-family: 'Syne Mono', monospace;
+    font-size: 10px;
+    color: #8A8680;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    z-index: 100;
+  }
+  .design-label a {
+    color: #7A7672;
+    text-decoration: none;
+    display: block;
+    margin-top: 4px;
+    font-size: 9px;
+  }
+  .design-label a:hover { color: #4A4744; }
+
+  .screen-tabs {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 4px;
+    z-index: 100;
+  }
+  .screen-tab {
+    padding: 6px 14px;
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    background: white;
+    color: var(--grey);
+    border: 1px solid var(--mid-grey);
+    text-transform: uppercase;
+    transition: all 0.15s ease;
+  }
+  .screen-tab:hover { color: var(--near-black); }
+  .screen-tab.active {
+    background: var(--red);
+    color: white;
+    border-color: var(--red);
+  }
+
+  .ipad-frame {
+    width: 1194px;
+    height: 834px;
+    background: var(--white);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.15);
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.05),
+      0 40px 120px rgba(0,0,0,0.2);
+  }
+
+  .app {
+    display: none;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+  }
+  .app.visible { display: flex; }
+
+  /* === TOPBAR === */
+  .topbar {
+    height: 52px;
+    background: var(--black);
+    display: flex;
+    align-items: stretch;
+    flex-shrink: 0;
+  }
+
+  .topbar-wordmark {
+    width: 200px;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .wordmark-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: white;
+  }
+
+  .wordmark-text .dot { color: var(--red); }
+
+  .tab-bar {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .tab-item {
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.15s ease;
+  }
+  .tab-item:hover { color: rgba(255,255,255,0.65); }
+  .tab-item.active {
+    color: white;
+    border-bottom-color: var(--red);
+  }
+
+  .topbar-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 10px;
+  }
+
+  .tb-icon {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.4);
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+  .tb-icon:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); }
+
+  /* === MAIN LAYOUT === */
+  .main { flex: 1; display: flex; overflow: hidden; }
+
+  /* === BAKE TAB === */
+  .bake-left {
+    width: 340px;
+    flex-shrink: 0;
+    background: var(--off);
+    border-right: var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .panel-head {
+    padding: 0 24px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    border-bottom: var(--border);
+    flex-shrink: 0;
+  }
+
+  .panel-head-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey);
+    flex: 1;
+  }
+
+  .panel-count {
+    font-family: 'Syne Mono', monospace;
+    font-size: 10px;
+    color: var(--grey);
+    letter-spacing: 0.06em;
+  }
+
+  .panel-scroll {
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--mid-grey) transparent;
+  }
+
+  /* Formula cards */
+  .formula-card {
+    padding: 16px 24px;
+    border-bottom: var(--border-thin);
+    cursor: pointer;
+    transition: background 0.15s ease;
+    position: relative;
+  }
+  .formula-card:hover { background: var(--light-grey); }
+  .formula-card.selected { background: var(--white); }
+  .formula-card.selected::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--red);
+  }
+
+  .fc-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--near-black);
+    letter-spacing: 0.02em;
+    margin-bottom: 4px;
+  }
+
+  .fc-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+  }
+
+  .diff-tag {
+    font-family: 'Syne Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border: 1px solid currentColor;
+  }
+  .diff-beg { color: #3A7A44; }
+  .diff-int { color: var(--red); }
+  .diff-adv { color: var(--near-black); }
+
+  .fc-timing {
+    font-family: 'Syne Mono', monospace;
+    font-size: 10px;
+    color: var(--grey);
+  }
+
+  .fc-desc {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 12px;
+    color: var(--dark-grey);
+    line-height: 1.5;
+  }
+
+  /* Sub-sections */
+  .sub-section {
+    padding: 16px 24px;
+    border-bottom: var(--border-thin);
+  }
+
+  .sub-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-bottom: 10px;
+  }
+
+  .starter-pick {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--white);
+    border: var(--border);
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+  .starter-pick:hover { border-color: var(--dark-grey); }
+
+  .sp-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #3A7A44;
+    flex-shrink: 0;
+  }
+
+  .sp-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--near-black);
+    flex: 1;
+  }
+
+  .sp-status {
+    font-family: 'Syne Mono', monospace;
+    font-size: 10px;
+    color: var(--grey);
+  }
+
+  .sp-caret { color: var(--grey); font-size: 12px; }
+
+  /* Weight */
+  .weight-ctrl-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--white);
+    border: var(--border);
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+
+  .wc-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--dark-grey);
+    flex: 1;
+    padding: 10px 12px;
+    border-right: var(--border);
+  }
+
+  .wc-minus, .wc-plus {
+    width: 36px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--dark-grey);
+    transition: background 0.15s ease;
+    border: none;
+    background: none;
+    font-family: 'Syne', sans-serif;
+  }
+  .wc-minus:hover, .wc-plus:hover { background: var(--light-grey); }
+  .wc-minus { border-right: var(--border); }
+  .wc-plus { border-left: var(--border); }
+
+  .wc-val {
+    font-family: 'Syne Mono', monospace;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--near-black);
+    padding: 0 14px;
+    min-width: 70px;
+    text-align: center;
+  }
+
+  .double-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: var(--white);
+    border: var(--border);
+    cursor: pointer;
+  }
+
+  .toggle-sw {
+    width: 32px;
+    height: 18px;
+    border-radius: 0;
+    background: var(--mid-grey);
+    border: 1px solid var(--mid-grey);
+    position: relative;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+  }
+  .toggle-sw-thumb {
+    width: 12px;
+    height: 12px;
+    background: white;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: left 0.2s ease;
+  }
+
+  .dr-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--dark-grey);
+  }
+
+  /* DDT */
+  .ddt-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--mid-grey);
+    border: var(--border);
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+
+  .ddt-cell {
+    background: var(--white);
+    padding: 10px 12px;
+  }
+
+  .ddt-cell-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-bottom: 4px;
+  }
+
+  .ddt-cell-val {
+    font-family: 'Syne Mono', monospace;
+    font-size: 15px;
+    color: var(--near-black);
+  }
+
+  .ddt-result-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    background: var(--red-light);
+    border: 1px solid var(--red-mid);
+  }
+
+  .ddt-res-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+    flex: 1;
+  }
+
+  .ddt-res-val {
+    font-family: 'Syne Mono', monospace;
+    font-size: 20px;
+    color: var(--red);
+    font-weight: 400;
+  }
+
+  /* === RIGHT PANELS === */
+  .bake-right { flex: 1; display: flex; overflow: hidden; }
+
+  .ingredients-panel {
+    flex: 1;
+    background: var(--white);
+    border-right: var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .timeline-panel {
+    width: 280px;
+    flex-shrink: 0;
+    background: var(--off);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .pills-row {
+    padding: 14px 24px;
+    border-bottom: var(--border);
+    display: flex;
+    gap: 8px;
+  }
+
+  .pill {
+    font-family: 'Syne Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border: 1px solid var(--mid-grey);
+    color: var(--dark-grey);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .pill.red-pill {
+    background: var(--red-light);
+    border-color: var(--red-mid);
+    color: var(--red);
+  }
+
+  .table-wrap {
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--mid-grey) transparent;
+  }
+
+  .ing-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .ing-table th {
+    font-family: 'Syne', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey);
+    padding: 12px 24px;
+    border-bottom: var(--border);
+    text-align: right;
+    background: var(--off);
+    position: sticky;
+    top: 0;
+  }
+  .ing-table th:first-child { text-align: left; }
+
+  .ing-table td {
+    font-family: 'Syne Mono', monospace;
+    font-size: 12px;
+    color: var(--dark-grey);
+    padding: 11px 24px;
+    border-bottom: var(--border-thin);
+    text-align: right;
+    vertical-align: middle;
+  }
+  .ing-table td:first-child {
+    text-align: left;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--near-black);
+  }
+
+  .ing-table tr.flour-row td { background: rgba(58, 122, 68, 0.04); }
+  .ing-table tr.flour-row td:first-child { color: #3A7A44; }
+  .ing-table tr.total-row td {
+    font-weight: 700;
+    color: var(--near-black);
+    border-top: var(--border);
+    background: var(--off);
+    font-size: 13px;
+  }
+
+  /* Schedule bar */
+  .schedule-bar {
+    height: 52px;
+    border-top: var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    gap: 12px;
+    flex-shrink: 0;
+    background: var(--white);
+  }
+
+  .sched-segs {
+    display: flex;
+    overflow: hidden;
+    border: var(--border);
+  }
+
+  .sched-seg {
+    padding: 7px 16px;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--grey);
+    cursor: pointer;
+    border-right: var(--border);
+    transition: all 0.15s ease;
+  }
+  .sched-seg:last-child { border-right: none; }
+  .sched-seg:hover { background: var(--light-grey); color: var(--near-black); }
+  .sched-seg.active { background: var(--near-black); color: white; }
+
+  .sched-spacer { flex: 1; }
+
+  .btn-save {
+    padding: 8px 18px;
+    border: var(--border);
+    background: var(--white);
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dark-grey);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .btn-save:hover { background: var(--light-grey); }
+
+  .btn-start {
+    padding: 8px 22px;
+    background: var(--red);
+    border: 1px solid var(--red);
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: white;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .btn-start:hover { background: #B32400; }
+
+  /* Timeline */
+  .tl-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--mid-grey) transparent;
+  }
+
+  .tl-row {
+    display: flex;
+    padding: 0;
+    border-bottom: var(--border-thin);
+    position: relative;
+    transition: background 0.15s ease;
+    cursor: pointer;
+  }
+  .tl-row:hover { background: var(--light-grey); }
+  .tl-row.active-row { background: var(--red-light); }
+
+  .tl-num {
+    width: 44px;
+    flex-shrink: 0;
+    padding: 14px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: var(--border-thin);
+  }
+
+  .tl-num-inner {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne Mono', monospace;
+    font-size: 10px;
+    color: var(--grey);
+    border: 1px solid var(--mid-grey);
+  }
+  .tl-num-inner.done { background: #3A7A44; border-color: #3A7A44; color: white; font-size: 11px; }
+  .tl-num-inner.active { background: var(--red); border-color: var(--red); color: white; }
+
+  .tl-info {
+    flex: 1;
+    padding: 12px 16px;
+  }
+
+  .tl-step-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--near-black);
+    letter-spacing: 0.02em;
+    margin-bottom: 2px;
+  }
+  .tl-row.active-row .tl-step-name { color: var(--red); }
+
+  .tl-step-time {
+    font-family: 'Syne Mono', monospace;
+    font-size: 10px;
+    color: var(--grey);
+    letter-spacing: 0.04em;
+  }
+
+  .tl-dur {
+    width: 70px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 14px;
+    font-family: 'Syne Mono', monospace;
+    font-size: 10px;
+    color: var(--grey);
+  }
+
+  .tl-proof-bar {
+    width: 100%;
+    height: 3px;
+    margin-top: 6px;
+    background: repeating-linear-gradient(
+      45deg,
+      var(--mid-grey),
+      var(--mid-grey) 2px,
+      transparent 2px,
+      transparent 5px
+    );
+  }
+
+  /* === STARTER TAB === */
+  .starter-sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    background: var(--off);
+    border-right: var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .sidebar-head {
+    height: 52px;
+    padding: 0 20px;
+    border-bottom: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sidebar-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--near-black);
+  }
+
+  .add-btn-sq {
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--red);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .starter-list-scroll {
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--mid-grey) transparent;
+  }
+
+  .sc-row-item {
+    padding: 14px 20px;
+    border-bottom: var(--border-thin);
+    cursor: pointer;
+    transition: background 0.15s ease;
+    position: relative;
+  }
+  .sc-row-item:hover { background: var(--light-grey); }
+  .sc-row-item.active { background: var(--white); }
+  .sc-row-item.active::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--red);
+  }
+
+  .sc-top-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+  }
+
+  .sc-sdot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+  .sc-sdot.green { background: #3A7A44; }
+  .sc-sdot.amber { background: #C07828; }
+
+  .sc-sname {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--near-black);
+    flex: 1;
+  }
+
+  .sc-sage {
+    font-family: 'Syne Mono', monospace;
+    font-size: 10px;
+    color: var(--grey);
+  }
+
+  .sc-sstatus {
+    font-family: 'Syne Mono', monospace;
+    font-size: 10px;
+    color: var(--grey);
+    letter-spacing: 0.04em;
+  }
+  .sc-sstatus.green { color: #3A7A44; }
+  .sc-sstatus.amber { color: #C07828; }
+
+  /* Starter detail */
+  .sd-main {
+    flex: 1;
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .sd-header {
+    padding: 28px 32px;
+    border-bottom: var(--border);
+    background: var(--black);
+  }
+
+  .sd-name-big {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: white;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .sd-origin {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+
+  .sd-metrics {
+    display: flex;
+    gap: 0;
+  }
+
+  .sd-metric {
+    padding: 14px 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-right: none;
+  }
+  .sd-metric:last-child { border-right: 1px solid rgba(255,255,255,0.1); }
+
+  .sd-m-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 4px;
+  }
+
+  .sd-m-val {
+    font-family: 'Syne Mono', monospace;
+    font-size: 18px;
+    color: white;
+  }
+  .sd-m-val.red { color: var(--red); }
+  .sd-m-val.green { color: #5AB065; }
+
+  .sd-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 32px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--mid-grey) transparent;
+  }
+
+  .sd-body-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: var(--border);
+  }
+
+  .sd-body-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--near-black);
+  }
+
+  .log-feed-btn {
+    padding: 8px 18px;
+    background: var(--red);
+    border: none;
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: white;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .log-feed-btn:hover { background: #B32400; }
+
+  .feed-row {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: var(--border-thin);
+    align-items: start;
+  }
+
+  .fr-date {
+    font-family: 'Syne Mono', monospace;
+    font-size: 10px;
+    color: var(--grey);
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+
+  .fr-ratios {
+    font-family: 'Syne Mono', monospace;
+    font-size: 12px;
+    color: var(--dark-grey);
+    margin-bottom: 4px;
+  }
+
+  .fr-note {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 12px;
+    color: var(--grey);
+    font-style: italic;
+  }
+
+  .fr-health {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Syne Mono', monospace;
+    font-size: 10px;
+    color: #3A7A44;
+    letter-spacing: 0.04em;
+  }
+
+  /* === LOG TAB === */
+  .log-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+  }
+
+  .log-bar {
+    height: 52px;
+    border-bottom: var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    gap: 0;
+    flex-shrink: 0;
+  }
+
+  .filter-seg {
+    padding: 0 16px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--grey);
+    cursor: pointer;
+    border-right: var(--border-thin);
+    transition: all 0.15s ease;
+  }
+  .filter-seg:hover { color: var(--near-black); }
+  .filter-seg.active {
+    color: var(--red);
+    border-bottom: 3px solid var(--red);
+  }
+
+  .log-grid {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    align-content: start;
+    background: var(--mid-grey);
+    scrollbar-width: thin;
+    scrollbar-color: var(--mid-grey) transparent;
+  }
+
+  .log-card {
+    background: var(--white);
+    cursor: pointer;
+    transition: background 0.15s ease;
+    position: relative;
+  }
+  .log-card:hover { background: var(--off); }
+
+  .log-photo {
+    aspect-ratio: 1;
+    background: var(--off);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    opacity: 0.25;
+    border-bottom: 1px solid var(--light-grey);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .log-photo-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--light-grey), var(--off));
+  }
+
+  .log-photo-icon { position: relative; }
+
+  .log-info {
+    padding: 12px 14px;
+  }
+
+  .log-formula-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--near-black);
+    letter-spacing: 0.02em;
+    margin-bottom: 2px;
+  }
+
+  .log-date-label {
+    font-family: 'Syne Mono', monospace;
+    font-size: 9px;
+    color: var(--grey);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .stars-row { display: flex; gap: 2px; }
+  .s { font-size: 10px; color: var(--red); }
+  .s.e { color: var(--light-grey); }
+
+  /* === TRACKER === */
+  .tracker-app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--white);
+  }
+
+  .tracker-bar {
+    height: 52px;
+    background: var(--black);
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    gap: 20px;
+    flex-shrink: 0;
+  }
+
+  .tb-formula {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: white;
+    flex: 1;
+  }
+
+  .tb-step {
+    font-family: 'Syne Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.06em;
+  }
+
+  .end-btn {
+    padding: 7px 16px;
+    border: 1px solid rgba(204,43,0,0.5);
+    background: rgba(204,43,0,0.15);
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--red);
+    cursor: pointer;
+  }
+
+  .tracker-body {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
+
+  .tr-left {
+    width: 55%;
+    border-right: var(--border);
+    padding: 40px 44px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--mid-grey) transparent;
+  }
+
+  .step-label {
+    font-family: 'Syne Mono', monospace;
+    font-size: 10px;
+    color: var(--red);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .step-big {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--near-black);
+    margin-bottom: 12px;
+    line-height: 1.1;
+  }
+
+  .step-desc {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 13px;
+    color: var(--dark-grey);
+    line-height: 1.6;
+    margin-bottom: 32px;
+    max-width: 400px;
+  }
+
+  .timer-block {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    align-self: center;
+  }
+
+  .timer-svg-wrap {
+    width: 200px;
+    height: 200px;
+    position: relative;
+  }
+
+  .timer-svg {
+    width: 200px;
+    height: 200px;
+    transform: rotate(-90deg);
+  }
+
+  .timer-bg-c {
+    fill: none;
+    stroke: var(--light-grey);
+    stroke-width: 6;
+  }
+
+  .timer-fg-c {
+    fill: none;
+    stroke: var(--red);
+    stroke-width: 6;
+    stroke-linecap: square;
+    stroke-dasharray: 565;
+    stroke-dashoffset: 169;
+    transition: stroke-dashoffset 1s linear;
+  }
+
+  .timer-center-abs {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .timer-big-num {
+    font-family: 'Syne Mono', monospace;
+    font-size: 40px;
+    color: var(--near-black);
+    letter-spacing: -0.02em;
+  }
+
+  .timer-small-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-top: 2px;
+  }
+
+  .timer-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .ta-btn {
+    padding: 11px 28px;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: var(--border);
+    background: var(--white);
+    color: var(--dark-grey);
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+  .ta-btn:hover { background: var(--off); }
+
+  .ta-btn.primary {
+    background: var(--red);
+    border-color: var(--red);
+    color: white;
+  }
+  .ta-btn.primary:hover { background: #B32400; }
+
+  .tr-right {
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--mid-grey) transparent;
+  }
+
+  .tr-section {
+    border-bottom: var(--border);
+  }
+
+  .tr-section-head {
+    height: 36px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    background: var(--off);
+    border-bottom: var(--border-thin);
+  }
+
+  .tr-section-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+
+  .tr-section-body {
+    padding: 0;
+  }
+
+  .prog-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 10px 20px;
+    border-bottom: var(--border-thin);
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .prog-row:hover { background: var(--off); }
+  .prog-row.pr-done { opacity: 0.45; }
+  .prog-row.pr-active { background: var(--red-light); }
+
+  .prog-num-sq {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--mid-grey);
+    font-family: 'Syne Mono', monospace;
+    font-size: 9px;
+    color: var(--grey);
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+  .prog-num-sq.done { background: #3A7A44; border-color: #3A7A44; color: white; }
+  .prog-num-sq.active { background: var(--red); border-color: var(--red); color: white; }
+
+  .prog-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--near-black);
+    flex: 1;
+  }
+  .prog-row.pr-active .prog-name { color: var(--red); }
+  .prog-row.pr-done .prog-name { text-decoration: line-through; }
+
+  .prog-time {
+    font-family: 'Syne Mono', monospace;
+    font-size: 10px;
+    color: var(--grey);
+  }
+
+  .ing-check-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 20px;
+    border-bottom: var(--border-thin);
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--dark-grey);
+    transition: background 0.15s ease;
+  }
+  .ing-check-row:hover { background: var(--off); }
+  .ing-check-row.checked { color: var(--grey); text-decoration: line-through; }
+
+  .check-sq {
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--mid-grey);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .check-sq.checked {
+    background: #3A7A44;
+    border-color: #3A7A44;
+    color: white;
+    font-size: 11px;
+  }
+
+  .tool-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 12px 20px;
+  }
+
+  .tool-chip {
+    padding: 4px 12px;
+    border: var(--border);
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--dark-grey);
+  }
+</style>
+</head>
+<body>
+
+<div class="design-label">
+  ALT-02 · Swiss Precision
+  <a href="../../..">← Back to prototypes</a>
+</div>
+
+<div class="screen-tabs">
+  <div class="screen-tab active" onclick="showScreen('bake')">Bake Tab</div>
+  <div class="screen-tab" onclick="showScreen('starter')">Starter Tab</div>
+  <div class="screen-tab" onclick="showScreen('log')">Bread Log</div>
+  <div class="screen-tab" onclick="showScreen('tracker')">Bake Tracker</div>
+</div>
+
+<div class="ipad-frame">
+
+  <!-- BAKE TAB -->
+  <div class="app visible" id="screen-bake">
+    <div class="topbar">
+      <div class="topbar-wordmark">
+        <div class="wordmark-text">F<span class="dot">·</span>N</div>
+      </div>
+      <div class="tab-bar">
+        <div class="tab-item">Starter</div>
+        <div class="tab-item active">Bake</div>
+        <div class="tab-item">Log</div>
+      </div>
+      <div class="topbar-right">
+        <div class="tb-icon">⚙</div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="bake-left">
+        <div class="panel-head">
+          <div class="panel-head-label">Formula</div>
+          <div class="panel-count">5 available</div>
+        </div>
+        <div class="panel-scroll">
+          <div class="formula-card selected">
+            <div class="fc-name">Four-Fold PAL</div>
+            <div class="fc-meta">
+              <span class="diff-tag diff-int">●● Intermediate</span>
+              <span class="fc-timing">16–20h</span>
+            </div>
+            <div class="fc-desc">Classic folded dough. Hydration and levain fully adjustable.</div>
+          </div>
+          <div class="formula-card">
+            <div class="fc-name">No-Knead PAL</div>
+            <div class="fc-meta">
+              <span class="diff-tag diff-beg">● Beginner</span>
+              <span class="fc-timing">14–18h</span>
+            </div>
+            <div class="fc-desc">Hands-off overnight loaf. Simply mix, wait, and bake.</div>
+          </div>
+          <div class="formula-card">
+            <div class="fc-name">Tartine Country</div>
+            <div class="fc-meta">
+              <span class="diff-tag diff-int">●● Intermediate</span>
+              <span class="fc-timing">18–24h</span>
+            </div>
+            <div class="fc-desc">Chad Robertson's iconic open-crumb country loaf. Fixed ratios.</div>
+          </div>
+          <div class="formula-card">
+            <div class="fc-name">100% Whole Grain</div>
+            <div class="fc-meta">
+              <span class="diff-tag diff-adv">●●● Advanced</span>
+              <span class="fc-timing">20–26h</span>
+            </div>
+            <div class="fc-desc">Dense, nutritious, complex flavor. Requires careful hydration management.</div>
+          </div>
+
+          <div class="sub-section">
+            <div class="sub-label">Starter</div>
+            <div class="starter-pick">
+              <div class="sp-dot"></div>
+              <div class="sp-name">Rye Baby</div>
+              <div class="sp-status">Thriving · 4h</div>
+              <div class="sp-caret">›</div>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <div class="sub-label">Dough Weight</div>
+            <div class="weight-ctrl-row">
+              <div class="wc-label">Total dough</div>
+              <div class="wc-minus">−</div>
+              <div class="wc-val">900g</div>
+              <div class="wc-plus">+</div>
+            </div>
+            <div class="double-row">
+              <div class="toggle-sw"><div class="toggle-sw-thumb"></div></div>
+              <div class="dr-label">Double batch (2×)</div>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <div class="sub-label">Desired Dough Temperature</div>
+            <div class="ddt-grid">
+              <div class="ddt-cell">
+                <div class="ddt-cell-label">Flour</div>
+                <div class="ddt-cell-val">68°F</div>
+              </div>
+              <div class="ddt-cell">
+                <div class="ddt-cell-label">Room</div>
+                <div class="ddt-cell-val">72°F</div>
+              </div>
+              <div class="ddt-cell">
+                <div class="ddt-cell-label">Levain</div>
+                <div class="ddt-cell-val">75°F</div>
+              </div>
+            </div>
+            <div class="ddt-result-row">
+              <div class="ddt-res-label">Water Temperature</div>
+              <div class="ddt-res-val">77°F</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="bake-right">
+        <div class="ingredients-panel">
+          <div class="pills-row">
+            <div class="pill red-pill">75% Hydration</div>
+            <div class="pill red-pill">20% Levain</div>
+            <div class="pill">900g Total</div>
+          </div>
+          <div class="table-wrap">
+            <table class="ing-table">
+              <thead>
+                <tr>
+                  <th style="text-align:left">Ingredient</th>
+                  <th>Baker's %</th>
+                  <th>Grams</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="flour-row">
+                  <td>Bread Flour</td>
+                  <td>80%</td>
+                  <td>432g</td>
+                  <td>432g</td>
+                </tr>
+                <tr class="flour-row">
+                  <td>Whole Wheat</td>
+                  <td>20%</td>
+                  <td>108g</td>
+                  <td>108g</td>
+                </tr>
+                <tr>
+                  <td>Water</td>
+                  <td>75%</td>
+                  <td>405g</td>
+                  <td>405g</td>
+                </tr>
+                <tr>
+                  <td>Levain</td>
+                  <td>20%</td>
+                  <td>108g</td>
+                  <td>108g</td>
+                </tr>
+                <tr>
+                  <td>Salt</td>
+                  <td>2%</td>
+                  <td>10.8g</td>
+                  <td>10.8g</td>
+                </tr>
+                <tr class="total-row">
+                  <td colspan="2">Total</td>
+                  <td>—</td>
+                  <td>900g</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="schedule-bar">
+            <div class="sched-segs">
+              <div class="sched-seg active">Start Now</div>
+              <div class="sched-seg">Start At</div>
+              <div class="sched-seg">Finish By</div>
+            </div>
+            <div class="sched-spacer"></div>
+            <div class="btn-save">Save</div>
+            <div class="btn-start">Start Bake →</div>
+          </div>
+        </div>
+
+        <div class="timeline-panel">
+          <div class="panel-head">
+            <div class="panel-head-label">Timeline</div>
+          </div>
+          <div class="tl-scroll">
+            <div class="tl-row">
+              <div class="tl-num"><div class="tl-num-inner done">✓</div></div>
+              <div class="tl-info">
+                <div class="tl-step-name">Mix & Autolyse</div>
+                <div class="tl-step-time">9:00 AM · 30 min</div>
+              </div>
+              <div class="tl-dur">30m</div>
+            </div>
+            <div class="tl-row active-row">
+              <div class="tl-num"><div class="tl-num-inner active">→</div></div>
+              <div class="tl-info">
+                <div class="tl-step-name">Bulk Fermentation</div>
+                <div class="tl-step-time">9:30 AM</div>
+                <div class="tl-proof-bar"></div>
+              </div>
+              <div class="tl-dur">4–5h</div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-num"><div class="tl-num-inner">3</div></div>
+              <div class="tl-info">
+                <div class="tl-step-name">Pre-Shape</div>
+                <div class="tl-step-time">~2:00 PM</div>
+              </div>
+              <div class="tl-dur">15m</div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-num"><div class="tl-num-inner">4</div></div>
+              <div class="tl-info">
+                <div class="tl-step-name">Bench Rest</div>
+                <div class="tl-step-time">~2:15 PM</div>
+              </div>
+              <div class="tl-dur">30m</div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-num"><div class="tl-num-inner">5</div></div>
+              <div class="tl-info">
+                <div class="tl-step-name">Final Shape</div>
+                <div class="tl-step-time">~2:45 PM</div>
+              </div>
+              <div class="tl-dur">20m</div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-num"><div class="tl-num-inner">6</div></div>
+              <div class="tl-info">
+                <div class="tl-step-name">Cold Proof</div>
+                <div class="tl-step-time">~3:00 PM</div>
+                <div class="tl-proof-bar"></div>
+              </div>
+              <div class="tl-dur">12h</div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-num"><div class="tl-num-inner">7</div></div>
+              <div class="tl-info">
+                <div class="tl-step-name">Preheat</div>
+                <div class="tl-step-time">Tomorrow · 7:30 AM</div>
+              </div>
+              <div class="tl-dur">45m</div>
+            </div>
+            <div class="tl-row">
+              <div class="tl-num"><div class="tl-num-inner">8</div></div>
+              <div class="tl-info">
+                <div class="tl-step-name">Bake</div>
+                <div class="tl-step-time">Tomorrow · 8:15 AM</div>
+              </div>
+              <div class="tl-dur">50m</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STARTER TAB -->
+  <div class="app" id="screen-starter">
+    <div class="topbar">
+      <div class="topbar-wordmark">
+        <div class="wordmark-text">F<span class="dot">·</span>N</div>
+      </div>
+      <div class="tab-bar">
+        <div class="tab-item active">Starter</div>
+        <div class="tab-item">Bake</div>
+        <div class="tab-item">Log</div>
+      </div>
+      <div class="topbar-right">
+        <div class="tb-icon">⚙</div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="starter-sidebar">
+        <div class="sidebar-head">
+          <div class="sidebar-title">Starters</div>
+          <div class="add-btn-sq">+</div>
+        </div>
+        <div class="starter-list-scroll">
+          <div class="sc-row-item active">
+            <div class="sc-top-row">
+              <div class="sc-sdot green"></div>
+              <div class="sc-sname">Rye Baby</div>
+              <div class="sc-sage">4h ago</div>
+            </div>
+            <div class="sc-sstatus green">Thriving</div>
+          </div>
+          <div class="sc-row-item">
+            <div class="sc-top-row">
+              <div class="sc-sdot amber"></div>
+              <div class="sc-sname">Old Faithful</div>
+              <div class="sc-sage">2d ago</div>
+            </div>
+            <div class="sc-sstatus amber">Needs Feeding</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sd-main">
+        <div class="sd-header">
+          <div class="sd-name-big">Rye Baby</div>
+          <div class="sd-origin">From neighbor Maria · June 2022 · Rye flour, 100% hydration</div>
+          <div class="sd-metrics">
+            <div class="sd-metric">
+              <div class="sd-m-label">Status</div>
+              <div class="sd-m-val green">Thriving</div>
+            </div>
+            <div class="sd-metric">
+              <div class="sd-m-label">Last Fed</div>
+              <div class="sd-m-val red">4h ago</div>
+            </div>
+            <div class="sd-metric">
+              <div class="sd-m-label">Age</div>
+              <div class="sd-m-val">2y 9m</div>
+            </div>
+            <div class="sd-metric">
+              <div class="sd-m-label">Total Feeds</div>
+              <div class="sd-m-val">147</div>
+            </div>
+            <div class="sd-metric">
+              <div class="sd-m-label">Bakes</div>
+              <div class="sd-m-val">34</div>
+            </div>
+          </div>
+        </div>
+        <div class="sd-body">
+          <div class="sd-body-head">
+            <div class="sd-body-title">Feeding History</div>
+            <div class="log-feed-btn">+ Log a Feed</div>
+          </div>
+
+          <div class="feed-row">
+            <div class="fr-date">MAR 19<br>9:15 AM<br>4h ago</div>
+            <div>
+              <div class="fr-ratios">150g flour · 150g water · 75g starter · 75g discard</div>
+              <div class="fr-note">Looking super active, peaked at 3h. Beautiful dome.</div>
+            </div>
+            <div class="fr-health">● Thriving</div>
+          </div>
+
+          <div class="feed-row">
+            <div class="fr-date">MAR 18<br>8:30 AM<br>1d ago</div>
+            <div>
+              <div class="fr-ratios">150g flour · 150g water · 75g starter</div>
+              <div class="fr-note">Back to normal after the weekend bake.</div>
+            </div>
+            <div class="fr-health">● Thriving</div>
+          </div>
+
+          <div class="feed-row">
+            <div class="fr-date">MAR 16<br>7:00 PM<br>3d ago</div>
+            <div>
+              <div class="fr-ratios">150g bread flour · 150g water · 75g starter</div>
+              <div class="fr-note"></div>
+            </div>
+            <div class="fr-health">● Thriving</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOG TAB -->
+  <div class="app" id="screen-log">
+    <div class="topbar">
+      <div class="topbar-wordmark">
+        <div class="wordmark-text">F<span class="dot">·</span>N</div>
+      </div>
+      <div class="tab-bar">
+        <div class="tab-item">Starter</div>
+        <div class="tab-item">Bake</div>
+        <div class="tab-item active">Log</div>
+      </div>
+      <div class="topbar-right">
+        <div class="tb-icon">⚙</div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="log-main">
+        <div class="log-bar">
+          <div class="filter-seg active">All Bakes</div>
+          <div class="filter-seg">Four-Fold PAL</div>
+          <div class="filter-seg">Tartine Country</div>
+          <div class="filter-seg">No-Knead</div>
+          <div class="filter-seg">Rye Baby</div>
+          <div style="margin-left:auto; display: flex; align-items: center; padding: 0 16px; height: 100%; border-left: 1px solid var(--light-grey); cursor: pointer; font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: var(--red);">+ New Entry</div>
+        </div>
+
+        <div class="log-grid">
+          <div class="log-card">
+            <div class="log-photo" style="opacity:1; background: linear-gradient(135deg, #EDE0CC, #D4C0A0)">
+              <div class="log-photo-icon" style="font-size: 48px">🍞</div>
+            </div>
+            <div class="log-info">
+              <div class="log-formula-name">Four-Fold PAL</div>
+              <div class="log-date-label">Mar 17, 2026</div>
+              <div class="stars-row"><span class="s">★</span><span class="s">★</span><span class="s">★</span><span class="s">★</span><span class="s e">★</span></div>
+            </div>
+          </div>
+
+          <div class="log-card">
+            <div class="log-photo" style="opacity:1; background: linear-gradient(135deg, #D8C8B0, #C4AE90)">
+              <div class="log-photo-icon" style="font-size: 48px">🥖</div>
+            </div>
+            <div class="log-info">
+              <div class="log-formula-name">Tartine Country</div>
+              <div class="log-date-label">Mar 10, 2026</div>
+              <div class="stars-row"><span class="s">★</span><span class="s">★</span><span class="s">★</span><span class="s">★</span><span class="s">★</span></div>
+            </div>
+          </div>
+
+          <div class="log-card">
+            <div class="log-photo" style="opacity:1; background: linear-gradient(135deg, #E8DCC8, #D0BE9C)">
+              <div class="log-photo-icon" style="font-size: 48px">🍞</div>
+            </div>
+            <div class="log-info">
+              <div class="log-formula-name">No-Knead PAL</div>
+              <div class="log-date-label">Mar 2, 2026</div>
+              <div class="stars-row"><span class="s">★</span><span class="s">★</span><span class="s">★</span><span class="s e">★</span><span class="s e">★</span></div>
+            </div>
+          </div>
+
+          <div class="log-card">
+            <div class="log-photo" style="opacity:1; background: linear-gradient(135deg, #EAD8C0, #D4B898)">
+              <div class="log-photo-icon" style="font-size: 48px">🫓</div>
+            </div>
+            <div class="log-info">
+              <div class="log-formula-name">Four-Fold PAL</div>
+              <div class="log-date-label">Feb 22, 2026</div>
+              <div class="stars-row"><span class="s">★</span><span class="s">★</span><span class="s">★</span><span class="s">★</span><span class="s e">★</span></div>
+            </div>
+          </div>
+
+          <div class="log-card">
+            <div class="log-photo" style="opacity:1; background: linear-gradient(135deg, #DCCAB0, #C8AA88)">
+              <div class="log-photo-icon" style="font-size: 48px">🍞</div>
+            </div>
+            <div class="log-info">
+              <div class="log-formula-name">Tartine Country</div>
+              <div class="log-date-label">Feb 14, 2026</div>
+              <div class="stars-row"><span class="s">★</span><span class="s">★</span><span class="s">★</span><span class="s">★</span><span class="s">★</span></div>
+            </div>
+          </div>
+
+          <div class="log-card" style="border: 2px dashed var(--mid-grey);">
+            <div class="log-photo" style="background: var(--off);">
+              <div class="log-photo-icon" style="font-size: 32px; opacity: 0.4;">+</div>
+            </div>
+            <div class="log-info">
+              <div class="log-formula-name" style="color: var(--grey)">New Entry</div>
+              <div class="log-date-label">Log a Bake</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRACKER -->
+  <div class="app" id="screen-tracker">
+    <div class="tracker-app">
+      <div class="tracker-bar">
+        <div class="tb-formula">Baking: Four-Fold PAL</div>
+        <div class="tb-step">Step 2 of 8</div>
+        <div class="end-btn">✕ End Bake</div>
+      </div>
+
+      <div class="tracker-body">
+        <div class="tr-left">
+          <div class="step-label">Step 02</div>
+          <div class="step-big">Bulk<br>Fermentation</div>
+          <div class="step-desc">Perform 4 sets of stretch-and-folds, 30 minutes apart. Then rest undisturbed until the dough has increased by 50–75% and shows bubbling at the edges.</div>
+
+          <div class="timer-block">
+            <div class="timer-svg-wrap">
+              <svg class="timer-svg" viewBox="0 0 200 200">
+                <circle class="timer-bg-c" cx="100" cy="100" r="90"/>
+                <circle class="timer-fg-c" cx="100" cy="100" r="90"/>
+              </svg>
+              <div class="timer-center-abs">
+                <div class="timer-big-num">3:42</div>
+                <div class="timer-small-label">Remaining</div>
+              </div>
+            </div>
+
+            <div class="timer-actions">
+              <div class="ta-btn">⏭ Skip</div>
+              <div class="ta-btn">⏸ Pause</div>
+              <div class="ta-btn primary">✓ Done</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tr-right">
+          <div class="tr-section">
+            <div class="tr-section-head">
+              <div class="tr-section-label">Progress</div>
+            </div>
+            <div class="tr-section-body">
+              <div class="prog-row pr-done">
+                <div class="prog-num-sq done">✓</div>
+                <div class="prog-name">Levain Build</div>
+                <div class="prog-time">9:00 AM</div>
+              </div>
+              <div class="prog-row pr-active">
+                <div class="prog-num-sq active">2</div>
+                <div class="prog-name">Bulk Fermentation</div>
+                <div class="prog-time">9:30 AM</div>
+              </div>
+              <div class="prog-row">
+                <div class="prog-num-sq">3</div>
+                <div class="prog-name">Pre-Shape</div>
+                <div class="prog-time">~2:00 PM</div>
+              </div>
+              <div class="prog-row">
+                <div class="prog-num-sq">4</div>
+                <div class="prog-name">Bench Rest</div>
+                <div class="prog-time">~2:15 PM</div>
+              </div>
+              <div class="prog-row">
+                <div class="prog-num-sq">5</div>
+                <div class="prog-name">Final Shape</div>
+                <div class="prog-time">~2:45 PM</div>
+              </div>
+              <div class="prog-row">
+                <div class="prog-num-sq">6</div>
+                <div class="prog-name">Cold Proof</div>
+                <div class="prog-time">~3:00 PM</div>
+              </div>
+              <div class="prog-row">
+                <div class="prog-num-sq">7</div>
+                <div class="prog-name">Preheat</div>
+                <div class="prog-time">Tomorrow 7:30am</div>
+              </div>
+              <div class="prog-row">
+                <div class="prog-num-sq">8</div>
+                <div class="prog-name">Bake</div>
+                <div class="prog-time">Tomorrow 8:15am</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tr-section">
+            <div class="tr-section-head">
+              <div class="tr-section-label">Ingredients</div>
+            </div>
+            <div class="tr-section-body">
+              <div class="ing-check-row checked">
+                <div class="check-sq checked">✓</div>
+                432g Bread Flour
+              </div>
+              <div class="ing-check-row checked">
+                <div class="check-sq checked">✓</div>
+                108g Whole Wheat
+              </div>
+              <div class="ing-check-row">
+                <div class="check-sq"></div>
+                405g Water (77°F)
+              </div>
+              <div class="ing-check-row">
+                <div class="check-sq"></div>
+                108g Levain
+              </div>
+              <div class="ing-check-row">
+                <div class="check-sq"></div>
+                10.8g Salt
+              </div>
+            </div>
+          </div>
+
+          <div class="tr-section">
+            <div class="tr-section-head">
+              <div class="tr-section-label">Tools this step</div>
+            </div>
+            <div class="tool-chips">
+              <div class="tool-chip">Large bowl</div>
+              <div class="tool-chip">Bowl scraper</div>
+              <div class="tool-chip">Wet hands</div>
+            </div>
+            <div style="padding: 8px 20px 14px; font-family: 'Syne Mono', monospace; font-size: 10px; color: var(--grey); letter-spacing: 0.04em;">Next: bench knife, banneton</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showScreen(name) {
+  document.querySelectorAll('.app').forEach(a => a.classList.remove('visible'));
+  document.getElementById('screen-' + name).classList.add('visible');
+  document.querySelectorAll('.screen-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
