@@ -7,38 +7,49 @@ This document captures interaction behavior, states, and component details that 
 
 ## Navigation
 
-### Tab Bar (bottom, all screens)
-- 3 tabs: **Starter**, **Bake** (active by default), **Log**
-- Active tab: `goldenCrust` (#C07A2E), inactive: `wheatField` (#8B7355)
-- Tab bar background: `flourDust` (#F2EBE0)
-- Settings ⚙️ gear icon: top-right nav bar, available from every tab
+### Structure
+- **Landscape (regular width):** `NavigationSplitView` sidebar (always visible, 240px, `surface-container-lowest` background) + detail column
+- **Portrait (compact width):** Sidebar collapses; tab bar appears at bottom
+- **Active sidebar item:** `primary` (#974400) background, white label
+- **Inactive sidebar items:** `on-surface-variant` (#564338) label
+- **Sidebar footer:** ⚙️ gear icon for Settings — not a main section
+- **Home** is the default detail view on launch
 
 ### Navigation Flows
 ```
-Starter Tab
+Home  [default landing, sidebar item 1]
+├── → Starter section
+├── → Bake section
+├── → Log section
+└── → Formulas section
+
+Starter  [sidebar item 2]
 ├── [Empty] → 3 onboarding buttons
 │   ├── "I've got a starter" → Create Starter → Log First Feed
 │   ├── "Cultivate" → Create Starter → Cultivate Info Sheet → Log First Feed
 │   └── "Find" → Find a Starter (informational)
 ├── [Non-empty] → Starter card grid
-│   ├── Tap card → Starter Details → Log a Feed
+│   ├── Tap card → Starter Details → Log a Feed (sheet)
 │   └── + New Starter → Create Starter
 └── Log a Feed → returns to Starter Details
 
-Bake Tab
+Bake  [sidebar item 3]
 ├── Configure formula, starter, weight, DDT (inline)
 ├── View ingredients + timeline (side-by-side sub-panels)
 └── Start Bake → Bake Tracker (full-screen)
-    └── Complete → Log Entry (sheet)
+    └── Complete → Bake Entry Form (sheet) → Bake Detail
 
-Log Tab
+Log  [sidebar item 4]
 ├── Filter bar (by Starter, by Formula)
 ├── Bake grid → Bake Detail
-│   ├── Edit, Share, Bake this Again → Bake tab
+│   ├── Edit, Share, Bake this Again → Bake section (with presets)
 │   └── Share Your Bread (coming soon)
 └── + New Entry (sheet)
 
-Settings ⚙️ → Inspiration, Preferences, Equipment Guide, About Fournil
+Formulas  [sidebar item 5]
+└── Formula list (static) → Formula Detail → "Use this formula" → Bake section
+
+Settings ⚙️ → Inspiration · Preferences · Equipment Guide · About Fournil
 ```
 
 ---
@@ -47,6 +58,7 @@ Settings ⚙️ → Inspiration, Preferences, Equipment Guide, About Fournil
 
 | SVG File | Screen | Notes |
 |----------|--------|-------|
+| `00-home.svg` | Home (control center) | Starter overview, monthly stats, recent bakes, nav hub — **Not started** |
 | `01-plan-tab.svg` | Bake tab | Formula carousel, starter selector, ingredients + timeline side-by-side |
 | `02-starter-tab.svg` | Starter list (non-empty) | Multi-starter card grid with health dots |
 | `03-bread-log-tab.svg` | Bread Log | Photo grid with filter bar |
@@ -60,13 +72,14 @@ Settings ⚙️ → Inspiration, Preferences, Equipment Guide, About Fournil
 | `11-starter-details.svg` | Starter Details | Feeding history, bake history, health |
 | `13-create-starter.svg` | Create a Starter | Name, source, description |
 | `15-find-a-starter.svg` | Find a Starter | Buy online, community links |
+| `16-formulas.svg` | Formulas | Static formula list + detail view — **Not started** |
 
 ---
 
 ## Bake Tab (01-plan-tab.svg)
 
 ### Layout
-- **Left column** (380px, fixed, scrollable, parchment-warm bg):
+- **Left column** (380px, fixed, scrollable, `surface-container-lowest` bg):
   Formula carousel → Starter selector → Dough weight + 2× → Hydration/Levain controls → DDT calculator
 - **Right area** splits into two side-by-side sub-panels:
   - **Ingredients** (left): pills, table, recipe instructions below
@@ -75,9 +88,9 @@ Settings ⚙️ → Inspiration, Preferences, Equipment Guide, About Fournil
 
 ### Formula Carousel
 - Vertical scroll, snap-to-card, ~230px max height (shows ~2 cards)
-- Selected card: white bg, goldenCrust border, shadow
-- Unselected: flourDust bg
-- Each card: thumbnail icon, name (Fraunces), difficulty dots + label, timing, description (2-line clamp), "View previous bakes →"
+- Selected card: `surface-container-lowest` bg, `primary` border, ambient shadow
+- Unselected: `surface-container-low` bg
+- Each card: thumbnail icon, name (Noto Serif), difficulty dots + label, timing, description (2-line clamp), "View previous bakes →"
 - "+" New Formula: dashed border, "Coming soon" popover on tap
 
 ### Starter Selector
@@ -86,14 +99,14 @@ Settings ⚙️ → Inspiration, Preferences, Equipment Guide, About Fournil
 
 ### Formula Controls (Hydration / Levain)
 Three interchangeable styles (toggle: Arc / Slider / Steps):
-- **Arc**: circular knob with goldenCrust fill arc, value in center
+- **Arc**: circular knob with `primary` fill arc, value in center
 - **Slider**: horizontal with thumb, tick marks at presets
 - **Stepper**: preset buttons + fine-tune ±
 - Interactive only for Four-Fold PAL; read-only (dimmed) for others
 
 ### DDT Calculator
 - White card with 3 temp inputs (Flour, Room, Levain)
-- Large result: "Use water at 127°F" (Fraunces, 28px, slate color)
+- Large result: "Use water at 127°F" (Noto Serif, 28px, `on-surface`)
 - Reference row: "DDT of 78°F · Hand mixing [✎]"
 - Popover: "Desired Dough Temperature" label, target DDT, mixing method selector (Hand/Mixer/Processor)
 
@@ -104,11 +117,11 @@ Three interchangeable styles (toggle: Arc / Slider / Steps):
 - Recipe Instructions below table (scrollable, numbered steps from formula)
 
 ### Timeline Panel
-- Vertical line: gradient (goldenCrust → flourDust → sage)
-- Step dots: golden (first), open (upcoming), sage (bake)
-- Duration badges: short=sage, long=golden, overnight=clay
+- Vertical line: gradient (`primary` → `surface-container-low` → sage)
+- Step dots: `primary` (first), open (upcoming), sage (bake)
+- Duration badges: short=sage, long=`primary`, overnight=clay
 - Proof blocks (4 styles, toggle: Gradient/Thick/Hatched/Bracket):
-  - Bulk: golden-glow gradient, goldenCrust left border
+  - Bulk: warm gradient, `primary` left border
   - Cold: night-bg gradient, night-blue left border
 - Day boundary markers: "🌙 tomorrow"
 
@@ -129,14 +142,14 @@ Three interchangeable styles (toggle: Arc / Slider / Steps):
 
 ### Timer Ring
 - 260×260px circular countdown
-- Ring colors: goldenCrust (counting), overProofAmber (paused), sage (complete)
-- 60 tick marks, Fira Mono digits (38px)
+- Ring colors: `primary` (counting), amber (paused), sage (complete)
+- 60 tick marks, Manrope digits (38px)
 - Long steps: "Done around 7:00 PM" hint
 
 ### Controls
 - Skip (⏭): outlined, confirm dialog
 - Pause (⏸) / Resume (▶): toggles, amber styling when paused
-- Done (✓): filled goldenCrust, primary CTA
+- Done (✓): filled `primary`, primary CTA
 
 ### Step Complete Celebration
 - Semi-transparent overlay with backdrop blur
@@ -145,7 +158,7 @@ Three interchangeable styles (toggle: Arc / Slider / Steps):
 - Auto-dismisses ~1.4s
 
 ### Right Panel Sections
-1. **Progress**: vertical list, completed=✓ struck-through, current=golden highlight, upcoming=dimmed
+1. **Progress**: vertical list, completed=✓ struck-through, current=`primary` highlight, upcoming=dimmed
 2. **Ingredients**: compact list with check-off (flour/water at Mix, salt at Add Salt, levain at Mix). Checked items struck through.
 3. **Tools**: pill chips for current step tools + "Next: ..." hint
 4. **Notes**: [📷 Add Photo] [📝 Add Note] buttons
@@ -289,27 +302,54 @@ Observations on previous cycle are **always visible** regardless of chain state.
 ## Shared Components
 
 ### Color System
+
+#### Base Palette
 | Token | Hex | Usage |
 |-------|-----|-------|
-| parchment | #FEFBF5 | Main background |
-| parchment-warm | #FAF5EC | Left column bg |
-| flour-dust | #F2EBE0 | Cards, tab bar, surfaces |
-| flour-dust-deep | #E4D9C8 | Borders, dividers |
-| crust-brown | #4A3228 | Primary text |
-| crust-medium | #6B4D3E | Secondary text |
-| wheat-field | #8B7355 | Tertiary text, labels |
-| wheat-light | #A89478 | Hints, disabled |
-| golden-crust | #C07A2E | Primary accent, active states |
-| sage | #7A9178 | Success, thriving, beginner |
-| night-blue | #3D4F6A | Cold proof |
-| clay | #B86B4A | Advanced difficulty |
-| burned-red | #A04030 | Expert difficulty, destructive |
+| `surface` | #fbf9f1 | Main background |
+| `primary` | #974400 | Primary accent, active states, gradient CTA start |
+| `primary-container` | #bb5808 | Gradient CTA end |
+| `secondary` | #685e3e | Tertiary text, labels |
+| `secondary-container` | #f0e2ba | Chip backgrounds, wheat tone |
+| `on-surface` | #1b1c17 | Primary text (never true black) |
+| `on-surface-variant` | #564338 | Secondary text, muted labels |
+| `outline` | #8a7266 | Hints, disabled, icons |
+| `outline-variant` | #ddc1b3 | Ghost borders (15% opacity only) |
+
+#### Surface Hierarchy (6-tier, tonal layering only — no dividers)
+| Token | Approx Hex | Usage |
+|-------|-----------|-------|
+| `surface` | #fbf9f1 | Main app background |
+| `surface-container-lowest` | #f5f2e8 | Sidebar/nav panels |
+| `surface-container-low` | #ede8d8 | Card backgrounds (resting) |
+| `surface-container` | #e6dfcc | Elevated cards (tapped) |
+| `surface-container-high` | #dcd4be | Grouped field backgrounds |
+| `surface-container-highest` | #d0c9b0 | Overlays |
+
+#### Semantic Tokens (domain-specific, unchanged)
+| Token | Hex | Usage |
+|-------|-----|-------|
+| `sage` | #7A9178 | Success, thriving, beginner |
+| `night-blue` | #3D4F6A | Cold proof |
+| `clay` | #B86B4A | Advanced difficulty |
+| `burned-red` | #A04030 | Expert difficulty, destructive |
 
 ### Typography
-- **Titles**: Fraunces (serif, 600-700 weight)
-- **Body**: Source Serif 4 (serif, 400-500)
-- **Mono**: Fira Mono (weights, percentages, times)
-- **Section labels**: Fraunces, 11px, 600, uppercase, 0.13em letter-spacing
+- **Headlines / Display**: Noto Serif (600–700 weight) — editorial voice, scale and prestige
+- **Body / Labels**: Manrope (400–500 weight) — functional voice, clean and readable
+- **Numeric values** (weights, %, times): Manrope with `.fontDesign(.monospaced)` in SwiftUI
+- **Section labels**: Manrope, 11px, 600, uppercase, 0.13em letter-spacing
+
+### Design Rules
+
+These rules apply to all screens and override default SwiftUI styling:
+
+- **No dividers.** `Divider()` is prohibited. Content separation uses tonal surface shifts only.
+- **Ghost borders.** A 1px `outline-variant` stroke at 15% opacity is the accessibility fallback — never decorative.
+- **Ambient shadows.** Blur 24–40pt, opacity 4–6%, color tinted to `on-surface` (never pure black). Used sparingly on floating elements only.
+- **Gradient CTAs.** Primary action buttons use a linear gradient `primary` → `primary-container`. Secondary and tertiary buttons use solid `secondary-container` fill.
+- **Glassmorphism.** Applied to modal overlays and floating panels only — use `ultraThinMaterial` or `thinMaterial` in SwiftUI.
+- **Organic asymmetry.** Photo assets may overflow their grid cell by up to 8px (clipped to rounded corner). Minimum 24pt vertical spacing between content sections.
 
 ### Reusable Components
 - **Starter Card**: health dot + name + feed info + photo thumbnail

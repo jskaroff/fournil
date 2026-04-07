@@ -23,9 +23,11 @@ If it's a variant of an existing screen (e.g., `06b-...`), add it to the existin
 Move the corresponding wireframe card from "Wireframes" to "Ready to preview" — change it from a `div.wireframe-card` to an `<a href="...">` link with `badge-ready` badge. Keep the same eyebrow/title/description.
 
 ### Wireframe naming conventions
+- `00-` = Home screen
 - `01-` through `15-` = main screens
+- `16-` = Formulas
 - Suffix letters `a`, `b`, `c` = layout variants of the same screen
-- Prefix maps to tabs: `01`=Starter, `02`=Bake, `03`=Log; sheets/modals use descriptive names
+- Prefix maps to sections: `01`=Bake, `02`=Starter, `03`=Log; sheets/modals use descriptive names
 
 ## Deploying
 Vercel requires a manual deploy — it is NOT connected to GitHub for auto-deployment.
@@ -38,5 +40,7 @@ vercel --prod
 ```
 
 ## Design System
-Fonts: Fraunces (headings), Source Serif 4 (body), Fira Mono (labels)
-Colors: `--parchment`, `--flour-dust`, `--crust-brown`, `--wheat-field`, `--golden-crust`, `--sage`
+**Fonts:** Noto Serif (headlines/display), Manrope (body/labels/numeric values)
+**Primary colors:** `surface` #fbf9f1 · `primary` #974400 · `primary-container` #bb5808 · `on-surface` #1b1c17 · `on-surface-variant` #564338
+**Semantic colors:** `sage` #7A9178 · `night-blue` #3D4F6A · `clay` #B86B4A · `burned-red` #A04030
+**Key rule:** No dividers — use tonal surface shifts only. Full spec in `design/wireframes/design-spec.md`.

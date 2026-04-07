@@ -8,9 +8,9 @@ Earn badges for baking streaks and accomplishments:
 - **Badge detail**: tapping shows large badge with info from the feed/starter/bake that earned it, plus share button
 
 ## Formula Builder
-- Custom formulas with name, description, difficulty, ingredient percentages, timeline steps, instructions
-- Saved formulas appear alongside built-in formulas
-- V1: "+" card shows "Coming soon" popover
+- Creating and editing custom formulas (name, description, difficulty, ingredient percentages, timeline steps, instructions) is deferred to post-V1.
+- Browsing and selecting the built-in static formulas is V1 — see `docs/requirements/formulas.md`.
+- In V1, the "+" card in the Bake tab formula carousel shows a "Coming soon" popover.
 
 ## Other Deferred
 - Feeding history time graph (Starter Details — fast follow)

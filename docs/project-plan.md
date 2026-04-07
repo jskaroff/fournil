@@ -59,6 +59,7 @@ Low-fidelity SVG layouts at 1194x834 (iPad landscape). Created with the `/wirefr
 
 | Screen | SVG | Status |
 |--------|-----|--------|
+| Home (control center) | `00-home.svg` | Not started |
 | Bake tab (Plan) | `01-plan-tab.svg` | Done |
 | Starter tab (non-empty) | `02-starter-tab.svg` | Done |
 | Bread Log tab | `03-bread-log-tab.svg` | Done |
@@ -72,6 +73,7 @@ Low-fidelity SVG layouts at 1194x834 (iPad landscape). Created with the `/wirefr
 | Create a Starter | `13-create-starter.svg` | Done |
 | Cultivate Info Sheet | `14-cultivate-info.svg` | Not started |
 | Find a Starter | `15-find-a-starter.svg` | Done |
+| Formulas | `16-formulas.svg` | Not started |
 
 #### 1b. Interactive Prototypes
 
@@ -126,7 +128,7 @@ Set up the Xcode project, folder structure, and build pipeline. No feature code 
 - [ ] Folder structure matching architecture (Models, Views, Theme, Extensions)
 - [ ] `AppColors` and `AppTypography` theme enums from design spec
 - [ ] `Color+Hex` extension
-- [ ] Empty `TabView` shell with 3 tabs + settings gear
+- [ ] `NavigationSplitView` shell with 5 sidebar sections (Home, Starter, Bake, Log, Formulas) + Settings footer
 - [ ] SwiftData model container setup
 - [ ] Test target with one passing placeholder test
 - [ ] Project generates and builds clean (`xcodegen generate && xcodebuild`)
@@ -204,6 +206,7 @@ Each implementation slice follows this workflow:
 | **4g** | Bake Log + Detail | 4f | Log tab (03), Detail (07), Entry Form (08) |
 | **4h** | Settings + Inspiration | 4a | Settings (05), glossary, tips, about |
 | **4i** | Find/Cultivate a Starter | 4c | Find (15), Cultivate info (14) |
+| **4j** | Home screen | 4c, 4g | Home (00) — starter overview, monthly stats, recent bakes tail, nav hub |
 
 Each slice has its own gate: **Josh reviews the running feature against the approved designs.**
 
@@ -295,7 +298,7 @@ A simple marketing website and social presence to support the launch.
 
 These features are intentionally deferred. The architecture supports them, but they will not be built until after V1 ships.
 
-- Formula Builder (custom formulas)
+- Formula Builder (creating/editing custom formulas — browsing static formulas is V1)
 - Feeding history time graph
 - "Share Your Bread" social feature
 - Voice notes on Bake Tracker
@@ -326,3 +329,4 @@ These features are intentionally deferred. The architecture supports them, but t
 |------|--------|
 | 2026-03-19 | Initial project plan created |
 | 2026-03-19 | Added phases 6-9: branding, financial/legal setup, release prep, marketing |
+| 2026-03-23 | Adopted Stitch "Living Ferment" design system; added Home screen requirement; rethought navigation to Home-centered NavigationSplitView (hybrid); promoted Formulas from deferred to V1 (read-only); added 00-home.svg, 16-formulas.svg wireframe rows; added Phase 4j (Home impl) |
